@@ -37,6 +37,22 @@ html, body {
 	background-color: #000;
 }
 
+.status {
+	background-color: #eee;
+	background-image: linear-gradient( top, #aaa 0%, #eee 51% );
+	background-image: -webkit-linear-gradient( top, #aaa 0%, #eee 51% );
+	background-image: -ms-linear-gradient( top, #aaa 0%, #eee 51% );
+	background-image: -o-linear-gradient( top, #aaa 0%, #eee 51% );
+	background-image: -ms-linear-gradient( top, #aaa 0%, #eee 51% );
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop( 0, #aaa ),
+		color-stop( 0.51, #eee )
+	);
+}
+
 .inputMessage {
 	border: 1em solid #000;
 	bottom: 0;
@@ -64,4 +80,18 @@ html, body {
 	line-height: 125%;
 	font-family: "Gentium Basic", Georgia, Cambria, "Times New Roman", Times, serif;
 	cursor: default;
+}
+
+#orb {
+	width: 350px;
+	height: 400px;
+	margin: auto;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translate( 0, -50% );
+	-webkit-transform: translate( 0, -50% );
+	-mos-transform: translate( 0, -50% );
+	-o-transform: translate( 0, -50% );
+	-ms-transform: translate( 0, -50% );
 }

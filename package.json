@@ -21,7 +21,8 @@
 	},
 	"dependencies": {
 		"express": "~4",
-		"socket.io": "~1.2"
+		"socket.io": "~1.2",
+		"mongodb": "~2.0"
 	},
 	"devDependencies": {
 		"blessed": "~0.0",

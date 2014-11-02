@@ -23,6 +23,14 @@
 			callback( response );
 		} );
 
+		socket.on( "status", function ( data, callback ) {
+			var response = {
+				message: "online"
+			};
+
+			callback( response );
+		} );
+
 	} );
 
 	module.exports = app;
