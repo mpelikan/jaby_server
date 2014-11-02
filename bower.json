@@ -1,0 +1,31 @@
+{
+	"name": "jaby-server",
+	"private": true,
+	"author": {
+		"name": "Michael Pelikan",
+		"email": "mpelikan@jaby.com"
+	},
+	"contributors": [
+		{
+			"name": "Michael Pelikan",
+			"email": "mpelikan@jaby.com"
+		}
+	],
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "LICENSE"
+		}
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.org/mpelikan/jaby_server"
+	},
+	"bugs": {
+		"url": "https://github.org/mpelikan/jaby_server/issues"
+	},
+	"dependencies": {
+		"socket.io-client": "~1.2"
+	},
+	"devDependencies": {}
+}

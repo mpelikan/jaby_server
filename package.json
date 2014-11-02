@@ -1,0 +1,42 @@
+{
+	"name": "jaby-server",
+	"version": "0.1.0",
+	"description": "The brains behind Jaby",
+	"author": "Michael Pelikan <mpelikan@jaby.com>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mpelikan/jaby_server.git"
+	},
+	"scripts": {
+		"start": "nodemon app.js",
+		"development": "nodemon app.js",
+		"test": "grunt test",
+		"watch": "grunt watch"
+	},
+	"main": "index.js",
+	"private": true,
+	"engines": {
+		"node": "~ 0.10.30",
+		"npm": "~ 1.4.4"
+	},
+	"dependencies": {
+		"express": "~4.0",
+		"socket.io": "~1.2"
+	},
+	"devDependencies": {
+		"blessed": "^0.0.37",
+		"chai": "^1.9.1",
+		"mocha": "^1.21.5",
+		"multiline": "^0.3.4",
+		"supertest": "^0.13.0",
+		"grunt": "~0.4",
+		"grunt-booty": "~0.2",
+		"grunt-bower-task": "~0.4",
+		"grunt-cli": "~0.1",
+		"grunt-contrib-jshint": "~0.8",
+		"grunt-contrib-less": "~0.9",
+		"grunt-contrib-watch": "~0.5",
+		"matchdep": "~0.3",
+		"grunt-mocha-test": "~0.11"
+	}
+}
