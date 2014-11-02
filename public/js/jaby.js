@@ -39,17 +39,6 @@
 		}
 	}
 
-	function setTextContent( element, text ) {
-		if ( element ) {
-			if ( element.textContent && typeof ( element.textContent ) !== "undefined" ) {
-				element.textContent = text;
-			}
-			else {
-				element.innerText = text;
-			}
-		}
-	}
-
 	function getTextContent( element ) {
 		if ( element ) {
 			if ( element.textContent && typeof ( element.textContent ) !== "undefined" ) {

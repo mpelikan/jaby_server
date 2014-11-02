@@ -16,19 +16,19 @@
 	"main": "index.js",
 	"private": true,
 	"engines": {
-		"node": "~ 0.10.30",
-		"npm": "~ 1.4.4"
+		"node": "~ 0.10",
+		"npm": "~ 1.4"
 	},
 	"dependencies": {
-		"express": "~4.0",
+		"express": "~4",
 		"socket.io": "~1.2"
 	},
 	"devDependencies": {
-		"blessed": "^0.0.37",
-		"chai": "^1.9.1",
-		"mocha": "^1.21.5",
-		"multiline": "^0.3.4",
-		"supertest": "^0.13.0",
+		"blessed": "~0.0",
+		"chai": "~1.9",
+		"mocha": "~1.21",
+		"multiline": "~0.3",
+		"supertest": "~0.14",
 		"grunt": "~0.4",
 		"grunt-booty": "~0.2",
 		"grunt-bower-task": "~0.4",
