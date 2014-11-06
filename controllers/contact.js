@@ -43,7 +43,7 @@
 		var from = req.body.email;
 		//var name = req.body.name;
 		var body = req.body.message;
-		var to = "mpelikan@jaby.com";
+		var to = "contact@jaby.net";
 		var subject = "Contact Form | Jaby";
 
 		var mailOptions = {

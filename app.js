@@ -25,6 +25,7 @@
 	 */
 	var homeController = require( "./controllers/home" );
 	var userController = require( "./controllers/user" );
+	var jabyController = require( "./controllers/jaby" );
 	var apiController = require( "./controllers/api" );
 	var contactController = require( "./controllers/contact" );
 
@@ -55,7 +56,7 @@
 	var hour = 3600000; //milliseconds
 	var day = ( hour * 24 );
 	var week = ( day * 7 );
-	var month = ( day * 30 );
+	//var month = ( day * 30 );
 
 	/**
 	 * Connect to MongoDB
@@ -124,7 +125,9 @@
 	/**
 	 * Main routes.
 	 */
-	app.get( "/", homeController.index );
+	app.get( "/", jabyController.index );
+	app.get( "/home", homeController.home );
+	app.get( "/status", jabyController.status );
 	app.get( "/login", userController.getLogin );
 	app.post( "/login", userController.postLogin );
 	app.get( "/logout", userController.logout );

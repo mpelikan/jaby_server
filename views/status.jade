@@ -2,15 +2,14 @@ doctype html
 html( lang="en" )
 	head
 		meta( charset="utf-8" )
-		title Jaby
+		title Jaby Status
 		meta( name="description", content="What computers were meant to become." )
 		meta( name="author", content="Michael Pelikan" )
 		link( rel="icon", type="image/x-icon", href="img/favicon.ico" )
 		link( rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/css?family=Gentium+Basic" )
 		link( rel="stylesheet", type="text/css", href="css/jaby.css" )
 	body
-		.page
-			#content.resize
-			input.inputMessage( placeholder="Type here..." )
+		.page.status
+			include ../public/orb.svg
 		script( src="js/lib/socket.io-client/socket.io.js" )
-		script( src="js/jaby.js" )
+		script( src="js/status.js" )
