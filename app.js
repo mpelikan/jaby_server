@@ -1,6 +1,8 @@
 ( function () {
 	"use strict";
 
+	var jaby = require( "./jaby" );
+
 	var express = require( "express" );
 	var cookieParser = require( "cookie-parser" );
 	var compress = require( "compression" );
@@ -52,11 +54,17 @@
 	 */
 	var server = require( "http" ).Server( app );
 	var io = require( "socket.io" )( server );
+	var passportSocketIo = require( "passport.socketio" );
 
 	var hour = 3600000; //milliseconds
 	var day = ( hour * 24 );
 	var week = ( day * 7 );
 	//var month = ( day * 30 );
+
+	var sessionStore = new MongoStore( {
+		url: secrets.db,
+		auto_reconnect: true
+	} );
 
 	/**
 	 * Connect to MongoDB
@@ -85,14 +93,12 @@
 	app.use( expressValidator() );
 	app.use( methodOverride() );
 	app.use( cookieParser() );
+
 	app.use( session( {
 		resave: true,
 		saveUninitialized: true,
 		secret: secrets.sessionSecret,
-		store: new MongoStore( {
-			url: secrets.db,
-			auto_reconnect: true
-		} )
+		store: sessionStore
 	} ) );
 	app.use( passport.initialize() );
 	app.use( passport.session() );
@@ -254,40 +260,36 @@
 		console.log( "Jaby server listening on port %d in %s mode", app.get( "port" ), app.get( "env" ) );
 	} );
 
+	function onAuthorizeSuccess( data, accept ) {
+		console.log( "Successful connection to socket.io" );
+
+		accept();
+	}
+
+	function onAuthorizeFail( data, message, error, accept ) {
+		if ( error ) {
+			throw new Error( message );
+		}
+
+		console.log( "failed connection to socket.io:", message );
+
+		if ( error ) {
+			accept( new Error( message ) );
+		}
+	}
+
+	io.use( passportSocketIo.authorize( {
+		cookieParser: cookieParser,
+		key: "connect.sid", // the name of the cookie where express/connect stores its session_id
+		secret: secrets.sessionSecret,
+		store: sessionStore, // we NEED to use a sessionstore. no memorystore please
+		success: onAuthorizeSuccess, // *optional* callback on success - read more below
+		fail: onAuthorizeFail, // *optional* callback on fail/error - read more below
+	} ) );
+
 	io.on( "connection", function ( socket ) {
 
-		console.log( "Socket connected: %s", socket.handshake.address );
-
-		io.set( "authorization", function ( handshakeData, callback ) {
-			if ( handshakeData.xdomain ) {
-				callback( "Cross-domain connections are not allowed" );
-			}
-			else {
-				callback( null, true );
-			}
-		} );
-
-		socket.on( "message", function ( data ) {
-			var response = {
-				message: "Got the message: " + data.message
-			};
-
-			console.log( "From %s: %s", socket.handshake.address, data.message );
-
-			io.sockets.emit( "reply", response );
-		} );
-
-		socket.on( "disconnect", function () {
-			console.log( "Socket disconnected: %s", socket.handshake.address );
-		} );
-
-		socket.on( "status", function ( data, callback ) {
-			var response = {
-				message: "online"
-			};
-
-			callback( response );
-		} );
+		jaby.registerSocket( io, socket );
 
 	} );
 

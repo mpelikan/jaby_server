@@ -265,7 +265,7 @@
 
 	socket.on( "connect", function () {
 		connected = true;
-		showText( "Welcome." );
+		socket.emit( "start", {} );
 	} );
 
 	socket.on( "reply", function ( reply ) {

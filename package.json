@@ -58,6 +58,7 @@
 		"passport-linkedin-oauth2": "~1.1",
 		"passport-local": "~1.0",
 		"passport-oauth": "~1.0",
+		"passport.socketio": "~3.4",
 		"passport-twitter": "~1.0",
 		"request": "~2.47",
 		"stripe": "~2.8",
