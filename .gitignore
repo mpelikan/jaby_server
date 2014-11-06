@@ -18,6 +18,7 @@ node_modules
 .idea
 *.iml
 
+public/css/lib
 public/js/lib
 
 .DS_Store

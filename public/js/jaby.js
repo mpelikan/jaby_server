@@ -22,12 +22,8 @@
 			envelope.context = context;
 			envelope.message = message;
 
-			socket.emit( "message", envelope, onResponse );
+			socket.emit( "message", envelope );
 		}
-	}
-
-	function onResponse( data ) {
-		showText( data.message );
 	}
 
 	function keydown( event ) {
@@ -145,15 +141,15 @@
 
 		function calculatePause( phrase ) {
 			switch ( phrase.substr( phrase.length - 1 ) ) {
-				case "!":
-				case ".":
-				case "?":
-					return 25;
-				case ":":
-				case ";":
-					return 10;
-				default:
-					return 0;
+			case "!":
+			case ".":
+			case "?":
+				return 25;
+			case ":":
+			case ";":
+				return 10;
+			default:
+				return 0;
 			}
 		}
 
@@ -270,6 +266,11 @@
 	socket.on( "connect", function () {
 		connected = true;
 		showText( "Welcome." );
+	} );
+
+	socket.on( "reply", function ( reply ) {
+		console.log( "Reply: " + JSON.stringify( reply, null, "\t" ) );
+		showText( reply.message );
 	} );
 
 	window.onload = function () {

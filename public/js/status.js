@@ -1,20 +1,10 @@
+/* jshint browser:true, devel:true */
+/* global io */
+
 ( function () {
 	"use strict";
 
 	window.onload = function () {
-		function addEventHandler( element, eventType, handler ) {
-			if ( !element ) {
-				return;
-			}
-			if ( element.addEventListener ) {
-				element.addEventListener( eventType, handler, false );
-			}
-			else {
-				if ( element.attachEvent ) {
-					element.attachEvent( "on" + eventType, handler );
-				}
-			}
-		}
 
 		function onStatus( data ) {
 			if ( data && data.message ) {
@@ -54,12 +44,12 @@
 				if ( this.pulse >= this.pulseMax || this.pulse <= 0 ) {
 					this.pulseDirection *= -1;
 				}
-			}
+			};
 
 			jabyOrb.rotateSphere = function rotateSphere() {
 				this.rotateDeg = ( this.rotateDeg + this.rotateStep ) % 360;
 				this.rotated_sphere.setAttribute( "transform", "rotate( " + this.rotateDeg + ", 350, 350 )" );
-			}
+			};
 
 			jabyOrb.animate = function animate() {
 				if ( this.on ) {
@@ -164,7 +154,12 @@
 			};
 
 			jabyOrb.toggleOnOff = function toggleOnOff() {
-				this.on ? this.turnOff() : this.turnOn();
+				if ( this.on ) {
+					this.turnOff();
+				}
+				else {
+					this.turnOn();
+				}
 			};
 
 			jabyOrb.turnOn = function turnOn() {

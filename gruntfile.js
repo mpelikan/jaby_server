@@ -19,7 +19,7 @@ module.exports = function ( grunt ) {
 			}
 		},
 		jshint: {
-			files: [ "gruntfile.js", "config/**/*.js", "server/**/*.js", "public/**/*.js", "test/**/*.js", "!public/js/lib/**/*.js" ],
+			files: [ "gruntfile.js", "app.js", "config/**/*.js", "controllers/**/*.js", "jaby/**/*.js", "public/**/*.js", "test/**/*.js", "!public/js/lib/**/*.js" ],
 			options: {
 				jshintrc: ".jshintrc"
 			}
