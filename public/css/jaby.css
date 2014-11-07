@@ -1,97 +1,75 @@
 /* Fix user-agent */
-
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
-
 html {
-	font-weight: 300;
-	-webkit-font-smoothing: antialiased;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
 }
-
-html, input {
-	font-family:
-		"HelveticaNeue-Light",
-		"Helvetica Neue Light",
-		"Helvetica Neue",
-		Helvetica,
-		Arial,
-		"Lucida Grande",
-		sans-serif;
+html,
+input {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
-
-html, body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
-
 /* Pages */
-
 .page {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	position: absolute;
-	background-color: #000;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: absolute;
+  background-color: #000;
 }
-
 .status {
-	background-color: #eee;
-	background-image: linear-gradient( top, #aaa 0%, #eee 51% );
-	background-image: -webkit-linear-gradient( top, #aaa 0%, #eee 51% );
-	background-image: -ms-linear-gradient( top, #aaa 0%, #eee 51% );
-	background-image: -o-linear-gradient( top, #aaa 0%, #eee 51% );
-	background-image: -ms-linear-gradient( top, #aaa 0%, #eee 51% );
-	background-image: -webkit-gradient(
-		linear,
-		left top,
-		left bottom,
-		color-stop( 0, #aaa ),
-		color-stop( 0.51, #eee )
-	);
+  background-color: #eee;
+  background-image: linear-gradient(top, #aaaaaa 0%, #eeeeee 51%);
+  background-image: -webkit-linear-gradient(top, #aaaaaa 0%, #eeeeee 51%);
+  background-image: -o-linear-gradient(top, #aaaaaa 0%, #eeeeee 51%);
+  background-image: -ms-linear-gradient(top, #aaaaaa 0%, #eeeeee 51%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaaaaa), color-stop(0.51, #eeeeee));
 }
-
 .inputMessage {
-	border: 1em solid #000;
-	bottom: 0;
-	height: 4em;
-	left: 0;
-	font-size: 2em;
-	outline: none;
-	padding: 0 1em;
-	position: absolute;
-	right: 0;
-	width: 100%;
+  border: 1em solid #000;
+  bottom: 0;
+  height: 4em;
+  left: 0;
+  font-size: 2em;
+  outline: none;
+  padding: 0 1em;
+  position: absolute;
+  right: 0;
+  width: 100%;
 }
-
 #content {
-	margin-left: auto;
-	margin-right: auto;
-	width: 80%;
-	height: 50%;
-	position: absolute;
-	top: 20%;
-	left: 10%;
-	color: #fff;
-	text-align: center;
-	font-size: 12pt;
-	line-height: 125%;
-	font-family: "Gentium Basic", Georgia, Cambria, "Times New Roman", Times, serif;
-	cursor: default;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height: 50%;
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  color: #fff;
+  text-align: center;
+  font-size: 12pt;
+  line-height: 125%;
+  font-family: "Gentium Basic", Georgia, Cambria, "Times New Roman", Times, serif;
+  cursor: default;
 }
-
 #orb {
-	width: 525px;
-	height: 600px;
-	margin: auto;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate( -50%, -50% );
-	-webkit-transform: translate( -50%, -50% );
-	-mos-transform: translate( -50%, -50% );
-	-o-transform: translate( -50%, -50% );
-	-ms-transform: translate( -50%, -50% );
+  width: 525px;
+  height: 600px;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -mos-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }

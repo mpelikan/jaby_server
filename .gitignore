@@ -18,8 +18,7 @@ node_modules
 .idea
 *.iml
 
-public/css/lib
-public/js/lib
+public
 
 .DS_Store
 Thumbs.db

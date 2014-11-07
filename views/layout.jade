@@ -8,8 +8,8 @@ html
 		meta( name="description", content="What computers were meant to become." )
 		meta( name="author", content="Michael Pelikan" )
 		link( rel="icon", type="image/x-icon", href="img/favicon.ico" )
+		link( rel="stylesheet", type="text/css", href="css/styles.css" )
 		title #{title} | Jaby
-		!= css( "styles" )
 	body
 		include partials/navbar
 
@@ -19,4 +19,4 @@ html
 
 		include partials/footer
 
-		!= js( "application" )
+		script( src="js/jaby.js" )
