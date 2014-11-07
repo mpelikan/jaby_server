@@ -5,10 +5,10 @@
 var request = require( "supertest" );
 var app = require( "../app.js" );
 
-describe( "GET /", function () {
+describe( "GET /login", function () {
 	it( "should return 200 OK", function ( done ) {
 		request( app )
-			.get( "/" )
+			.get( "/login" )
 			.expect( 200, done );
 	} );
 } );

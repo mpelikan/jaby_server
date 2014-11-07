@@ -11,17 +11,17 @@
 	var graph = require( "fbgraph" );
 	var LastFmNode = require( "lastfm" ).LastFmNode;
 	var tumblr = require( "tumblr.js" );
-	var foursquare = require( "node-foursquare" )( {
-		secrets: secrets.foursquare
-	} );
+	// var foursquare = require( "node-foursquare" )( {
+	// 	secrets: secrets.foursquare
+	// } );
 	var Github = require( "github-api" );
 	var Twit = require( "twit" );
-	var stripe = require( "stripe" )( secrets.stripe.secretKey );
-	var twilio = require( "twilio" )( secrets.twilio.sid, secrets.twilio.token );
+	// var stripe = require( "stripe" )( secrets.stripe.secretKey );
+	// var twilio = require( "twilio" )( secrets.twilio.sid, secrets.twilio.token );
 	var Linkedin = require( "node-linkedin" )( secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL );
-	var clockwork = require( "clockwork" )( {
-		key: secrets.clockwork.apiKey
-	} );
+	// var clockwork = require( "clockwork" )( {
+	// 	key: secrets.clockwork.apiKey
+	// } );
 	var ig = require( "instagram-node" ).instagram();
 	var Y = require( "yui/yql" );
 	var _ = require( "lodash" );
@@ -40,41 +40,41 @@
 	 * GET /api/foursquare
 	 * Foursquare API example.
 	 */
-	exports.getFoursquare = function ( req, res, next ) {
-		var token = _.find( req.user.tokens, {
-			kind: "foursquare"
-		} );
-		async.parallel( {
-				trendingVenues: function ( callback ) {
-					foursquare.Venues.getTrending( "40.7222756", "-74.0022724", {
-						limit: 50
-					}, token.accessToken, function ( err, results ) {
-						callback( err, results );
-					} );
-				},
-				venueDetail: function ( callback ) {
-					foursquare.Venues.getVenue( "49da74aef964a5208b5e1fe3", token.accessToken, function ( err, results ) {
-						callback( err, results );
-					} );
-				},
-				userCheckins: function ( callback ) {
-					foursquare.Users.getCheckins( "self", null, token.accessToken, function ( err, results ) {
-						callback( err, results );
-					} );
-				}
-			},
-			function ( err, results ) {
-				if ( err ) {
-					return next( err );
-				}
-				res.render( "api/foursquare", {
-					title: "Foursquare API",
-					trendingVenues: results.trendingVenues,
-					venueDetail: results.venueDetail,
-					userCheckins: results.userCheckins
-				} );
-			} );
-	};
+	// exports.getFoursquare = function ( req, res, next ) {
+	// 	var token = _.find( req.user.tokens, {
+	// 		kind: "foursquare"
+	// 	} );
+	// 	async.parallel( {
+	// 			trendingVenues: function ( callback ) {
+	// 				foursquare.Venues.getTrending( "40.7222756", "-74.0022724", {
+	// 					limit: 50
+	// 				}, token.accessToken, function ( err, results ) {
+	// 					callback( err, results );
+	// 				} );
+	// 			},
+	// 			venueDetail: function ( callback ) {
+	// 				foursquare.Venues.getVenue( "49da74aef964a5208b5e1fe3", token.accessToken, function ( err, results ) {
+	// 					callback( err, results );
+	// 				} );
+	// 			},
+	// 			userCheckins: function ( callback ) {
+	// 				foursquare.Users.getCheckins( "self", null, token.accessToken, function ( err, results ) {
+	// 					callback( err, results );
+	// 				} );
+	// 			}
+	// 		},
+	// 		function ( err, results ) {
+	// 			if ( err ) {
+	// 				return next( err );
+	// 			}
+	// 			res.render( "api/foursquare", {
+	// 				title: "Foursquare API",
+	// 				trendingVenues: results.trendingVenues,
+	// 				venueDetail: results.venueDetail,
+	// 				userCheckins: results.userCheckins
+	// 			} );
+	// 		} );
+	// };
 
 	/**
 	 * GET /api/tumblr
@@ -425,107 +425,107 @@
 	 * GET /api/stripe
 	 * Stripe API example.
 	 */
-	exports.getStripe = function ( req, res ) {
-		res.render( "api/stripe", {
-			title: "Stripe API",
-			publishableKey: secrets.stripe.publishableKey
-		} );
-	};
+	// exports.getStripe = function ( req, res ) {
+	// 	res.render( "api/stripe", {
+	// 		title: "Stripe API",
+	// 		publishableKey: secrets.stripe.publishableKey
+	// 	} );
+	// };
 
 	/**
 	 * POST /api/stripe
 	 * Make a payment.
 	 */
-	exports.postStripe = function ( req, res ) {
-		var stripeToken = req.body.stripeToken;
-		var stripeEmail = req.body.stripeEmail;
-		stripe.charges.create( {
-			amount: 395,
-			currency: "usd",
-			card: stripeToken,
-			description: stripeEmail
-		}, function ( err ) {
-			if ( err && err.type === "StripeCardError" ) {
-				req.flash( "errors", {
-					msg: "Your card has been declined."
-				} );
-				res.redirect( "/api/stripe" );
-			}
-			req.flash( "success", {
-				msg: "Your card has been charged successfully."
-			} );
-			res.redirect( "/api/stripe" );
-		} );
-	};
+	// exports.postStripe = function ( req, res ) {
+	// 	var stripeToken = req.body.stripeToken;
+	// 	var stripeEmail = req.body.stripeEmail;
+	// 	stripe.charges.create( {
+	// 		amount: 395,
+	// 		currency: "usd",
+	// 		card: stripeToken,
+	// 		description: stripeEmail
+	// 	}, function ( err ) {
+	// 		if ( err && err.type === "StripeCardError" ) {
+	// 			req.flash( "errors", {
+	// 				msg: "Your card has been declined."
+	// 			} );
+	// 			res.redirect( "/api/stripe" );
+	// 		}
+	// 		req.flash( "success", {
+	// 			msg: "Your card has been charged successfully."
+	// 		} );
+	// 		res.redirect( "/api/stripe" );
+	// 	} );
+	// };
 
 	/**
 	 * GET /api/twilio
 	 * Twilio API example.
 	 */
-	exports.getTwilio = function ( req, res ) {
-		res.render( "api/twilio", {
-			title: "Twilio API"
-		} );
-	};
+	// exports.getTwilio = function ( req, res ) {
+	// 	res.render( "api/twilio", {
+	// 		title: "Twilio API"
+	// 	} );
+	// };
 
 	/**
 	 * POST /api/twilio
 	 * Send a text message using Twilio.
 	 */
-	exports.postTwilio = function ( req, res, next ) {
-		req.assert( "number", "Phone number is required." ).notEmpty();
-		req.assert( "message", "Message cannot be blank." ).notEmpty();
-		var errors = req.validationErrors();
-		if ( errors ) {
-			req.flash( "errors", errors );
-			return res.redirect( "/api/twilio" );
-		}
-		var message = {
-			to: req.body.number,
-			from: "+13472235148",
-			body: req.body.message
-		};
-		twilio.sendMessage( message, function ( err, responseData ) {
-			if ( err ) {
-				return next( err.message );
-			}
-			req.flash( "success", {
-				msg: "Text sent to " + responseData.to + "."
-			} );
-			res.redirect( "/api/twilio" );
-		} );
-	};
+	// exports.postTwilio = function ( req, res, next ) {
+	// 	req.assert( "number", "Phone number is required." ).notEmpty();
+	// 	req.assert( "message", "Message cannot be blank." ).notEmpty();
+	// 	var errors = req.validationErrors();
+	// 	if ( errors ) {
+	// 		req.flash( "errors", errors );
+	// 		return res.redirect( "/api/twilio" );
+	// 	}
+	// 	var message = {
+	// 		to: req.body.number,
+	// 		from: "+13472235148",
+	// 		body: req.body.message
+	// 	};
+	// 	twilio.sendMessage( message, function ( err, responseData ) {
+	// 		if ( err ) {
+	// 			return next( err.message );
+	// 		}
+	// 		req.flash( "success", {
+	// 			msg: "Text sent to " + responseData.to + "."
+	// 		} );
+	// 		res.redirect( "/api/twilio" );
+	// 	} );
+	// };
 
 	/**
 	 * GET /api/clockwork
 	 * Clockwork SMS API example.
 	 */
-	exports.getClockwork = function ( req, res ) {
-		res.render( "api/clockwork", {
-			title: "Clockwork SMS API"
-		} );
-	};
+	// exports.getClockwork = function ( req, res ) {
+	// 	res.render( "api/clockwork", {
+	// 		title: "Clockwork SMS API"
+	// 	} );
+	// };
 
 	/**
 	 * POST /api/clockwork
 	 * Send a text message using Clockwork SMS
 	 */
-	exports.postClockwork = function ( req, res, next ) {
-		var message = {
-			To: req.body.telephone,
-			From: "Jaby",
-			Content: "Hello from the Jaby Starter"
-		};
-		clockwork.sendSms( message, function ( err, responseData ) {
-			if ( err ) {
-				return next( err.errDesc );
-			}
-			req.flash( "success", {
-				msg: "Text sent to " + responseData.responses[ 0 ].to
-			} );
-			res.redirect( "/api/clockwork" );
-		} );
-	};
+	// exports.postClockwork = function ( req, res, next ) {
+	// 	var message = {
+	// 		To: req.body.telephone,
+	// 		From: "Jaby",
+	// 		Content: "Hello from the Jaby Starter"
+	// 	};
+	// 	clockwork.sendSms( message, function ( err, responseData ) {
+	// 		if ( err ) {
+	// 			return next( err.errDesc );
+	// 		}
+	// 		req.flash( "success", {
+	// 			msg: "Text sent to " + responseData.responses[ 0 ].to
+	// 		} );
+	// 		res.redirect( "/api/clockwork" );
+	// 	} );
+	// };
 
 	/**
 	 * GET /api/venmo

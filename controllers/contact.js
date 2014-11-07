@@ -6,8 +6,8 @@
 	var transporter = nodemailer.createTransport( {
 		service: "SendGrid",
 		auth: {
-			user: secrets.sendgrid.user,
-			pass: secrets.sendgrid.password
+			user: secrets.sendgrid ? secrets.sendgrid.user : "",
+			pass: secrets.sendgrid ? secrets.sendgrid.password : ""
 		}
 	} );
 
