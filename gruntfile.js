@@ -23,7 +23,9 @@ module.exports = function ( grunt ) {
 			}
 		},
 		browserify: {
-			"public/js/jaby.js": [ "lib/js/application.js", "lib/js/status.js", "lib/js/jaby.js" ]
+			"public/js/jaby.js": [ "lib/js/jaby.js" ],
+			"public/js/status.js": [ "lib/js/status.js" ],
+			"public/js/application.js": [ "lib/js/application.js" ]
 		},
 		less: {
 			application: {
