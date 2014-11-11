@@ -302,13 +302,13 @@
 			kind: "twitter"
 		} );
 		var T = new Twit( {
-			consumer_key: secrets.twitter.consumerKey,
-			consumer_secret: secrets.twitter.consumerSecret,
+			consumer_key: secrets.twitter.dev ? secrets.twitter.dev.consumerKey : secrets.twitter.consumerKey,
+			consumer_secret: secrets.twitter.dev ? secrets.twitter.dev.consumerSecret : secrets.twitter.consumerSecret,
 			access_token: token.accessToken,
 			access_token_secret: token.tokenSecret
 		} );
 		T.get( "search/tweets", {
-			q: "nodejs since:2013-01-01",
+			q: "nodejs since:2014-06-01",
 			geocode: "40.71448,-74.00598,5mi",
 			count: 10
 		}, function ( err, reply ) {

@@ -72,20 +72,20 @@ module.exports = function ( grunt ) {
 		watch: {
 			js: {
 				files: [ "<%= jshint.files %>" ],
-				tasks: [ "jshint" ]
+				tasks: [ "build" ]
 			},
 			css: {
 				files: [
 					"public/css/**/*.less"
 				],
-				tasks: [ "less" ]
+				tasks: [ "build" ]
 			},
 			test: {
 				options: {
 					spawn: false,
 				},
 				files: [ "test/**/*" ],
-				tasks: [ "mochaTest" ]
+				tasks: [ "build" ]
 			},
 		}
 	} );
