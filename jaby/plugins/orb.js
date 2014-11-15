@@ -50,6 +50,8 @@
 					message: "online"
 				};
 
+				console.info( JSON.stringify( data, null, "\t" ) );
+
 				callback( response );
 			} );
 		};

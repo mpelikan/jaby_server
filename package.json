@@ -32,8 +32,7 @@
 	"browserify-shim": {
 		"jquery": "$",
 		"modernizr": "Modernizr",
-		"bootstrap": "bootstrap",
-		"socket.io-client": "socket.io"
+		"bootstrap": "bootstrap"
 	},
 	"dependencies": {
 		"agenda": "~0.6",
