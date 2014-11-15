@@ -13,7 +13,7 @@
 		"test": "grunt test",
 		"watch": "grunt watch"
 	},
-	"main": "index.js",
+	"main": "app.js",
 	"private": true,
 	"engines": {
 		"node": "~ 0.10",
@@ -71,7 +71,9 @@
 		"twit": "~1.1",
 		"uglify-js": "~2.4",
 		"validator": "~3.22",
-		"yui": "~3.18"
+		"yui": "~3.18",
+		"broadway": "~0.3",
+		"nools": "~0.3"
 	},
 	"devDependencies": {
 		"browserify": "~6.2",
