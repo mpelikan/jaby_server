@@ -5,6 +5,13 @@
 		if ( !req.user ) {
 			return res.redirect( "/login" );
 		}
+		res.redirect( "/status" );
+	};
+
+	exports.home = function ( req, res ) {
+		if ( !req.user ) {
+			return res.redirect( "/login" );
+		}
 		res.render( "home", {
 			title: "Jaby"
 		} );
