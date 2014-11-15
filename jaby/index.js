@@ -10,6 +10,7 @@
 	} );
 
 	jaby.use( require( "./plugins/orb" ), {} );
+	jaby.use( require( "./plugins/testrules" ), {} );
 
 	jaby.init( function ( err ) {
 		if ( err ) {

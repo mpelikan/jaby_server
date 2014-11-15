@@ -4,7 +4,7 @@
 	/* global describe, it */
 
 	var request = require( "supertest" );
-	var app = require( "../app.js" );
+	var app = require( "../server.js" );
 
 	describe( "GET /login", function () {
 		it( "should return 200 OK", function ( done ) {

@@ -5,6 +5,16 @@ module.exports = function ( grunt ) {
 
 	grunt.initConfig( {
 		pkg: pkgSource,
+		bower: {
+			install: {
+				options: {
+					targetDir: "vendor/bower_components",
+					layout: "byComponent",
+					verbose: true,
+					cleanup: true
+				}
+			}
+		},
 		clean: {
 			public: [ "public/" ]
 		},
@@ -64,7 +74,10 @@ module.exports = function ( grunt ) {
 			}
 		},
 		jshint: {
-			files: [ "gruntfile.js", "app.js", "config/**/*.js", "controllers/**/*.js", "jaby/**/*.js", "lib/js/*.js", "test/**/*.js", "!public/js/lib/**/*.js" ],
+			files: [
+				"gruntfile.js", "server.js", "config/**/*.js", "controllers/**/*.js", "jaby/**/*.js",
+				"lib/js/*.js", "test/**/*.js", "!public/js/lib/**/*.js", "!vendor/**/*.js"
+			],
 			options: {
 				jshintrc: ".jshintrc"
 			}
@@ -90,6 +103,7 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
+	grunt.loadNpmTasks( "grunt-bower-task" );
 	grunt.loadNpmTasks( "grunt-browserify" );
 	grunt.loadNpmTasks( "grunt-contrib-clean" );
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
@@ -102,5 +116,5 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( "default", [ "jshint" ] );
 
-	grunt.registerTask( "build", [ "clean", "browserify", "copy", "less", "test" ] );
+	grunt.registerTask( "build", [ "clean", "bower", "browserify", "copy", "less", "test" ] );
 };
