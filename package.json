@@ -24,15 +24,9 @@
 		"transform": [ "browserify-shim" ]
 	},
 	"browser": {
-		"jquery": "./vendor/bower_components/jquery/jquery.js",
-		"modernizr": "./vendor/bower_components/modernizr/modernizr.js",
-		"bootstrap": "./vendor/bower_components/bootstrap/bootstrap.js",
 		"socket.io-client": "./vendor/bower_components/socket.io-client/socket.io.js"
 	},
 	"browserify-shim": {
-		"jquery": "$",
-		"modernizr": "Modernizr",
-		"bootstrap": "bootstrap"
 	},
 	"dependencies": {
 		"agenda": "~0.6",
@@ -55,6 +49,7 @@
 
 		"fbgraph": "~0.3",
 		"github-api": "~0.7",
+		"googleapis": "~1.0",
 		"instagram-node": "~0.5",
 		"jade": "~1.7",
 		"lastfm": "~0.9",
@@ -62,6 +57,7 @@
 		"lodash": "~2.4",
 		"lusca": "~1.0",
 		"method-override": "~2.3",
+		"mongodb": "~1.4",
 		"mongoose": "~3.8",
 		"morgan": "~1.4",
 		"node-foursquare": "~0.2",

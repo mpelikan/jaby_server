@@ -25,10 +25,7 @@
 		"url": "https://github.org/mpelikan/jaby_server/issues"
 	},
 	"dependencies": {
-		"modernizr": "~2.8",
-		"socket.io-client": "~1.2",
-		"jquery": "~2.1",
-		"bootstrap": "~3.1"
+		"socket.io-client": "~1.2"
 	},
 	"devDependencies": {}
 }

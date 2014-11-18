@@ -2,28 +2,22 @@
 	"use strict";
 
 	exports.index = function ( req, res ) {
+		var jabyHTML = require.resolve( "../public/jaby.html" );
+
 		if ( !req.user ) {
-			return res.redirect( "/login" );
+			return res.redirect( "/auth/twitter" );
 		}
-		res.redirect( "/status" );
+
+		res.status( 200 ).sendFile( jabyHTML );
 	};
 
-	exports.home = function ( req, res ) {
-		if ( !req.user ) {
-			return res.redirect( "/login" );
-		}
-		res.render( "home", {
-			title: "Jaby"
-		} );
+	exports.login = function ( req, res ) {
+		res.redirect( "/auth/twitter" );
 	};
 
-	exports.status = function ( req, res ) {
-		if ( !req.user ) {
-			return res.redirect( "/login" );
-		}
-		res.render( "status", {
-			title: "Status"
-		} );
+	exports.logout = function ( req, res ) {
+		req.logout();
+		res.redirect( "/" );
 	};
 
 } ).call( this );

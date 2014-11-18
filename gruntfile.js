@@ -19,6 +19,12 @@ module.exports = function ( grunt ) {
 			public: [ "public/" ]
 		},
 		copy: {
+			html: {
+				expand: true,
+				cwd: "lib/html",
+				src: [ "**" ],
+				dest: "public"
+			},
 			fonts: {
 				expand: true,
 				cwd: "lib/fonts",
@@ -33,9 +39,7 @@ module.exports = function ( grunt ) {
 			}
 		},
 		browserify: {
-			"public/js/jaby.js": [ "lib/js/jaby.js" ],
-			"public/js/status.js": [ "lib/js/status.js" ],
-			"public/js/application.js": [ "lib/js/application.js" ]
+			"public/js/jaby.js": [ "lib/js/jaby.js" ]
 		},
 		less: {
 			application: {
@@ -54,13 +58,6 @@ module.exports = function ( grunt ) {
 						ext: ".css"
 					}
 				]
-			},
-			lib: {
-				files: {
-					"public/css/lib/bootstrap.css": "lib/styles/lib/bootstrap/bootstrap.less",
-					"public/css/lib/font-awesome.css": "lib/styles/lib/font-awesome/font-awesome.less",
-					"public/css/lib/ionicons.css": "lib/styles/lib/ionicons/ionicons.less"
-				}
 			}
 		},
 		mochaTest: {
@@ -91,7 +88,7 @@ module.exports = function ( grunt ) {
 				files: [
 					"public/css/**/*.less"
 				],
-				tasks: [ "build" ]
+				tasks: [ "less" ]
 			},
 			test: {
 				options: {
