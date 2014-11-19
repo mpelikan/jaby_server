@@ -4,9 +4,10 @@
 	var jaby = require( "./jaby" );
 
 	var express = require( "express" );
+	var session = require( "express-session" );
+	var MongoStore = require( "connect-mongo" )( session );
 	var cookieParser = require( "cookie-parser" );
 	var compress = require( "compression" );
-	var session = require( "express-session" );
 	var bodyParser = require( "body-parser" );
 	var logger = require( "morgan" );
 	var errorHandler = require( "errorhandler" );
@@ -14,7 +15,6 @@
 	var methodOverride = require( "method-override" );
 
 	var _ = require( "lodash" );
-	var MongoStore = require( "connect-mongo" )( session );
 	var path = require( "path" );
 	var mongoose = require( "mongoose" );
 	var passport = require( "passport" );
@@ -51,15 +51,12 @@
 	var io = require( "socket.io" )( server );
 	var passportSocketIo = require( "passport.socketio" );
 
+	var sessionStore;
+
 	var hour = 3600000; //milliseconds
 	var day = ( hour * 24 );
 	var week = ( day * 7 );
 	//var month = ( day * 30 );
-
-	var sessionStore = new MongoStore( {
-		url: secrets.jabyDB,
-		auto_reconnect: true
-	} );
 
 	/**
 	 * Connect to MongoDB
@@ -67,6 +64,10 @@
 	mongoose.connect( secrets.jabyDB );
 	mongoose.connection.on( "error", function () {
 		console.error( "MongoDB Connection Error. Make sure MongoDB is running." );
+	} );
+
+	sessionStore = new MongoStore( {
+		mongoose_connection: mongoose.connections[ 0 ]
 	} );
 
 	/**
