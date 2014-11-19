@@ -19,15 +19,6 @@
 
 			console.log( "Socket connected: %s", socket.handshake.address );
 
-			// io.set( "authorization", function ( handshakeData, callback ) {
-			// 	if ( handshakeData.xdomain ) {
-			// 		callback( "Cross-domain connections are not allowed" );
-			// 	}
-			// 	else {
-			// 		callback( null, true );
-			// 	}
-			// } );
-
 			socket.on( "start", function () {
 				var response = {
 					message: "Welcome " + ( socket.request.user.logged_in ? socket.request.user.profile.name : "" )
@@ -52,11 +43,10 @@
 				console.log( "Socket disconnected: %s", socket.handshake.address );
 			} );
 
-			socket.on( "status", function ( context, callback ) {
-				var response = {
-					message: "online"
-				};
-				var connectionString = secrets.db + "/" + socket.request.user._id.toString();
+			socket.on( "status", function ( context ) {
+				var now = new Date();
+				var response;
+				var connectionString;
 
 				// function request( options, cb ) {
 				// 	var body = "";
@@ -95,48 +85,60 @@
 					callback( null );
 				}
 
-				MongoClient.connect( connectionString, function ( err, database ) {
-					var contextCollection;
+				if ( context.hasOwnProperty( "ttl" ) && context.ttl < now ) {
+					console.info( "Old status: %s", now - context.ttl );
+				}
+				else {
+					response = {
+						message: "online"
+					};
+					connectionString = secrets.db + "/" + socket.request.user._id.toString();
 
-					if ( err ) {
-						console.error( err );
-					}
+					MongoClient.connect( connectionString, function ( err, database ) {
+						var contextCollection;
 
-					if ( database ) {
-						contextCollection = database.collection( "context" );
-						contextCollection.ensureIndex( {
-							"when": 1
-						}, {
-							expireAfterSeconds: 3600
-						}, function ( err ) {
-							if ( err ) {
-								console.error( err );
-							}
-							else {
-								if ( context ) {
-									context.when = new Date();
-									contextCollection.save( context, function ( err ) {
-										if ( err ) {
-											console.error( "Could not save context: %s", err );
-										}
-										getTimeZone( context.position, function( err, timezoneData ) {
-											if ( err ) {
-												console.error( err );
-											}
-											else {
-												if ( timezoneData ) {
-													console.info( "Google returned %s", JSON.stringify( timezoneData ) );
-													response.timeZoneName = timezoneData.timeZoneName;
-												}
-											}
-											callback( response );
-										} );
-									} );
+						if ( err ) {
+							console.error( err );
+						}
+
+						if ( database ) {
+							contextCollection = database.collection( "context" );
+							contextCollection.ensureIndex( {
+								"when": 1
+							}, {
+								expireAfterSeconds: 3600
+							}, function ( err ) {
+								if ( err ) {
+									console.error( err );
 								}
-							}
-						} );
-					}
-				} );
+								else {
+									if ( context ) {
+										context.when = new Date();
+										contextCollection.save( context, function ( err ) {
+											if ( err ) {
+												console.error( "Could not save context: %s", err );
+											}
+											getTimeZone( context.position, function ( err, timezoneData ) {
+												if ( err ) {
+													console.error( err );
+												}
+												else {
+													if ( timezoneData ) {
+														console.info( "Google returned %s", JSON.stringify( timezoneData ) );
+														response.timeZoneName = timezoneData.timeZoneName;
+													}
+												}
+
+												io.sockets.emit( "status", response );
+
+											} );
+										} );
+									}
+								}
+							} );
+						}
+					} );
+				}
 			} );
 		};
 	};
