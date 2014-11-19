@@ -28,7 +28,7 @@ html {
 	font-weight: 300;
 	-webkit-font-smoothing: antialiased;
 	overflow-y: scroll;
-	background: #FFF;
+	background: #fff;
 }
 
 img, embed, object, video {
@@ -187,16 +187,17 @@ aside {
 	margin-left: auto;
 	margin-right: auto;
 	width: 80%;
-	height: 50%;
+	height: 60%;
 	position: absolute;
-	top: 20%;
+	top: 10%;
 	left: 10%;
-	color: #fff;
+	color: #333;
 	text-align: center;
 	font-size: 12pt;
 	line-height: 125%;
 	font-family: "Gentium Basic", Georgia, Cambria, "Times New Roman", Times, serif;
 	cursor: default;
+	background-color: rgba( 255, 255, 255, 0.7 );
 }
 
 #orb {
@@ -204,11 +205,30 @@ aside {
 	height: 600px;
 	margin: auto;
 	position: absolute;
-	top: 50%;
+	top: 45%;
 	left: 50%;
 	transform: translate( -50%, -50% );
 	-webkit-transform: translate( -50%, -50% );
 	-mos-transform: translate( -50%, -50% );
 	-o-transform: translate( -50%, -50% );
 	-ms-transform: translate( -50%, -50% );
+}
+
+.horizontal_message {
+	-webkit-transition: left 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+	-moz-transition: left 0.3s ease-out;  /* Firefox 4-15 */
+	-o-transition: left 0.3s ease-out;  /* Opera 10.50–12.00 */
+	transition: left 0.3s ease-out;  /* Chrome 26, Firefox 16+, IE 10+, Opera 12.10+ */
+}
+
+.vertical_message {
+	-webkit-transition: top 0.3s ease-out;  /* Chrome 1-25, Safari 3.2+ */
+	-moz-transition: top 0.3s ease-out;  /* Firefox 4-15 */
+	-o-transition: top 0.3s ease-out;  /* Opera 10.50–12.00 */
+	transition: top 0.3s ease-out;  /* Chrome 26, Firefox 16+, IE 10+, Opera 12.10+ */
+}
+
+.show_message {
+	left: 10% !important;
+	top: 10% !important;
 }

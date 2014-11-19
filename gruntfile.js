@@ -86,7 +86,7 @@ module.exports = function ( grunt ) {
 			},
 			css: {
 				files: [
-					"public/css/**/*.less"
+					"lib/styles/**/*.less"
 				],
 				tasks: [ "less" ]
 			},

@@ -25,7 +25,8 @@
 		"url": "https://github.org/mpelikan/jaby_server/issues"
 	},
 	"dependencies": {
-		"socket.io-client": "~1.2"
+		"socket.io-client": "~1.2",
+		"hammer.js": "~2.0"
 	},
 	"devDependencies": {}
 }
