@@ -84,6 +84,12 @@ module.exports = function ( grunt ) {
 				files: [ "<%= jshint.files %>" ],
 				tasks: [ "build" ]
 			},
+			html: {
+				files: [
+					"lib/html/**/*.html"
+				],
+				tasks: [ "build" ]
+			},
 			css: {
 				files: [
 					"lib/styles/**/*.less"

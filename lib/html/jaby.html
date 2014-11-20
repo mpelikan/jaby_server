@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 	<head>
 		<meta charset="utf-8"><title>Jaby</title>
 		<meta name="description" content="What computers were meant to become.">
@@ -8,8 +9,12 @@
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Gentium+Basic">
 		<link rel="stylesheet" type="text/css" href="css/jaby.css">
 	</head>
+
 	<body>
-		<div class="page status">
+		<div id="jaby">
+
+			<input id="inputMessage" placeholder="How may I help you?" style="display: hidden;"/>
+
 			<svg id="orb" width="700" height="800" viewBox="0 0 700 800" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">
 
 				<defs>
@@ -101,10 +106,17 @@
 			</svg>
 
 			<div id="content" class="transition resize"></div>
-			<input placeholder="Type here..." class="inputMessage">
 
 		</div>
 
 		<script src="js/jaby.js"></script>
+
+		<script type="text/javascript">
+			window.onload = function () {
+				console.info( "Loading Jaby..." );
+				jabyObj.initialize();
+			};
+		</script>
+
 	</body>
 </html>
