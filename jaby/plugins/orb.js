@@ -98,7 +98,7 @@
 						var contextCollection;
 
 						if ( err ) {
-							console.error( err );
+							console.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
 						}
 
 						if ( database ) {
@@ -109,18 +109,18 @@
 								expireAfterSeconds: 3600
 							}, function ( err ) {
 								if ( err ) {
-									console.error( err );
+									console.error( "%s\tCould not add expiration to context collection: %s", new Date(), err );
 								}
 								else {
 									if ( context ) {
 										context.when = new Date();
 										contextCollection.save( context, function ( err ) {
 											if ( err ) {
-												console.error( "Could not save context: %s", err );
+												console.error( "%s\tCould not save context: %s", new Date(), err );
 											}
 											getTimeZone( context.position, function ( err, timezoneData ) {
 												if ( err ) {
-													console.error( err );
+													console.error( "%s\tCould not get timezone: %s", new Date(), err );
 												}
 												else {
 													if ( timezoneData ) {
@@ -129,6 +129,7 @@
 													}
 												}
 
+												console.info( "%s\tStatus ping: %s", new Date(), socket.request.user._id );
 												io.sockets.emit( "status", response );
 
 											} );
