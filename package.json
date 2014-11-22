@@ -25,7 +25,8 @@
 	},
 	"browser": {
 		"socket.io-client": "./vendor/bower_components/socket.io-client/socket.io.js",
-		"hammer.js": "./vendor/bower_components/hammer.js/hammer.js"
+		"hammer.js": "./vendor/bower_components/hammer.js/hammer.js",
+		"visibly.js": "./vendor/bower_components/visibly.js/visibly.js"
 	},
 	"browserify-shim": {
 	},
