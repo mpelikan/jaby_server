@@ -36,10 +36,19 @@ module.exports = function ( grunt ) {
 				cwd: "lib/img",
 				src: [ "**" ],
 				dest: "public/img"
+			},
+			js: {
+				expand: true,
+				cwd: "lib/js",
+				src: [ "**" ],
+				dest: "public/js"
+			},
+			vendor: {
+				expand: true,
+				cwd: "vendor/bower_components",
+				src: [ "**" ],
+				dest: "public/vendor"
 			}
-		},
-		browserify: {
-			"public/js/jaby.js": [ "lib/js/jaby.js" ]
 		},
 		less: {
 			application: {
@@ -73,7 +82,8 @@ module.exports = function ( grunt ) {
 		jshint: {
 			files: [
 				"gruntfile.js", "server.js", "config/**/*.js", "controllers/**/*.js", "jaby/**/*.js",
-				"lib/js/*.js", "test/**/*.js", "!public/js/lib/**/*.js", "!vendor/**/*.js"
+				"lib/js/*.js", "test/**/*.js", "!public/js/lib/**/*.js",
+				"!public/vendor/**/*.js", "!vendor/**/*.js"
 			],
 			options: {
 				jshintrc: ".jshintrc"
@@ -107,7 +117,6 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.loadNpmTasks( "grunt-bower-task" );
-	grunt.loadNpmTasks( "grunt-browserify" );
 	grunt.loadNpmTasks( "grunt-contrib-clean" );
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
 	grunt.loadNpmTasks( "grunt-contrib-less" );
@@ -119,5 +128,5 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( "default", [ "jshint" ] );
 
-	grunt.registerTask( "build", [ "clean", "bower", "browserify", "copy", "less", "test" ] );
+	grunt.registerTask( "build", [ "clean", "bower", "copy", "less", "test" ] );
 };
