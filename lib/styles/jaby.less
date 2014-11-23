@@ -2,7 +2,7 @@
 	height: 75vmin;
 	margin: auto;
 	position: absolute;
-	top: 55%;
+	top: 51%;
 	left: 50%;
 	transform: translate( -50%, -50% );
 	-webkit-transform: translate( -50%, -50% );
@@ -39,6 +39,24 @@ body {
 		left bottom,
 		color-stop( 0, #aaa ),
 		color-stop( 0.51, #eee )
+	);
+}
+
+body.night {
+	filter: invert( 100% );
+	-webkit-filter: invert( 100% );
+	background-color: #111;
+	background-image: linear-gradient( top, #555 0%, #111 51% );
+	background-image: -webkit-linear-gradient( top, #555 0%, #111 51% );
+	background-image: -ms-linear-gradient( top, #555 0%, #111 51% );
+	background-image: -o-linear-gradient( top, #555 0%, #111 51% );
+	background-image: -ms-linear-gradient( top, #555 0%, #111 51% );
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop( 0, #555 ),
+		color-stop( 0.51, #111 )
 	);
 }
 
