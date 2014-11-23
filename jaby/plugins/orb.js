@@ -115,6 +115,14 @@
 									if ( context ) {
 										context.when = new Date();
 										contextCollection.save( context, function ( err ) {
+											try {
+												database.close();
+											}
+											catch ( e )
+											{
+												console.error( "Could not close database: %s", e );
+											}
+
 											if ( err ) {
 												console.error( "%s\tCould not save context: %s", new Date(), err );
 											}
