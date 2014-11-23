@@ -42,6 +42,24 @@ body {
 	);
 }
 
+body.twilight {
+	filter: invert( 15% );
+	-webkit-filter: invert( 15% );
+	background-color: #777;
+	background-image: linear-gradient( top, #999 0%, #777 51% );
+	background-image: -webkit-linear-gradient( top, #999 0%, #777 51% );
+	background-image: -ms-linear-gradient( top, #999 0%, #777 51% );
+	background-image: -o-linear-gradient( top, #999 0%, #777 51% );
+	background-image: -ms-linear-gradient( top, #999 0%, #777 51% );
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop( 0, #999 ),
+		color-stop( 0.51, #777 )
+	);
+}
+
 body.night {
 	filter: invert( 100% );
 	-webkit-filter: invert( 100% );
