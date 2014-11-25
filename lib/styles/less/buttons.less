@@ -1,0 +1,64 @@
+.reveal {
+	a.btn,
+	a.btn:link,
+	a.btn:visited,
+	a.btn:focus,
+	a.btn:active,
+	a.btn:hover {
+		border-radius: 0.5em;
+		border-style: solid;
+		border-width: 0.5vw;
+		display: inline-block;
+		color: #678;
+		padding: 0.5em;
+		text-decoration: none;
+	}
+
+	a.btn:focus,
+	a.btn:hover {
+		background-color: #999;
+		color: #fff;
+		border-color: #678;
+	}
+
+	a.btn {
+		margin: 2.5vw 2.75vw;
+	}
+
+	a.btn-med {
+		width: 23vw;
+	}
+
+	a.btn-xs {
+		font-size: 12px;
+		width: 15vw;
+	}
+	a.btn-sm {
+		font-size: 14px;
+		width: 30vw;
+	}
+	a.btn-lg {
+		font-size: 20px;
+		width: 90vw;
+	}
+
+	/* Layout utility for responsive buttons
+
+	Code:<a href="#" class="btn btn-full"> */
+	a.btn-full,
+	a.btn-full:link {
+		border-radius: 0.25em;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+		width: 100%;
+	}
+
+	/* Keep it mobile-first and responsive */
+	@media screen and ( min-width: 32em ) {
+		a.btn-full {
+			max-width: 16em !important;
+		}
+	}
+}

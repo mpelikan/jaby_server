@@ -13,6 +13,32 @@
 
 	orb.attach = function ( /* options */) {
 		this.registerSocket = function registerSocket( io, socket ) {
+
+			function askQuestion() {
+				var id = "question1";
+				var answers = [
+					{
+						id: 123,
+						text: "Testing One"
+					},
+					{
+						id: 456,
+						text: "Testing Two"
+					},
+					{
+						id: 789,
+						text: "Testing Three"
+					}
+				];
+				var qa = {
+					id: id,
+					question: "Does the QA function work?",
+					answers: answers
+				};
+
+				io.sockets.emit( "question", qa );
+			}
+
 			if ( !io || !socket ) {
 				return;
 			}
@@ -37,6 +63,10 @@
 				console.log( "From %s: %s", socket.handshake.address, data.message );
 
 				io.sockets.emit( "reply", response );
+			} );
+
+			socket.on( "answer", function ( data ) {
+				console.log( "Received answer \"%s\" from %s: \"%s\"", data.question, socket.handshake.address, data.answer );
 			} );
 
 			socket.on( "disconnect", function () {
@@ -140,6 +170,7 @@
 												console.info( "%s\tStatus ping: %s", new Date(), socket.request.user._id );
 												io.sockets.emit( "status", response );
 
+												askQuestion();
 											} );
 										} );
 									}
