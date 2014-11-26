@@ -53,6 +53,8 @@
 				console.log( "Start %s: %s", socket.handshake.address, socket.request.user.profile.name );
 
 				io.sockets.emit( "reply", response );
+
+				askQuestion();
 			} );
 
 			socket.on( "message", function ( data ) {
@@ -169,8 +171,6 @@
 
 												console.info( "%s\tStatus ping: %s", new Date(), socket.request.user._id );
 												io.sockets.emit( "status", response );
-
-												askQuestion();
 											} );
 										} );
 									}
