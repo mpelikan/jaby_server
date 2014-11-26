@@ -19,7 +19,7 @@ node_modules
 *.iml
 
 public
-vendor
+third-party
 
 .DS_Store
 Thumbs.db

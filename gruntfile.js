@@ -8,7 +8,7 @@ module.exports = function ( grunt ) {
 		bower: {
 			install: {
 				options: {
-					targetDir: "vendor/bower_components",
+					targetDir: "third-party/bower_components",
 					layout: "byComponent",
 					verbose: true,
 					cleanup: true
@@ -43,11 +43,11 @@ module.exports = function ( grunt ) {
 				src: [ "**" ],
 				dest: "public/js"
 			},
-			vendor_bower: {
+			third_party_bower: {
 				expand: true,
-				cwd: "vendor/bower_components",
+				cwd: "third-party/bower_components",
 				src: [ "**" ],
-				dest: "public/vendor"
+				dest: "public/third-party"
 			}
 		},
 		less: {
@@ -83,7 +83,7 @@ module.exports = function ( grunt ) {
 			files: [
 				"gruntfile.js", "server.js", "config/**/*.js", "controllers/**/*.js", "jaby/**/*.js",
 				"lib/js/*.js", "test/**/*.js", "!public/js/lib/**/*.js",
-				"!public/vendor/**/*.js", "!vendor/**/*.js"
+				"!public/third-party/**/*.js", "!third-party/**/*.js"
 			],
 			options: {
 				jshintrc: ".jshintrc"
