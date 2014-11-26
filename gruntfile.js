@@ -43,7 +43,7 @@ module.exports = function ( grunt ) {
 				src: [ "**" ],
 				dest: "public/js"
 			},
-			vendor: {
+			vendor_bower: {
 				expand: true,
 				cwd: "vendor/bower_components",
 				src: [ "**" ],

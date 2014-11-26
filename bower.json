@@ -28,7 +28,8 @@
 		"socket.io-client": "~1.2",
 		"hammer.js": "~2.0",
 		"visibly.js": "~0.1",
-		"reveal.js": "~2.6"
+		"reveal.js": "~2.6",
+		"reveal-add-remove.js": "~0.1"
 	},
 	"devDependencies": {}
 }
