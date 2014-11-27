@@ -122,7 +122,8 @@
 				}
 				else {
 					response = {
-						message: "online"
+						message: "online",
+						activityLoad: Math.floor( Math.random() * 10 ) + 1
 					};
 					connectionString = secrets.db + "/" + socket.request.user._id.toString();
 
