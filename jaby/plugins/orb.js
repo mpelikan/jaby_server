@@ -9,29 +9,30 @@
 	// var OAuth2 = google.auth.OAuth2;
 	// var oauth2Client = new OAuth2( secrets.google.clientID, secrets.google.clientSecret, secrets.google.callbackURL );
 
+	//	As a plug-in, provide init and attach functions
 	var orb = {
 
 		attach: function ( /* options */) {
 
 			this.registerSocket = function registerSocket( io, socket ) {
 
+				function generateUUID() {
+					/*jslint bitwise: true */
+
+					var d = new Date().getTime();
+					var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace( /[xy]/g, function ( c ) {
+						var r = ( d + Math.random() * 16 ) % 16 | 0;
+						d = Math.floor( d / 16 );
+
+						return ( c === "x" ? r : ( r & 0x3 | 0x8 ) ).toString( 16 );
+					} );
+
+					return uuid;
+				}
+
 				function askQuestion() {
-
-					function generateUUID() {
-						/*jslint bitwise: true */
-
-						var d = new Date().getTime();
-						var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace( /[xy]/g, function ( c ) {
-							var r = ( d + Math.random() * 16 ) % 16 | 0;
-							d = Math.floor( d / 16 );
-
-							return ( c === "x" ? r : ( r & 0x3 | 0x8 ) ).toString( 16 );
-						} );
-
-						return uuid;
-					}
-
-					var id = generateUUID();
+					var id = "question_" + generateUUID();
+					var question = "Does the QA function work?";
 					var answers = [
 						{
 							id: 123,
@@ -46,13 +47,12 @@
 							text: "Testing Three"
 						}
 					];
-					var qa = {
-						id: id,
-						question: "Does the QA function work?",
-						answers: answers
-					};
 
-					io.sockets.emit( "question", qa );
+					io.sockets.emit( "question", {
+						id: id,
+						question: question,
+						answers: answers
+					} );
 				}
 
 				if ( !io || !socket ) {
