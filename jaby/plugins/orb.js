@@ -62,9 +62,34 @@
 				console.log( "Socket connected: %s", socket.handshake.address );
 
 				socket.on( "start", function () {
-					console.log( "Start %s: %s", socket.handshake.address, socket.request.user.profile.name );
+					var connectionString = secrets.db + "/" + socket.request.user._id.toString();
 
-					askQuestion();
+					MongoClient.connect( connectionString, function ( err, database ) {
+						var contextCollection;
+
+						if ( err ) {
+							console.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
+						}
+
+						if ( database ) {
+							contextCollection = database.collection( "context" );
+							contextCollection.ensureIndex( {
+								"when": 1
+							}, {
+								expireAfterSeconds: 3600
+							}, function ( err ) {
+								if ( err ) {
+									console.error( "%s\tCould not add expiration to context collection: %s", new Date(), err );
+								}
+								else {
+									//	TODO: Anything else to do?
+									console.log( "Start %s: %s", socket.handshake.address, socket.request.user.profile.name );
+
+									askQuestion();
+								}
+							} );
+						}
+					} );
 				} );
 
 				socket.on( "message", function ( data ) {
@@ -146,46 +171,35 @@
 
 							if ( database ) {
 								contextCollection = database.collection( "context" );
-								contextCollection.ensureIndex( {
-									"when": 1
-								}, {
-									expireAfterSeconds: 3600
-								}, function ( err ) {
-									if ( err ) {
-										console.error( "%s\tCould not add expiration to context collection: %s", new Date(), err );
-									}
-									else {
-										if ( context ) {
-											context.when = new Date();
-											contextCollection.save( context, function ( err ) {
-												try {
-													database.close();
-												}
-												catch ( e ) {
-													console.error( "Could not close database: %s", e );
-												}
-
-												if ( err ) {
-													console.error( "%s\tCould not save context: %s", new Date(), err );
-												}
-												getTimeZone( context.position, function ( err, timezoneData ) {
-													if ( err ) {
-														console.error( "%s\tCould not get timezone: %s", new Date(), err );
-													}
-													else {
-														if ( timezoneData ) {
-															console.info( "Google returned %s", JSON.stringify( timezoneData ) );
-															response.timeZoneName = timezoneData.timeZoneName;
-														}
-													}
-
-													console.info( "%s\tStatus ping: %s", new Date(), socket.request.user._id );
-													io.sockets.emit( "status", response );
-												} );
-											} );
+								if ( context ) {
+									context.when = new Date();
+									contextCollection.save( context, function ( err ) {
+										try {
+											database.close();
 										}
-									}
-								} );
+										catch ( e ) {
+											console.error( "Could not close database: %s", e );
+										}
+
+										if ( err ) {
+											console.error( "%s\tCould not save context: %s", new Date(), err );
+										}
+										getTimeZone( context.position, function ( err, timezoneData ) {
+											if ( err ) {
+												console.error( "%s\tCould not get timezone: %s", new Date(), err );
+											}
+											else {
+												if ( timezoneData ) {
+													console.info( "Google returned %s", JSON.stringify( timezoneData ) );
+													response.timeZoneName = timezoneData.timeZoneName;
+												}
+											}
+
+											console.info( "%s\tStatus ping: %s", new Date(), socket.request.user._id );
+											io.sockets.emit( "status", response );
+										} );
+									} );
+								}
 							}
 						} );
 					}
