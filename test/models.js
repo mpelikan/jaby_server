@@ -10,6 +10,19 @@
 
 	describe( "User Model", function () {
 
+		it( "should not find test user", function ( done ) {
+			User.findOne( {
+				email: "test@gmail.com"
+			}, function ( err, user ) {
+				should.not.exist( err );
+				if ( err ) {
+					return done( err );
+				}
+				should.not.exist( user );
+				done();
+			} );
+		} );
+
 		it( "should create a new user", function ( done ) {
 			var user = new User( {
 				email: "test@gmail.com",

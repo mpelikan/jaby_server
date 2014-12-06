@@ -33,20 +33,16 @@
 				function askQuestion() {
 					var id = "question_" + generateUUID();
 					var question = "Does the QA function work?";
-					var answers = [
-						{
-							id: 123,
-							text: "Testing One"
-						},
-						{
-							id: 456,
-							text: "Testing Two"
-						},
-						{
-							id: 789,
-							text: "Testing Three"
-						}
-					];
+					var answers = [ {
+						id: 123,
+						text: "Testing One"
+					}, {
+						id: 456,
+						text: "Testing Two"
+					}, {
+						id: 789,
+						text: "Testing Three"
+					} ];
 
 					io.sockets.emit( "question", {
 						id: id,

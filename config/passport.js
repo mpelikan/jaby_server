@@ -1,4 +1,4 @@
-( function() {
+( function () {
 	"use strict";
 
 	var _ = require( "lodash" );
@@ -534,10 +534,11 @@
 	// Authorization Required middleware.
 	exports.isAuthorized = function ( req, res, next ) {
 		var provider = req.path.split( "/" ).slice( -1 )[ 0 ];
-
-		if ( _.find( req.user.tokens, {
+		var found = _.find( req.user.tokens, {
 			kind: provider
-		} ) ) {
+		} );
+
+		if ( found ) {
 			next();
 		}
 		else {

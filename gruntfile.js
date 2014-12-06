@@ -58,15 +58,13 @@ module.exports = function ( grunt ) {
 					syncImport: true,
 					yuicompress: true
 				},
-				files: [
-					{
-						expand: true,
-						cwd: "lib/styles",
-						src: [ "*.less" ],
-						dest: "public/css",
-						ext: ".css"
-					}
-				]
+				files: [ {
+					expand: true,
+					cwd: "lib/styles",
+					src: [ "*.less" ],
+					dest: "public/css",
+					ext: ".css"
+				} ]
 			}
 		},
 		mochaTest: {
@@ -77,6 +75,16 @@ module.exports = function ( grunt ) {
 					clearRequireCache: true
 				},
 				src: [ "test/**/*.js" ]
+			}
+		},
+		jsbeautifier: {
+			files: [
+				"gruntfile.js", "server.js", "config/**/*.js", "controllers/**/*.js", "jaby/**/*.js",
+				"lib/js/*.js", "test/**/*.js", "!public/js/lib/**/*.js",
+				"!public/third-party/**/*.js", "!third-party/**/*.js"
+			],
+			options: {
+				config: ".jsbeautifyrc"
 			}
 		},
 		jshint: {
@@ -116,6 +124,7 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
+	grunt.loadNpmTasks( "grunt-jsbeautifier" );
 	grunt.loadNpmTasks( "grunt-bower-task" );
 	grunt.loadNpmTasks( "grunt-contrib-clean" );
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
@@ -124,9 +133,9 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-watch" );
 	grunt.loadNpmTasks( "grunt-mocha-test" );
 
-	grunt.registerTask( "test", [ "jshint", "mochaTest" ] );
+	grunt.registerTask( "test", [ "jsbeautifier", "jshint", "mochaTest" ] );
 
-	grunt.registerTask( "default", [ "jshint" ] );
+	grunt.registerTask( "default", [ "jsbeautifier", "jshint" ] );
 
 	grunt.registerTask( "build", [ "clean", "bower", "copy", "less", "test" ] );
 };
