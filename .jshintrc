@@ -17,7 +17,7 @@
 	"unused": true,
 	"strict": true,
 	"trailing": true,
-	"indent": true,
+	"indent": false,
 	"smarttabs": true,
 	"globals": {
 		"$": true
