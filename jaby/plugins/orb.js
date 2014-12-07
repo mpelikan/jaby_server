@@ -1,6 +1,7 @@
 ( function () {
 	"use strict";
 
+	var usage = require( "usage" );
 	var secrets = require( "../../config/secrets" );
 	// var https = require( "https" );
 	// var querystring = require( "querystring" );
@@ -110,6 +111,10 @@
 					var now = new Date();
 					var response;
 					var connectionString;
+					var pid = process.pid;
+					var options = {
+						keepHistory: true
+					};
 
 					// function request( options, cb ) {
 					// 	var body = "";
@@ -153,50 +158,61 @@
 					}
 					else {
 						response = {
-							message: "online",
-							activityLoad: Math.floor( Math.random() * 10 ) + 1
+							message: "online"
 						};
-						connectionString = secrets.db + "/" + socket.request.user._id.toString();
 
-						MongoClient.connect( connectionString, function ( err, database ) {
-							var contextCollection;
-
+						usage.lookup( pid, options, function ( err, result ) {
 							if ( err ) {
-								console.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
+								console.error( "Could not get machine usage: %s", err );
 							}
-
-							if ( database ) {
-								contextCollection = database.collection( "context" );
-								if ( context ) {
-									context.when = new Date();
-									contextCollection.save( context, function ( err ) {
-										try {
-											database.close();
-										}
-										catch ( e ) {
-											console.error( "Could not close database: %s", e );
-										}
-
-										if ( err ) {
-											console.error( "%s\tCould not save context: %s", new Date(), err );
-										}
-										getTimeZone( context.position, function ( err, timezoneData ) {
-											if ( err ) {
-												console.error( "%s\tCould not get timezone: %s", new Date(), err );
-											}
-											else {
-												if ( timezoneData ) {
-													console.info( "Google returned %s", JSON.stringify( timezoneData ) );
-													response.timeZoneName = timezoneData.timeZoneName;
-												}
-											}
-
-											console.info( "%s\tStatus ping: %s", new Date(), socket.request.user._id );
-											io.sockets.emit( "status", response );
-										} );
-									} );
+							else {
+								if ( result ) {
+									response.usage = result;
 								}
 							}
+
+							connectionString = secrets.db + "/" + socket.request.user._id.toString();
+
+							MongoClient.connect( connectionString, function ( err, database ) {
+								var contextCollection;
+
+								if ( err ) {
+									console.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
+								}
+
+								if ( database ) {
+									contextCollection = database.collection( "context" );
+									if ( context ) {
+										context.when = new Date();
+										contextCollection.save( context, function ( err ) {
+											try {
+												database.close();
+											}
+											catch ( e ) {
+												console.error( "Could not close database: %s", e );
+											}
+
+											if ( err ) {
+												console.error( "%s\tCould not save context: %s", new Date(), err );
+											}
+											getTimeZone( context.position, function ( err, timezoneData ) {
+												if ( err ) {
+													console.error( "%s\tCould not get timezone: %s", new Date(), err );
+												}
+												else {
+													if ( timezoneData ) {
+														console.info( "Google returned %s", JSON.stringify( timezoneData ) );
+														response.timeZoneName = timezoneData.timeZoneName;
+													}
+												}
+
+												console.info( "%s\tStatus ping for %s: %s", new Date(), socket.request.user._id, JSON.stringify( response ) );
+												io.sockets.emit( "status", response );
+											} );
+										} );
+									}
+								}
+							} );
 						} );
 					}
 				} );

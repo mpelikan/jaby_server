@@ -77,7 +77,8 @@
 		"validator": "~3.22",
 		"yui": "~3.18",
 		"broadway": "~0.3",
-		"nools": "~0.3"
+		"nools": "~0.3",
+		"usage": "~0.5"
 	},
 	"devDependencies": {
 		"blessed": "~0.0",
@@ -92,6 +93,7 @@
 		"grunt-contrib-less": "~0.9",
 		"grunt-contrib-watch": "~0.5",
 		"grunt-mocha-test": "~0.11",
+		"grunt-npm-install": "~0.1",
 		"matchdep": "~0.3",
 		"mocha": "~1.21",
 		"multiline": "~0.3",
