@@ -206,6 +206,12 @@
 	 */
 	server.listen( app.get( "port" ), function () {
 		console.log( "Jaby server listening on port %d in %s mode", app.get( "port" ), app.get( "env" ) );
+
+		jaby.hello( "world" );
+		jaby.emit( "world:hello", {
+			meta: "is here"
+		} );
+
 	} );
 
 	function onAuthorizeSuccess( data, accept ) {
@@ -228,11 +234,11 @@
 
 	io.use( passportSocketIo.authorize( {
 		cookieParser: cookieParser,
-		key: "connect.sid", // the name of the cookie where express/connect stores its session_id
+		key: "connect.sid",
 		secret: secrets.sessionSecret,
-		store: sessionStore, // we NEED to use a sessionstore. no memorystore please
-		success: onAuthorizeSuccess, // *optional* callback on success - read more below
-		fail: onAuthorizeFail, // *optional* callback on fail/error - read more below
+		store: sessionStore,
+		success: onAuthorizeSuccess,
+		fail: onAuthorizeFail
 	} ) );
 
 	io.on( "connection", function ( socket ) {
