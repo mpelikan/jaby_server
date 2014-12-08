@@ -78,7 +78,8 @@
 		"yui": "~3.18",
 		"broadway": "~0.3",
 		"nools": "~0.3",
-		"usage": "~0.5"
+		"usage": "~0.5",
+		"winston": "~0.8"
 	},
 	"devDependencies": {
 		"blessed": "~0.0",

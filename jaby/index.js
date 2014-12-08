@@ -10,6 +10,7 @@
 	 */
 	function loadPlugins( plugins_path, plugins ) {
 		var stat;
+		var relativePath;
 		var files, file, numFiles, i;
 
 		if ( !plugins ) {
@@ -35,13 +36,21 @@
 					}
 				}
 				else {
-					//	Have a file; load it
-					plugins[ plugins_path ] = require( plugins_path );
+					//	Have a file... is it JavaScript?
+					if ( path.extname( plugins_path ) === ".js" ) {
+						//	Load the file
+						relativePath = path.relative( pluginsRoot, plugins_path ).replace( /^(?:\.\.\/)+/, "" );
+						jaby.logger.info( "Loading: %s", relativePath );
+						plugins[ relativePath ] = require( plugins_path );
+					}
 				}
 			}
 		}
 		catch ( e ) {
-			console.error( "Could not load plugin: %s", e );
+			jaby.logger.error( "Could not load plugin: %s", e );
+			if ( e.stack ) {
+				jaby.logger.info( e.stack );
+			}
 		}
 
 		return plugins;
@@ -51,27 +60,29 @@
 	var path = require( "path" );
 	var broadway = require( "broadway" );
 
-	var jaby = new broadway.App();
-	var plugins = loadPlugins( path.join( __dirname, "plugins" ) );
+	var pluginsRoot = path.join( __dirname, "plugins" );
 	var plugin;
 
-	for ( plugin in plugins ) {
-		if ( plugins.hasOwnProperty( plugin ) ) {
-			console.info( "Using %s", plugin );
+	var jaby = new broadway.App();
+	jaby.logger = require( "winston" );
+
+	jaby.plugins = loadPlugins( pluginsRoot );
+
+	for ( plugin in jaby.plugins ) {
+		if ( jaby.plugins.hasOwnProperty( plugin ) ) {
+			jaby.logger.info( "Using %s", plugin );
 			try {
-				jaby.use( plugins[ plugin ], {} );
+				jaby.use( jaby.plugins[ plugin ], jaby );
 			}
 			catch ( e ) {
-				console.error( "Could not use %s: %s", plugin, e );
+				jaby.logger.error( "Could not use %s: %s", plugin, e );
 			}
 		}
 	}
 
-	jaby.plugins = plugins;
-
 	jaby.init( function ( err ) {
 		if ( err ) {
-			console.log( err );
+			console.info( err );
 		}
 	} );
 

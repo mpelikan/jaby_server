@@ -9,8 +9,10 @@
 
 	var coreRules = {
 
-		// `exports.attach` gets called by broadway on `app.use`
-		attach: function ( /* options */) {
+		name: "Core",
+
+		//	`exports.attach` gets called by Broadway on `app.use`
+		attach: function ( jaby ) {
 
 			var flow = nools.flow( "core", function ( flow ) {
 
@@ -22,7 +24,7 @@
 
 				//	Find all messages then end in goodbye
 				flow.rule( "Goodbye", [ Message, "m", "m.text =~ /.*goodbye$/" ], function ( facts ) {
-					console.log( facts.m.text );
+					jaby.logger.info( facts.m.text );
 				} );
 			} );
 
@@ -42,7 +44,7 @@
 
 		},
 
-		// `exports.init` gets called by broadway on `app.init`.
+		//	`exports.init` gets called by Broadway on `app.init`.
 		init: function ( done ) {
 			return done();
 		}
