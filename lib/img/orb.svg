@@ -76,7 +76,7 @@
 		<g id="sphere_center">
 			<use xlink:href="#primary" />
 		</g>
-			<g id="sphere_holes">
+		<g id="sphere_holes">
 			<use xlink:href="#secondary" transform="rotate( 15, 350, 350)" />
 			<use xlink:href="#secondary" transform="rotate( 75, 350, 350)" />
 			<use xlink:href="#secondary" transform="rotate( 135, 350, 350)" />

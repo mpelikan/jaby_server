@@ -155,7 +155,7 @@ body {
 	z-index: 1;
 }
 
-/* Ensure certain elements are never larger than the slide itself */
+/* Ensure certain elements are never larger than the message itself */
 .communiqué img,
 .communiqué video,
 .communiqué iframe {
@@ -281,14 +281,14 @@ body {
 	max-height: none;
 }
 
-/********************************************** SLIDES *********************************************/
+/********************************************** MESSAGES *********************************************/
 .communiqué {
 	position: relative;
 	width: 100%;
 	height: 100%;
 	-ms-touch-action: none;
 }
-.communiqué .slides {
+.communiqué .messages {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -311,11 +311,11 @@ body {
 	-ms-perspective-origin: 0px -100px;
 	perspective-origin: 0px -100px;
 }
-.communiqué .slides>section {
+.communiqué .messages > section {
 	-ms-perspective: 600px;
 }
-.communiqué .slides>section,
-.communiqué .slides>section>section {
+.communiqué .messages > section,
+.communiqué .messages > section > section {
 	display: none;
 	position: absolute;
 	width: 100%;
@@ -335,67 +335,67 @@ body {
 }
 
 /* Global transition speed settings */
-.communiqué[data-transition-speed="fast"] .slides section {
+.communiqué[data-transition-speed="fast"] .messages section {
 	-webkit-transition-duration: 400ms;
 	-moz-transition-duration: 400ms;
 	-ms-transition-duration: 400ms;
 	transition-duration: 400ms;
 }
-.communiqué[data-transition-speed="slow"] .slides section {
+.communiqué[data-transition-speed="slow"] .messages section {
 	-webkit-transition-duration: 1200ms;
 	-moz-transition-duration: 1200ms;
 	-ms-transition-duration: 1200ms;
 	transition-duration: 1200ms;
 }
 
-/* Slide-specific transition speed overrides */
-.communiqué .slides section[data-transition-speed="fast"] {
+/* Message-specific transition speed overrides */
+.communiqué .messages section[data-transition-speed="fast"] {
 	-webkit-transition-duration: 400ms;
 	-moz-transition-duration: 400ms;
 	-ms-transition-duration: 400ms;
 	transition-duration: 400ms;
 }
-.communiqué .slides section[data-transition-speed="slow"] {
+.communiqué .messages section[data-transition-speed="slow"] {
 	-webkit-transition-duration: 1200ms;
 	-moz-transition-duration: 1200ms;
 	-ms-transition-duration: 1200ms;
 	transition-duration: 1200ms;
 }
-.communiqué .slides>section {
+.communiqué .messages > section {
 	left: -50%;
 	top: -50%;
 }
-.communiqué .slides>section.stack {
+.communiqué .messages > section.stack {
 	padding-top: 0;
 	padding-bottom: 0;
 }
-.communiqué .slides>section.present,
-.communiqué .slides>section>section.present {
+.communiqué .messages > section.present,
+.communiqué .messages > section > section.present {
 	display: block;
 	z-index: 11;
 	opacity: 1;
 }
 .communiqué.center,
-.communiqué.center .slides,
-.communiqué.center .slides section {
+.communiqué.center .messages,
+.communiqué.center .messages section {
 	min-height: auto !important;
 }
 
-/* Don't allow interaction with invisible slides */
-.communiqué .slides>section.future,
-.communiqué .slides>section>section.future,
-.communiqué .slides>section.past,
-.communiqué .slides>section>section.past {
+/* Don't allow interaction with invisible messages */
+.communiqué .messages > section.future,
+.communiqué .messages > section > section.future,
+.communiqué .messages > section.past,
+.communiqué .messages > section > section.past {
 	pointer-events: none;
 }
-.communiqué.overview .slides>section,
-.communiqué.overview .slides>section>section {
+.communiqué.overview .messages > section,
+.communiqué.overview .messages > section > section {
 	pointer-events: auto;
 }
 
 /********************************************** DEFAULT TRANSITION *********************************************/
-.communiqué .slides>section[data-transition=default].past,
-.communiqué .slides>section.past {
+.communiqué .messages > section[data-transition=default].past,
+.communiqué .messages > section.past {
 	display: block;
 	opacity: 0;
 	-webkit-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
@@ -403,8 +403,8 @@ body {
 	-ms-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 	transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 }
-.communiqué .slides>section[data-transition=default].future,
-.communiqué .slides>section.future {
+.communiqué .messages > section[data-transition=default].future,
+.communiqué .messages > section.future {
 	display: block;
 	opacity: 0;
 	-webkit-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
@@ -412,8 +412,8 @@ body {
 	-ms-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 	transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 }
-.communiqué .slides>section>section[data-transition=default].past,
-.communiqué .slides>section>section.past {
+.communiqué .messages > section > section[data-transition=default].past,
+.communiqué .messages > section > section.past {
 	display: block;
 	opacity: 0;
 	-webkit-transform: translate3d(0, -300px, 0) rotateX(70deg) translate3d(0, -300px, 0);
@@ -421,8 +421,8 @@ body {
 	-ms-transform: translate3d(0, -300px, 0) rotateX(70deg) translate3d(0, -300px, 0);
 	transform: translate3d(0, -300px, 0) rotateX(70deg) translate3d(0, -300px, 0);
 }
-.communiqué .slides>section>section[data-transition=default].future,
-.communiqué .slides>section>section.future {
+.communiqué .messages > section > section[data-transition=default].future,
+.communiqué .messages > section > section.future {
 	display: block;
 	opacity: 0;
 	-webkit-transform: translate3d(0, 300px, 0) rotateX(-70deg) translate3d(0, 300px, 0);
@@ -432,29 +432,29 @@ body {
 }
 
 /********************************************** CONCAVE TRANSITION *********************************************/
-.communiqué .slides>section[data-transition=concave].past,
-.communiqué.concave  .slides>section.past {
+.communiqué .messages > section[data-transition=concave].past,
+.communiqué.concave  .messages > section.past {
 	-webkit-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	-moz-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	-ms-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 }
-.communiqué .slides>section[data-transition=concave].future,
-.communiqué.concave .slides>section.future {
+.communiqué .messages > section[data-transition=concave].future,
+.communiqué.concave .messages > section.future {
 	-webkit-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	-moz-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	-ms-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 }
-.communiqué .slides>section>section[data-transition=concave].past,
-.communiqué.concave .slides>section>section.past {
+.communiqué .messages > section > section[data-transition=concave].past,
+.communiqué.concave .messages > section > section.past {
 	-webkit-transform: translate3d(0, -80%, 0) rotateX(-70deg) translate3d(0, -80%, 0);
 	-moz-transform: translate3d(0, -80%, 0) rotateX(-70deg) translate3d(0, -80%, 0);
 	-ms-transform: translate3d(0, -80%, 0) rotateX(-70deg) translate3d(0, -80%, 0);
 	transform: translate3d(0, -80%, 0) rotateX(-70deg) translate3d(0, -80%, 0);
 }
-.communiqué .slides>section>section[data-transition=concave].future,
-.communiqué.concave .slides>section>section.future {
+.communiqué .messages > section > section[data-transition=concave].future,
+.communiqué.concave .messages > section > section.future {
 	-webkit-transform: translate3d(0, 80%, 0) rotateX(70deg) translate3d(0, 80%, 0);
 	-moz-transform: translate3d(0, 80%, 0) rotateX(70deg) translate3d(0, 80%, 0);
 	-ms-transform: translate3d(0, 80%, 0) rotateX(70deg) translate3d(0, 80%, 0);
@@ -462,16 +462,16 @@ body {
 }
 
 /********************************************** ZOOM TRANSITION *********************************************/
-.communiqué .slides>section[data-transition=zoom],
-.communiqué.zoom .slides>section {
+.communiqué .messages > section[data-transition=zoom],
+.communiqué.zoom .messages > section {
 	-webkit-transition-timing-function: ease;
 	-moz-transition-timing-function: ease;
 	-ms-transition-timing-function: ease;
 	-o-transition-timing-function: ease;
 	transition-timing-function: ease;
 }
-.communiqué .slides>section[data-transition=zoom].past,
-.communiqué.zoom .slides>section.past {
+.communiqué .messages > section[data-transition=zoom].past,
+.communiqué.zoom .messages > section.past {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(16);
@@ -480,8 +480,8 @@ body {
 	-o-transform: scale(16);
 	transform: scale(16);
 }
-.communiqué .slides>section[data-transition=zoom].future,
-.communiqué.zoom .slides>section.future {
+.communiqué .messages > section[data-transition=zoom].future,
+.communiqué.zoom .messages > section.future {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(0.2);
@@ -490,16 +490,16 @@ body {
 	-o-transform: scale(0.2);
 	transform: scale(0.2);
 }
-.communiqué .slides>section>section[data-transition=zoom].past,
-.communiqué.zoom .slides>section>section.past {
+.communiqué .messages > section > section[data-transition=zoom].past,
+.communiqué.zoom .messages > section > section.past {
 	-webkit-transform: translate(0, -150%);
 	-moz-transform: translate(0, -150%);
 	-ms-transform: translate(0, -150%);
 	-o-transform: translate(0, -150%);
 	transform: translate(0, -150%);
 }
-.communiqué .slides>section>section[data-transition=zoom].future,
-.communiqué.zoom .slides>section>section.future {
+.communiqué .messages > section > section[data-transition=zoom].future,
+.communiqué.zoom .messages > section > section.future {
 	-webkit-transform: translate(0, 150%);
 	-moz-transform: translate(0, 150%);
 	-ms-transform: translate(0, 150%);
@@ -514,32 +514,32 @@ body {
 	-ms-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
-.communiqué .slides>section[data-transition=linear].past,
-.communiqué.linear .slides>section.past {
+.communiqué .messages > section[data-transition=linear].past,
+.communiqué.linear .messages > section.past {
 	-webkit-transform: translate(-150%, 0);
 	-moz-transform: translate(-150%, 0);
 	-ms-transform: translate(-150%, 0);
 	-o-transform: translate(-150%, 0);
 	transform: translate(-150%, 0);
 }
-.communiqué .slides>section[data-transition=linear].future,
-.communiqué.linear .slides>section.future {
+.communiqué .messages > section[data-transition=linear].future,
+.communiqué.linear .messages > section.future {
 	-webkit-transform: translate(150%, 0);
 	-moz-transform: translate(150%, 0);
 	-ms-transform: translate(150%, 0);
 	-o-transform: translate(150%, 0);
 	transform: translate(150%, 0);
 }
-.communiqué .slides>section>section[data-transition=linear].past,
-.communiqué.linear .slides>section>section.past {
+.communiqué .messages > section > section[data-transition=linear].past,
+.communiqué.linear .messages > section > section.past {
 	-webkit-transform: translate(0, -150%);
 	-moz-transform: translate(0, -150%);
 	-ms-transform: translate(0, -150%);
 	-o-transform: translate(0, -150%);
 	transform: translate(0, -150%);
 }
-.communiqué .slides>section>section[data-transition=linear].future,
-.communiqué.linear .slides>section>section.future {
+.communiqué .messages > section > section[data-transition=linear].future,
+.communiqué.linear .messages > section > section.future {
 	-webkit-transform: translate(0, 150%);
 	-moz-transform: translate(0, 150%);
 	-ms-transform: translate(0, 150%);
@@ -548,13 +548,13 @@ body {
 }
 
 /********************************************** CUBE TRANSITION *********************************************/
-.communiqué.cube .slides {
+.communiqué.cube .messages {
 	-webkit-perspective: 1300px;
 	-moz-perspective: 1300px;
 	-ms-perspective: 1300px;
 	perspective: 1300px;
 }
-.communiqué.cube .slides section {
+.communiqué.cube .messages section {
 	padding: 30px;
 	min-height: 700px;
 	-webkit-backface-visibility: hidden;
@@ -565,10 +565,10 @@ body {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.communiqué.center.cube .slides section {
+.communiqué.center.cube .messages section {
 	min-height: auto;
 }
-.communiqué.cube .slides section:not(.stack):before {
+.communiqué.cube .messages section:not(.stack):before {
 	content: '';
 	position: absolute;
 	display: block;
@@ -584,7 +584,7 @@ body {
 	-o-transform: translateZ( -20px );
 	transform: translateZ( -20px );
 }
-.communiqué.cube .slides section:not(.stack):after {
+.communiqué.cube .messages section:not(.stack):after {
 	content: '';
 	position: absolute;
 	display: block;
@@ -602,11 +602,11 @@ body {
 	-o-transform: translateZ(-90px) rotateX( 65deg );
 	transform: translateZ(-90px) rotateX( 65deg );
 }
-.communiqué.cube .slides>section.stack {
+.communiqué.cube .messages > section.stack {
 	padding: 0;
 	background: none;
 }
-.communiqué.cube .slides>section.past {
+.communiqué.cube .messages > section.past {
 	-webkit-transform-origin: 100% 0%;
 	-moz-transform-origin: 100% 0%;
 	-ms-transform-origin: 100% 0%;
@@ -616,7 +616,7 @@ body {
 	-ms-transform: translate3d(-100%, 0, 0) rotateY(-90deg);
 	transform: translate3d(-100%, 0, 0) rotateY(-90deg);
 }
-.communiqué.cube .slides>section.future {
+.communiqué.cube .messages > section.future {
 	-webkit-transform-origin: 0% 0%;
 	-moz-transform-origin: 0% 0%;
 	-ms-transform-origin: 0% 0%;
@@ -626,7 +626,7 @@ body {
 	-ms-transform: translate3d(100%, 0, 0) rotateY(90deg);
 	transform: translate3d(100%, 0, 0) rotateY(90deg);
 }
-.communiqué.cube .slides>section>section.past {
+.communiqué.cube .messages > section > section.past {
 	-webkit-transform-origin: 0% 100%;
 	-moz-transform-origin: 0% 100%;
 	-ms-transform-origin: 0% 100%;
@@ -636,7 +636,7 @@ body {
 	-ms-transform: translate3d(0, -100%, 0) rotateX(90deg);
 	transform: translate3d(0, -100%, 0) rotateX(90deg);
 }
-.communiqué.cube .slides>section>section.future {
+.communiqué.cube .messages > section > section.future {
 	-webkit-transform-origin: 0% 0%;
 	-moz-transform-origin: 0% 0%;
 	-ms-transform-origin: 0% 0%;
@@ -648,7 +648,7 @@ body {
 }
 
 /********************************************** PAGE TRANSITION *********************************************/
-.communiqué.page .slides {
+.communiqué.page .messages {
 	-webkit-perspective-origin: 0% 50%;
 	-moz-perspective-origin: 0% 50%;
 	-ms-perspective-origin: 0% 50%;
@@ -658,17 +658,17 @@ body {
 	-ms-perspective: 3000px;
 	perspective: 3000px;
 }
-.communiqué.page .slides section {
+.communiqué.page .messages section {
 	padding: 30px;
 	min-height: 700px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.communiqué.page .slides section.past {
+.communiqué.page .messages section.past {
 	z-index: 12;
 }
-.communiqué.page .slides section:not(.stack):before {
+.communiqué.page .messages section:not(.stack):before {
 	content: '';
 	position: absolute;
 	display: block;
@@ -683,7 +683,7 @@ body {
 	-o-transform: translateZ( -20px );
 	transform: translateZ( -20px );
 }
-.communiqué.page .slides section:not(.stack):after {
+.communiqué.page .messages section:not(.stack):after {
 	content: '';
 	position: absolute;
 	display: block;
@@ -697,11 +697,11 @@ body {
 	box-shadow: 0px 95px 25px rgba(0, 0, 0, 0.2);
 	-webkit-transform: translateZ(-90px) rotateX( 65deg );
 }
-.communiqué.page .slides>section.stack {
+.communiqué.page .messages > section.stack {
 	padding: 0;
 	background: none;
 }
-.communiqué.page .slides>section.past {
+.communiqué.page .messages > section.past {
 	-webkit-transform-origin: 0% 0%;
 	-moz-transform-origin: 0% 0%;
 	-ms-transform-origin: 0% 0%;
@@ -711,7 +711,7 @@ body {
 	-ms-transform: translate3d(-40%, 0, 0) rotateY(-80deg);
 	transform: translate3d(-40%, 0, 0) rotateY(-80deg);
 }
-.communiqué.page .slides>section.future {
+.communiqué.page .messages > section.future {
 	-webkit-transform-origin: 100% 0%;
 	-moz-transform-origin: 100% 0%;
 	-ms-transform-origin: 100% 0%;
@@ -721,7 +721,7 @@ body {
 	-ms-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
 }
-.communiqué.page .slides>section>section.past {
+.communiqué.page .messages > section > section.past {
 	-webkit-transform-origin: 0% 0%;
 	-moz-transform-origin: 0% 0%;
 	-ms-transform-origin: 0% 0%;
@@ -731,7 +731,7 @@ body {
 	-ms-transform: translate3d(0, -40%, 0) rotateX(80deg);
 	transform: translate3d(0, -40%, 0) rotateX(80deg);
 }
-.communiqué.page .slides>section>section.future {
+.communiqué.page .messages > section > section.future {
 	-webkit-transform-origin: 0% 100%;
 	-moz-transform-origin: 0% 100%;
 	-ms-transform-origin: 0% 100%;
@@ -743,9 +743,9 @@ body {
 }
 
 /********************************************** FADE TRANSITION *********************************************/
-.communiqué .slides section[data-transition=fade],
-.communiqué.fade .slides section,
-.communiqué.fade .slides>section>section {
+.communiqué .messages section[data-transition=fade],
+.communiqué.fade .messages section,
+.communiqué.fade .messages > section > section {
 	-webkit-transform: none;
 	-moz-transform: none;
 	-ms-transform: none;
@@ -757,10 +757,10 @@ body {
 	-o-transition: opacity 0.5s;
 	transition: opacity 0.5s;
 }
-.communiqué.fade.overview .slides section,
-.communiqué.fade.overview .slides>section>section,
-.communiqué.fade.overview-deactivating .slides section,
-.communiqué.fade.overview-deactivating .slides>section>section {
+.communiqué.fade.overview .messages section,
+.communiqué.fade.overview .messages > section > section,
+.communiqué.fade.overview-deactivating .messages section,
+.communiqué.fade.overview-deactivating .messages > section > section {
 	-webkit-transition: none;
 	-moz-transition: none;
 	-ms-transition: none;
@@ -769,8 +769,8 @@ body {
 }
 
 /********************************************** NO TRANSITION *********************************************/
-.communiqué .slides section[data-transition=none],
-.communiqué.none .slides section {
+.communiqué .messages section[data-transition=none],
+.communiqué.none .messages section {
 	-webkit-transform: none;
 	-moz-transform: none;
 	-ms-transform: none;
@@ -787,7 +787,7 @@ body {
 .no-transforms {
 	overflow-y: auto;
 }
-.no-transforms .communiqué .slides {
+.no-transforms .communiqué .messages {
 	position: relative;
 	width: 80%;
 	height: auto !important;
@@ -796,7 +796,7 @@ body {
 	margin: 0;
 	text-align: center;
 }
-.no-transforms .communiqué .slides section {
+.no-transforms .communiqué .messages section {
 	display: block !important;
 	opacity: 1 !important;
 	position: relative !important;
@@ -811,7 +811,7 @@ body {
 	-o-transform: none;
 	transform: none;
 }
-.no-transforms .communiqué .slides section section {
+.no-transforms .communiqué .messages section section {
 	left: 0;
 }
 .communiqué .no-transition,
@@ -823,7 +823,7 @@ body {
 	transition: none !important;
 }
 
-/********************************************** PER-SLIDE BACKGROUNDS *********************************************/
+/********************************************** PER-MESSAGE BACKGROUNDS *********************************************/
 .communiqué>.backgrounds {
 	position: absolute;
 	width: 100%;
@@ -833,7 +833,7 @@ body {
 	-ms-perspective: 600px;
 	perspective: 600px;
 }
-.communiqué .slide-background {
+.communiqué .message-background {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -849,18 +849,18 @@ body {
 	-o-transition: all 800ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
 	transition: all 800ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
 }
-.communiqué .slide-background.present {
+.communiqué .message-background.present {
 	opacity: 1;
 	visibility: visible;
 }
-.print-pdf .communiqué .slide-background {
+.print-pdf .communiqué .message-background {
 	opacity: 1 !important;
 	visibility: visible !important;
 }
 
 /* Immediate transition style */
-.communiqué[data-background-transition=none]>.backgrounds .slide-background,
-.communiqué>.backgrounds .slide-background[data-background-transition=none] {
+.communiqué[data-background-transition=none]>.backgrounds .message-background,
+.communiqué>.backgrounds .message-background[data-background-transition=none] {
 	-webkit-transition: none;
 	-moz-transition: none;
 	-ms-transition: none;
@@ -868,41 +868,41 @@ body {
 	transition: none;
 }
 
-/* 2D slide */
-.communiqué[data-background-transition=slide]>.backgrounds .slide-background,
-.communiqué>.backgrounds .slide-background[data-background-transition=slide] {
+/* 2D message */
+.communiqué[data-background-transition=message]>.backgrounds .message-background,
+.communiqué>.backgrounds .message-background[data-background-transition=message] {
 	opacity: 1;
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	-ms-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
-.communiqué[data-background-transition=slide]>.backgrounds .slide-background.past,
-.communiqué>.backgrounds .slide-background.past[data-background-transition=slide] {
+.communiqué[data-background-transition=message]>.backgrounds .message-background.past,
+.communiqué>.backgrounds .message-background.past[data-background-transition=message] {
 	-webkit-transform: translate(-100%, 0);
 	-moz-transform: translate(-100%, 0);
 	-ms-transform: translate(-100%, 0);
 	-o-transform: translate(-100%, 0);
 	transform: translate(-100%, 0);
 }
-.communiqué[data-background-transition=slide]>.backgrounds .slide-background.future,
-.communiqué>.backgrounds .slide-background.future[data-background-transition=slide] {
+.communiqué[data-background-transition=message]>.backgrounds .message-background.future,
+.communiqué>.backgrounds .message-background.future[data-background-transition=message] {
 	-webkit-transform: translate(100%, 0);
 	-moz-transform: translate(100%, 0);
 	-ms-transform: translate(100%, 0);
 	-o-transform: translate(100%, 0);
 	transform: translate(100%, 0);
 }
-.communiqué[data-background-transition=slide]>.backgrounds .slide-background>.slide-background.past,
-.communiqué>.backgrounds .slide-background>.slide-background.past[data-background-transition=slide] {
+.communiqué[data-background-transition=message]>.backgrounds .message-background>.message-background.past,
+.communiqué>.backgrounds .message-background>.message-background.past[data-background-transition=message] {
 	-webkit-transform: translate(0, -100%);
 	-moz-transform: translate(0, -100%);
 	-ms-transform: translate(0, -100%);
 	-o-transform: translate(0, -100%);
 	transform: translate(0, -100%);
 }
-.communiqué[data-background-transition=slide]>.backgrounds .slide-background>.slide-background.future,
-.communiqué>.backgrounds .slide-background>.slide-background.future[data-background-transition=slide] {
+.communiqué[data-background-transition=message]>.backgrounds .message-background>.message-background.future,
+.communiqué>.backgrounds .message-background>.message-background.future[data-background-transition=message] {
 	-webkit-transform: translate(0, 100%);
 	-moz-transform: translate(0, 100%);
 	-ms-transform: translate(0, 100%);
@@ -911,32 +911,32 @@ body {
 }
 
 /* Convex */
-.communiqué[data-background-transition=convex]>.backgrounds .slide-background.past,
-.communiqué>.backgrounds .slide-background.past[data-background-transition=convex] {
+.communiqué[data-background-transition=convex]>.backgrounds .message-background.past,
+.communiqué>.backgrounds .message-background.past[data-background-transition=convex] {
 	opacity: 0;
 	-webkit-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 	-moz-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 	-ms-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 	transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 }
-.communiqué[data-background-transition=convex]>.backgrounds .slide-background.future,
-.communiqué>.backgrounds .slide-background.future[data-background-transition=convex] {
+.communiqué[data-background-transition=convex]>.backgrounds .message-background.future,
+.communiqué>.backgrounds .message-background.future[data-background-transition=convex] {
 	opacity: 0;
 	-webkit-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 	-moz-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 	-ms-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 	transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 }
-.communiqué[data-background-transition=convex]>.backgrounds .slide-background>.slide-background.past,
-.communiqué>.backgrounds .slide-background>.slide-background.past[data-background-transition=convex] {
+.communiqué[data-background-transition=convex]>.backgrounds .message-background>.message-background.past,
+.communiqué>.backgrounds .message-background>.message-background.past[data-background-transition=convex] {
 	opacity: 0;
 	-webkit-transform: translate3d(0, -100%, 0) rotateX(90deg) translate3d(0, -100%, 0);
 	-moz-transform: translate3d(0, -100%, 0) rotateX(90deg) translate3d(0, -100%, 0);
 	-ms-transform: translate3d(0, -100%, 0) rotateX(90deg) translate3d(0, -100%, 0);
 	transform: translate3d(0, -100%, 0) rotateX(90deg) translate3d(0, -100%, 0);
 }
-.communiqué[data-background-transition=convex]>.backgrounds .slide-background>.slide-background.future,
-.communiqué>.backgrounds .slide-background>.slide-background.future[data-background-transition=convex] {
+.communiqué[data-background-transition=convex]>.backgrounds .message-background>.message-background.future,
+.communiqué>.backgrounds .message-background>.message-background.future[data-background-transition=convex] {
 	opacity: 0;
 	-webkit-transform: translate3d(0, 100%, 0) rotateX(-90deg) translate3d(0, 100%, 0);
 	-moz-transform: translate3d(0, 100%, 0) rotateX(-90deg) translate3d(0, 100%, 0);
@@ -945,32 +945,32 @@ body {
 }
 
 /* Concave */
-.communiqué[data-background-transition=concave]>.backgrounds .slide-background.past,
-.communiqué>.backgrounds .slide-background.past[data-background-transition=concave] {
+.communiqué[data-background-transition=concave]>.backgrounds .message-background.past,
+.communiqué>.backgrounds .message-background.past[data-background-transition=concave] {
 	opacity: 0;
 	-webkit-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	-moz-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	-ms-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 }
-.communiqué[data-background-transition=concave]>.backgrounds .slide-background.future,
-.communiqué>.backgrounds .slide-background.future[data-background-transition=concave] {
+.communiqué[data-background-transition=concave]>.backgrounds .message-background.future,
+.communiqué>.backgrounds .message-background.future[data-background-transition=concave] {
 	opacity: 0;
 	-webkit-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	-moz-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	-ms-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 }
-.communiqué[data-background-transition=concave]>.backgrounds .slide-background>.slide-background.past,
-.communiqué>.backgrounds .slide-background>.slide-background.past[data-background-transition=concave] {
+.communiqué[data-background-transition=concave]>.backgrounds .message-background>.message-background.past,
+.communiqué>.backgrounds .message-background>.message-background.past[data-background-transition=concave] {
 	opacity: 0;
 	-webkit-transform: translate3d(0, -100%, 0) rotateX(-90deg) translate3d(0, -100%, 0);
 	-moz-transform: translate3d(0, -100%, 0) rotateX(-90deg) translate3d(0, -100%, 0);
 	-ms-transform: translate3d(0, -100%, 0) rotateX(-90deg) translate3d(0, -100%, 0);
 	transform: translate3d(0, -100%, 0) rotateX(-90deg) translate3d(0, -100%, 0);
 }
-.communiqué[data-background-transition=concave]>.backgrounds .slide-background>.slide-background.future,
-.communiqué>.backgrounds .slide-background>.slide-background.future[data-background-transition=concave] {
+.communiqué[data-background-transition=concave]>.backgrounds .message-background>.message-background.future,
+.communiqué>.backgrounds .message-background>.message-background.future[data-background-transition=concave] {
 	opacity: 0;
 	-webkit-transform: translate3d(0, 100%, 0) rotateX(90deg) translate3d(0, 100%, 0);
 	-moz-transform: translate3d(0, 100%, 0) rotateX(90deg) translate3d(0, 100%, 0);
@@ -979,16 +979,16 @@ body {
 }
 
 /* Zoom */
-.communiqué[data-background-transition=zoom]>.backgrounds .slide-background,
-.communiqué>.backgrounds .slide-background[data-background-transition=zoom] {
+.communiqué[data-background-transition=zoom]>.backgrounds .message-background,
+.communiqué>.backgrounds .message-background[data-background-transition=zoom] {
 	-webkit-transition-timing-function: ease;
 	-moz-transition-timing-function: ease;
 	-ms-transition-timing-function: ease;
 	-o-transition-timing-function: ease;
 	transition-timing-function: ease;
 }
-.communiqué[data-background-transition=zoom]>.backgrounds .slide-background.past,
-.communiqué>.backgrounds .slide-background.past[data-background-transition=zoom] {
+.communiqué[data-background-transition=zoom]>.backgrounds .message-background.past,
+.communiqué>.backgrounds .message-background.past[data-background-transition=zoom] {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(16);
@@ -997,8 +997,8 @@ body {
 	-o-transform: scale(16);
 	transform: scale(16);
 }
-.communiqué[data-background-transition=zoom]>.backgrounds .slide-background.future,
-.communiqué>.backgrounds .slide-background.future[data-background-transition=zoom] {
+.communiqué[data-background-transition=zoom]>.backgrounds .message-background.future,
+.communiqué>.backgrounds .message-background.future[data-background-transition=zoom] {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(0.2);
@@ -1007,8 +1007,8 @@ body {
 	-o-transform: scale(0.2);
 	transform: scale(0.2);
 }
-.communiqué[data-background-transition=zoom]>.backgrounds .slide-background>.slide-background.past,
-.communiqué>.backgrounds .slide-background>.slide-background.past[data-background-transition=zoom] {
+.communiqué[data-background-transition=zoom]>.backgrounds .message-background>.message-background.past,
+.communiqué>.backgrounds .message-background>.message-background.past[data-background-transition=zoom] {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(16);
@@ -1017,8 +1017,8 @@ body {
 	-o-transform: scale(16);
 	transform: scale(16);
 }
-.communiqué[data-background-transition=zoom]>.backgrounds .slide-background>.slide-background.future,
-.communiqué>.backgrounds .slide-background>.slide-background.future[data-background-transition=zoom] {
+.communiqué[data-background-transition=zoom]>.backgrounds .message-background>.message-background.future,
+.communiqué>.backgrounds .message-background>.message-background.future[data-background-transition=zoom] {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(0.2);
@@ -1029,13 +1029,13 @@ body {
 }
 
 /* Global transition speed settings */
-.communiqué[data-transition-speed="fast"]>.backgrounds .slide-background {
+.communiqué[data-transition-speed="fast"]>.backgrounds .message-background {
 	-webkit-transition-duration: 400ms;
 	-moz-transition-duration: 400ms;
 	-ms-transition-duration: 400ms;
 	transition-duration: 400ms;
 }
-.communiqué[data-transition-speed="slow"]>.backgrounds .slide-background {
+.communiqué[data-transition-speed="slow"]>.backgrounds .message-background {
 	-webkit-transition-duration: 1200ms;
 	-moz-transition-duration: 1200ms;
 	-ms-transition-duration: 1200ms;
@@ -1043,13 +1043,13 @@ body {
 }
 
 /********************************************** RTL SUPPORT *********************************************/
-.communiqué.rtl .slides,
-.communiqué.rtl .slides h1,
-.communiqué.rtl .slides h2,
-.communiqué.rtl .slides h3,
-.communiqué.rtl .slides h4,
-.communiqué.rtl .slides h5,
-.communiqué.rtl .slides h6 {
+.communiqué.rtl .messages,
+.communiqué.rtl .messages h1,
+.communiqué.rtl .messages h2,
+.communiqué.rtl .messages h3,
+.communiqué.rtl .messages h4,
+.communiqué.rtl .messages h5,
+.communiqué.rtl .messages h6 {
 	direction: rtl;
 	font-family: sans-serif;
 }
@@ -1316,13 +1316,13 @@ body {
 	border-color: #28c;
 	box-shadow: 0 0 0.75em rgba(0, 0, 0, 0.55);
 }
-.communiqué .slides > section.present,
-.communiqué .slides > section > section.present {
+.communiqué .messages > section.present,
+.communiqué .messages > section > section.present {
 	background-color: #fff;
 	opacity: 0.9;
 	cursor: default;
 }
-.communiqué .slides > section {
+.communiqué .messages > section {
 	background-color: #fff;
 	opacity: 1;
 	padding: 1em 0;
