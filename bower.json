@@ -25,9 +25,9 @@
 		"url": "https://github.org/mpelikan/jaby_server/issues"
 	},
 	"dependencies": {
-		"socket.io-client": "~1.2",
-		"html5shiv": "~3.7",
-		"visibly.js": "~0.1"
+		"socket.io-client": "~1.x",
+		"html5shiv": "~3.x",
+		"visibly.js": "~0.x"
 	},
 	"devDependencies": {}
 }

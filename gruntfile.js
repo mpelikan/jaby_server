@@ -11,12 +11,13 @@ module.exports = function ( grunt ) {
 					targetDir: "third-party/bower_components",
 					layout: "byComponent",
 					verbose: true,
-					cleanup: true
+					cleanTargetDir: true,
+					copy: false
 				}
 			}
 		},
 		clean: {
-			public: [ "public/" ]
+			all: [ "public/", "third-party/bower_components/" ]
 		},
 		copy: {
 			html: {
