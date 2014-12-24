@@ -22,6 +22,7 @@
 		}
 
 		try {
+			jaby.logger.info( "path = %s", plugins_path );
 			stat = fs.lstatSync( plugins_path );
 			if ( stat ) {
 				if ( stat.isDirectory() ) {
@@ -47,9 +48,14 @@
 			}
 		}
 		catch ( e ) {
-			jaby.logger.error( "Could not load plugin: %s", e );
-			if ( e.stack ) {
-				jaby.logger.info( e.stack );
+			if ( e ) {
+				jaby.logger.error( "Could not load plugin: %s", e );
+				if ( e.stack ) {
+					jaby.logger.info( e.stack );
+				}
+			}
+			else {
+				jaby.logger.error( "Could not load plugin and no exception provided." );
 			}
 		}
 
@@ -65,6 +71,9 @@
 
 	var jaby = new broadway.App();
 	jaby.logger = require( "winston" );
+
+	jaby.logger.info( "Starting up Jaby..." );
+	jaby.logger.info( "Path = %s", pluginsRoot );
 
 	jaby.plugins = loadPlugins( pluginsRoot );
 
