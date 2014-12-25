@@ -114,7 +114,7 @@
 					};
 
 					if ( context.hasOwnProperty( "ttl" ) && context.ttl < now ) {
-						jaby.logger.info( "Old status: %s", now - context.ttl );
+						return;
 					}
 					else {
 						response = {
