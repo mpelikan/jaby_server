@@ -22,6 +22,7 @@
 		}
 
 		try {
+			console.info( "loadPlugins(%s)", plugins_path );
 			jaby.logger.info( "path = %s", plugins_path );
 			stat = fs.lstatSync( plugins_path );
 			if ( stat ) {
@@ -41,6 +42,7 @@
 					if ( path.extname( plugins_path ) === ".js" ) {
 						//	Load the file
 						relativePath = path.relative( pluginsRoot, plugins_path ).replace( /^(?:\.\.\/)+/, "" );
+						console.info( "Loading: %s", relativePath );
 						jaby.logger.info( "Loading: %s", relativePath );
 						plugins[ relativePath ] = require( plugins_path );
 					}
@@ -69,12 +71,18 @@
 	var pluginsRoot = path.join( __dirname, "plugins" );
 	var plugin;
 
+	console.info( "About to load application." );
+
 	var jaby = new broadway.App();
+	console.info( "Jaby loaded." );
+
 	jaby.logger = require( "winston" );
+	console.info( "Logger loaded? %s", jaby.logger !== undefined && jaby.logger !== null );
 
 	jaby.logger.info( "Starting up Jaby..." );
 	jaby.logger.info( "Path = %s", pluginsRoot );
 
+	console.info( "About to load plugins." );
 	jaby.plugins = loadPlugins( pluginsRoot );
 
 	for ( plugin in jaby.plugins ) {
