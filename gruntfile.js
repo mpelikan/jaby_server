@@ -72,7 +72,7 @@ module.exports = function ( grunt ) {
 			test: {
 				options: {
 					reporter: "spec",
-					quiet: true,
+					quiet: false,
 					clearRequireCache: true
 				},
 				src: [ "test/**/*.js" ]
