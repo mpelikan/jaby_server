@@ -3,7 +3,7 @@
 
 	var usage = require( "usage" );
 	var path = require( "path" );
-	var secrets = require( path.relative( __dirname, path.join( __dirname, "config", "secrets" ) ) );
+	var secrets = require( path.relative( __dirname, path.join( process.cwd(), "config", "secrets" ) ) );
 	var MongoClient = require( "mongodb" ).MongoClient;
 
 	//	As a Broadway plug-in, provide init and attach functions
