@@ -24,4 +24,4 @@ third-party
 .DS_Store
 Thumbs.db
 
-config/secrets.js
+config/private.js
