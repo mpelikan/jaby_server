@@ -135,9 +135,11 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( "grunt-mocha-test" );
 	grunt.loadNpmTasks( "grunt-npm-install" );
 
-	grunt.registerTask( "test", [ "jsbeautifier", "jshint", "mochaTest" ] );
-
 	grunt.registerTask( "default", [ "jsbeautifier", "jshint" ] );
 
-	grunt.registerTask( "build", [ "clean", "npm-install", "bower", "copy", "less", "test" ] );
+	grunt.registerTask( "test", [ "jsbeautifier", "jshint", "mochaTest" ] );
+
+	grunt.registerTask( "build", [ "bower", "copy", "less", "test" ] );
+
+	grunt.registerTask( "full", [ "clean", "npm-install", "build" ] );
 };
