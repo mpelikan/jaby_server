@@ -22,8 +22,8 @@
 	var privateSecrets;
 	var secrets = {
 
-		db: process.env.MONGODB || "mongodb://localhost:27016",
-		jabyDB: ( process.env.MONGODB || "mongodb://localhost:27016" ) + "/jaby",
+		db: process.env.MONGODB || "mongodb://localhost:27017",
+		jabyDB: ( process.env.MONGODB || "mongodb://localhost:27017" ) + "/jaby",
 
 		sessionSecret: process.env.SESSION_SECRET || "12456789-abcd-4567-efab-7890cdef1234",
 
