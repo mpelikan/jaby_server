@@ -1,19 +1,22 @@
 /**
  * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT * IMPORTANT *
  *
- * You should never commit this file to a public repository on GitHub!
- * All public code on GitHub can be searched, that means anyone can see your
- * uploaded secrets.js file.
+ * You should never change the properties in this file.
  *
- * I did it for your convenience using "throw away" credentials so that
- * all features could work out of the box.
+ * These are development version of the keys.
  *
- * Untrack secrets.js before pushing your code to public GitHub repository:
+ * To override properties, etc. in this configuration file, create a private.js file in the
+ * config directory. Then, just provide properties that replace this file's properties:
  *
- * git rm --cached config/secrets.js
+ * {
+ * 		sessionSecret: process.env.SESSION_SECRET || "your_private_session_secret",
+ * 		twitter: {
+ * 			consumerKey: process.env.TWITTER_KEY || "your_private_key",
+ * 			consumerSecret: process.env.TWITTER_SECRET || "your_private_secret"
+ * 		}
+ * }
  *
- * If you have already committed this file to GitHub with your keys, then
- * refer to https://help.github.com/articles/remove-sensitive-data
+ * These properties will be applied over the secrets.js object.
  */
 ( function () {
 
