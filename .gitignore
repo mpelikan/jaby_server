@@ -21,6 +21,12 @@ node_modules
 public
 third-party
 
+logs
+systemDB
+data.json
+jaby/plugins/orb/systemDB
+jaby/plugins/orb/topics
+
 .DS_Store
 Thumbs.db
 

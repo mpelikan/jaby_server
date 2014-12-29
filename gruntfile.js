@@ -26,12 +26,6 @@ module.exports = function ( grunt ) {
 				src: [ "**" ],
 				dest: "public"
 			},
-			fonts: {
-				expand: true,
-				cwd: "lib/fonts",
-				src: [ "**" ],
-				dest: "public/fonts"
-			},
 			images: {
 				expand: true,
 				cwd: "lib/img",
@@ -43,6 +37,12 @@ module.exports = function ( grunt ) {
 				cwd: "lib/js",
 				src: [ "**" ],
 				dest: "public/js"
+			},
+			third_party_fonts: {
+				expand: true,
+				cwd: "lib/fonts",
+				src: [ "**" ],
+				dest: "public/third-party/fonts"
 			},
 			third_party_bower: {
 				expand: true,
@@ -72,7 +72,7 @@ module.exports = function ( grunt ) {
 			test: {
 				options: {
 					reporter: "spec",
-					quiet: false,
+					quiet: true,
 					clearRequireCache: true
 				},
 				src: [ "test/**/*.js" ]

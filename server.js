@@ -67,7 +67,7 @@
 	} );
 
 	sessionStore = new MongoStore( {
-		mongoose_connection: mongoose.connections[ 0 ]
+		mongooseConnection: mongoose.connections[ 0 ]
 	} );
 
 	/**
@@ -206,12 +206,6 @@
 	 */
 	server.listen( app.get( "port" ), function () {
 		console.log( "Jaby server listening on port %d in %s mode", app.get( "port" ), app.get( "env" ) );
-
-		jaby.hello( "world" );
-		jaby.emit( "world:hello", {
-			meta: "is here"
-		} );
-
 	} );
 
 	function onAuthorizeSuccess( data, accept ) {
@@ -242,9 +236,7 @@
 	} ) );
 
 	io.on( "connection", function ( socket ) {
-
 		jaby.registerSocket( io, socket );
-
 	} );
 
 	module.exports = app;

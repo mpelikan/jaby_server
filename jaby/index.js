@@ -63,13 +63,13 @@
 	var fs = require( "fs" );
 	var path = require( "path" );
 	var broadway = require( "broadway" );
+	var winston = require( "winston" );
 
 	var pluginsRoot = path.join( __dirname, "plugins" );
 	var plugin;
 
 	var jaby = new broadway.App();
-
-	jaby.logger = require( "winston" );
+	jaby.logger = winston;
 
 	jaby.plugins = loadPlugins( pluginsRoot );
 
@@ -87,7 +87,7 @@
 
 	jaby.init( function ( err ) {
 		if ( err ) {
-			console.info( err );
+			this.logger.info( err );
 		}
 	} );
 
