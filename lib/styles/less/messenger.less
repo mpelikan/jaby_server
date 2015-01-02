@@ -2,84 +2,84 @@
 /********************************************** RESET STYLES *********************************************/
 html,
 body,
-.communiqué div,
-.communiqué span,
-.communiqué applet,
-.communiqué object,
-.communiqué iframe,
-.communiqué h1,
-.communiqué h2,
-.communiqué h3,
-.communiqué h4,
-.communiqué h5,
-.communiqué h6,
-.communiqué p,
-.communiqué blockquote,
-.communiqué pre,
-.communiqué a,
-.communiqué abbr,
-.communiqué acronym,
-.communiqué address,
-.communiqué big,
-.communiqué cite,
-.communiqué code,
-.communiqué del,
-.communiqué dfn,
-.communiqué em,
-.communiqué img,
-.communiqué ins,
-.communiqué kbd,
-.communiqué q,
-.communiqué s,
-.communiqué samp,
-.communiqué small,
-.communiqué strike,
-.communiqué strong,
-.communiqué sub,
-.communiqué sup,
-.communiqué tt,
-.communiqué var,
-.communiqué b,
-.communiqué u,
-.communiqué i,
-.communiqué center,
-.communiqué dl,
-.communiqué dt,
-.communiqué dd,
-.communiqué ol,
-.communiqué ul,
-.communiqué li,
-.communiqué fieldset,
-.communiqué form,
-.communiqué label,
-.communiqué legend,
-.communiqué table,
-.communiqué caption,
-.communiqué tbody,
-.communiqué tfoot,
-.communiqué thead,
-.communiqué tr,
-.communiqué th,
-.communiqué td,
-.communiqué article,
-.communiqué aside,
-.communiqué canvas,
-.communiqué details,
-.communiqué embed,
-.communiqué figure,
-.communiqué figcaption,
-.communiqué footer,
-.communiqué header,
-.communiqué hgroup,
-.communiqué menu,
-.communiqué nav,
-.communiqué output,
-.communiqué ruby,
-.communiqué section,
-.communiqué summary,
-.communiqué time,
-.communiqué mark,
-.communiqué audio,
+.messenger div,
+.messenger span,
+.messenger applet,
+.messenger object,
+.messenger iframe,
+.messenger h1,
+.messenger h2,
+.messenger h3,
+.messenger h4,
+.messenger h5,
+.messenger h6,
+.messenger p,
+.messenger blockquote,
+.messenger pre,
+.messenger a,
+.messenger abbr,
+.messenger acronym,
+.messenger address,
+.messenger big,
+.messenger cite,
+.messenger code,
+.messenger del,
+.messenger dfn,
+.messenger em,
+.messenger img,
+.messenger ins,
+.messenger kbd,
+.messenger q,
+.messenger s,
+.messenger samp,
+.messenger small,
+.messenger strike,
+.messenger strong,
+.messenger sub,
+.messenger sup,
+.messenger tt,
+.messenger var,
+.messenger b,
+.messenger u,
+.messenger i,
+.messenger center,
+.messenger dl,
+.messenger dt,
+.messenger dd,
+.messenger ol,
+.messenger ul,
+.messenger li,
+.messenger fieldset,
+.messenger form,
+.messenger label,
+.messenger legend,
+.messenger table,
+.messenger caption,
+.messenger tbody,
+.messenger tfoot,
+.messenger thead,
+.messenger tr,
+.messenger th,
+.messenger td,
+.messenger article,
+.messenger aside,
+.messenger canvas,
+.messenger details,
+.messenger embed,
+.messenger figure,
+.messenger figcaption,
+.messenger footer,
+.messenger header,
+.messenger hgroup,
+.messenger menu,
+.messenger nav,
+.messenger output,
+.messenger ruby,
+.messenger section,
+.messenger summary,
+.messenger time,
+.messenger mark,
+.messenger audio,
 video {
 	margin: 0;
 	padding: 0;
@@ -88,17 +88,17 @@ video {
 	font: inherit;
 	vertical-align: baseline;
 }
-.communiqué article,
-.communiqué aside,
-.communiqué details,
-.communiqué figcaption,
-.communiqué figure,
-.communiqué footer,
-.communiqué header,
-.communiqué hgroup,
-.communiqué menu,
-.communiqué nav,
-.communiqué section {
+.messenger article,
+.messenger aside,
+.messenger details,
+.messenger figcaption,
+.messenger figure,
+.messenger footer,
+.messenger header,
+.messenger hgroup,
+.messenger menu,
+.messenger nav,
+.messenger section {
 	display: block;
 }
 
@@ -119,7 +119,7 @@ body {
 	text-shadow: none;
 }
 
-.communiqué {
+.messenger {
 	font-family: Lato, sans-serif;
 	font-size: 3vmax;
 	font-weight: normal;
@@ -129,95 +129,95 @@ body {
 
 
 /********************************************** HEADERS *********************************************/
-.communiqué h1,
-.communiqué h2,
-.communiqué h3,
-.communiqué h4,
-.communiqué h5,
-.communiqué h6 {
+.messenger h1,
+.messenger h2,
+.messenger h3,
+.messenger h4,
+.messenger h5,
+.messenger h6 {
 	-webkit-hyphens: auto;
 	-moz-hyphens: auto;
 	hyphens: auto;
 	word-wrap: break-word;
 	line-height: 1;
 }
-.communiqué h1 {
+.messenger h1 {
 	font-size: 3.77em;
 }
-.communiqué h2 {
+.messenger h2 {
 	font-size: 2.11em;
 }
-.communiqué h3 {
+.messenger h3 {
 	font-size: 1.55em;
 }
-.communiqué h4 {
+.messenger h4 {
 	font-size: 1em;
 }
 
 /********************************************** DEFAULT ELEMENT STYLES *********************************************/
 /* Fixes issue in Chrome where italic fonts did not appear when printing to PDF */
-.communiqué:after {
+.messenger:after {
 	content: '';
 	font-style: italic;
 }
-.communiqué iframe {
+.messenger iframe {
 	z-index: 1;
 }
 
 /* Ensure certain elements are never larger than the message itself */
-.communiqué img,
-.communiqué video,
-.communiqué iframe {
+.messenger img,
+.messenger video,
+.messenger iframe {
 	max-width: 95%;
 	max-height: 95%;
 }
 
 /** Prevents layering issues in certain browser/transition combinations */
-.communiqué a {
+.messenger a {
 	position: relative;
 }
-.communiqué strong,
-.communiqué b {
+.messenger strong,
+.messenger b {
 	font-weight: bold;
 }
-.communiqué em,
-.communiqué i {
+.messenger em,
+.messenger i {
 	font-style: italic;
 }
-.communiqué ol,
-.communiqué ul {
+.messenger ol,
+.messenger ul {
 	display: inline-block;
 	text-align: left;
 	margin: 0 0 0 1em;
 }
-.communiqué ol {
+.messenger ol {
 	list-style-type: decimal;
 }
-.communiqué ul {
+.messenger ul {
 	list-style-type: disc;
 }
-.communiqué ul ul {
+.messenger ul ul {
 	list-style-type: square;
 }
-.communiqué ul ul ul {
+.messenger ul ul ul {
 	list-style-type: circle;
 }
-.communiqué ul ul,
-.communiqué ul ol,
-.communiqué ol ol,
-.communiqué ol ul {
+.messenger ul ul,
+.messenger ul ol,
+.messenger ol ol,
+.messenger ol ul {
 	display: block;
 	margin-left: 40px;
 }
-.communiqué p {
+.messenger p {
 	margin-bottom: 10px;
 	line-height: 1.2em;
 }
-.communiqué q,
-.communiqué blockquote {
+.messenger q,
+.messenger blockquote {
 	quotes: none;
 }
-.communiqué blockquote {
+.messenger blockquote {
 	display: block;
 	position: relative;
 	width: 70%;
@@ -227,14 +227,14 @@ body {
 	background: rgba(255, 255, 255, 0.05);
 	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
 }
-.communiqué blockquote p:first-child,
-.communiqué blockquote p:last-child {
+.messenger blockquote p:first-child,
+.messenger blockquote p:last-child {
 	display: inline-block;
 }
-.communiqué q {
+.messenger q {
 	font-style: italic;
 }
-.communiqué pre {
+.messenger pre {
 	display: block;
 	position: relative;
 	width: 90%;
@@ -246,58 +246,58 @@ body {
 	word-wrap: break-word;
 	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
 }
-.communiqué code {
+.messenger code {
 	font-family: monospace;
 }
-.communiqué pre code {
+.messenger pre code {
 	padding: 5px;
 	overflow: auto;
 	max-height: 400px;
 	word-wrap: normal;
 }
-.communiqué pre.stretch code {
+.messenger pre.stretch code {
 	height: 100%;
 	max-height: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
-.communiqué table th,
-.communiqué table td {
+.messenger table th,
+.messenger table td {
 	text-align: left;
 	padding-right: .3em;
 }
-.communiqué table th {
+.messenger table th {
 	font-weight: bold;
 }
-.communiqué sup {
+.messenger sup {
 	vertical-align: super;
 }
-.communiqué sub {
+.messenger sub {
 	vertical-align: sub;
 }
-.communiqué small {
+.messenger small {
 	display: inline-block;
 	font-size: 0.6em;
 	line-height: 1.2em;
 	vertical-align: top;
 }
-.communiqué small * {
+.messenger small * {
 	vertical-align: top;
 }
-.communiqué .stretch {
+.messenger .stretch {
 	max-width: none;
 	max-height: none;
 }
 
 /********************************************** MESSAGES *********************************************/
-.communiqué {
+.messenger {
 	position: relative;
 	width: 100%;
 	height: 100%;
 	-ms-touch-action: none;
 }
-.communiqué .messages {
+.messenger .messages {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -320,11 +320,11 @@ body {
 	-ms-perspective-origin: 0px -100px;
 	perspective-origin: 0px -100px;
 }
-.communiqué .messages > section {
+.messenger .messages > section {
 	-ms-perspective: 600px;
 }
-.communiqué .messages > section,
-.communiqué .messages > section > section {
+.messenger .messages > section,
+.messenger .messages > section > section {
 	display: none;
 	position: absolute;
 	width: 100%;
@@ -344,13 +344,13 @@ body {
 }
 
 /* Global transition speed settings */
-.communiqué[data-transition-speed="fast"] .messages section {
+.messenger[data-transition-speed="fast"] .messages section {
 	-webkit-transition-duration: 400ms;
 	-moz-transition-duration: 400ms;
 	-ms-transition-duration: 400ms;
 	transition-duration: 400ms;
 }
-.communiqué[data-transition-speed="slow"] .messages section {
+.messenger[data-transition-speed="slow"] .messages section {
 	-webkit-transition-duration: 1200ms;
 	-moz-transition-duration: 1200ms;
 	-ms-transition-duration: 1200ms;
@@ -358,53 +358,53 @@ body {
 }
 
 /* Message-specific transition speed overrides */
-.communiqué .messages section[data-transition-speed="fast"] {
+.messenger .messages section[data-transition-speed="fast"] {
 	-webkit-transition-duration: 400ms;
 	-moz-transition-duration: 400ms;
 	-ms-transition-duration: 400ms;
 	transition-duration: 400ms;
 }
-.communiqué .messages section[data-transition-speed="slow"] {
+.messenger .messages section[data-transition-speed="slow"] {
 	-webkit-transition-duration: 1200ms;
 	-moz-transition-duration: 1200ms;
 	-ms-transition-duration: 1200ms;
 	transition-duration: 1200ms;
 }
-.communiqué .messages > section {
+.messenger .messages > section {
 	left: -50%;
 	top: -50%;
 }
-.communiqué .messages > section.stack {
+.messenger .messages > section.stack {
 	padding-top: 0;
 	padding-bottom: 0;
 }
-.communiqué .messages > section.present,
-.communiqué .messages > section > section.present {
+.messenger .messages > section.present,
+.messenger .messages > section > section.present {
 	display: block;
 	z-index: 11;
 	opacity: 1;
 }
-.communiqué.center,
-.communiqué.center .messages,
-.communiqué.center .messages section {
+.messenger.center,
+.messenger.center .messages,
+.messenger.center .messages section {
 	min-height: auto !important;
 }
 
 /* Don't allow interaction with invisible messages */
-.communiqué .messages > section.future,
-.communiqué .messages > section > section.future,
-.communiqué .messages > section.past,
-.communiqué .messages > section > section.past {
+.messenger .messages > section.future,
+.messenger .messages > section > section.future,
+.messenger .messages > section.past,
+.messenger .messages > section > section.past {
 	pointer-events: none;
 }
-.communiqué.overview .messages > section,
-.communiqué.overview .messages > section > section {
+.messenger.overview .messages > section,
+.messenger.overview .messages > section > section {
 	pointer-events: auto;
 }
 
 /********************************************** DEFAULT TRANSITION *********************************************/
-.communiqué .messages > section[data-transition=default].past,
-.communiqué .messages > section.past {
+.messenger .messages > section[data-transition=default].past,
+.messenger .messages > section.past {
 	display: block;
 	opacity: 0;
 	-webkit-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
@@ -412,8 +412,8 @@ body {
 	-ms-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 	transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 }
-.communiqué .messages > section[data-transition=default].future,
-.communiqué .messages > section.future {
+.messenger .messages > section[data-transition=default].future,
+.messenger .messages > section.future {
 	display: block;
 	opacity: 0;
 	-webkit-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
@@ -421,8 +421,8 @@ body {
 	-ms-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 	transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 }
-.communiqué .messages > section > section[data-transition=default].past,
-.communiqué .messages > section > section.past {
+.messenger .messages > section > section[data-transition=default].past,
+.messenger .messages > section > section.past {
 	display: block;
 	opacity: 0;
 	-webkit-transform: translate3d(0, -300px, 0) rotateX(70deg) translate3d(0, -300px, 0);
@@ -430,8 +430,8 @@ body {
 	-ms-transform: translate3d(0, -300px, 0) rotateX(70deg) translate3d(0, -300px, 0);
 	transform: translate3d(0, -300px, 0) rotateX(70deg) translate3d(0, -300px, 0);
 }
-.communiqué .messages > section > section[data-transition=default].future,
-.communiqué .messages > section > section.future {
+.messenger .messages > section > section[data-transition=default].future,
+.messenger .messages > section > section.future {
 	display: block;
 	opacity: 0;
 	-webkit-transform: translate3d(0, 300px, 0) rotateX(-70deg) translate3d(0, 300px, 0);
@@ -444,7 +444,7 @@ body {
 .no-transforms {
 	overflow-y: auto;
 }
-.no-transforms .communiqué .messages {
+.no-transforms .messenger .messages {
 	position: relative;
 	width: 80%;
 	height: auto !important;
@@ -453,7 +453,7 @@ body {
 	margin: 0;
 	text-align: center;
 }
-.no-transforms .communiqué .messages section {
+.no-transforms .messenger .messages section {
 	display: block !important;
 	opacity: 1 !important;
 	position: relative !important;
@@ -468,11 +468,11 @@ body {
 	-o-transform: none;
 	transform: none;
 }
-.no-transforms .communiqué .messages section section {
+.no-transforms .messenger .messages section section {
 	left: 0;
 }
-.communiqué .no-transition,
-.communiqué .no-transition * {
+.messenger .no-transition,
+.messenger .no-transition * {
 	-webkit-transition: none !important;
 	-moz-transition: none !important;
 	-ms-transition: none !important;
@@ -481,7 +481,7 @@ body {
 }
 
 /********************************************** PER-MESSAGE BACKGROUNDS *********************************************/
-.communiqué>.backgrounds {
+.messenger>.backgrounds {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -490,7 +490,7 @@ body {
 	-ms-perspective: 600px;
 	perspective: 600px;
 }
-.communiqué .message-background {
+.messenger .message-background {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -506,18 +506,18 @@ body {
 	-o-transition: all 800ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
 	transition: all 800ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
 }
-.communiqué .message-background.present {
+.messenger .message-background.present {
 	opacity: 1;
 	visibility: visible;
 }
-.print-pdf .communiqué .message-background {
+.print-pdf .messenger .message-background {
 	opacity: 1 !important;
 	visibility: visible !important;
 }
 
 /* Immediate transition style */
-.communiqué[data-background-transition=none]>.backgrounds .message-background,
-.communiqué>.backgrounds .message-background[data-background-transition=none] {
+.messenger[data-background-transition=none]>.backgrounds .message-background,
+.messenger>.backgrounds .message-background[data-background-transition=none] {
 	-webkit-transition: none;
 	-moz-transition: none;
 	-ms-transition: none;
@@ -526,40 +526,40 @@ body {
 }
 
 /* 2D message */
-.communiqué[data-background-transition=message]>.backgrounds .message-background,
-.communiqué>.backgrounds .message-background[data-background-transition=message] {
+.messenger[data-background-transition=message]>.backgrounds .message-background,
+.messenger>.backgrounds .message-background[data-background-transition=message] {
 	opacity: 1;
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	-ms-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
-.communiqué[data-background-transition=message]>.backgrounds .message-background.past,
-.communiqué>.backgrounds .message-background.past[data-background-transition=message] {
+.messenger[data-background-transition=message]>.backgrounds .message-background.past,
+.messenger>.backgrounds .message-background.past[data-background-transition=message] {
 	-webkit-transform: translate(-100%, 0);
 	-moz-transform: translate(-100%, 0);
 	-ms-transform: translate(-100%, 0);
 	-o-transform: translate(-100%, 0);
 	transform: translate(-100%, 0);
 }
-.communiqué[data-background-transition=message]>.backgrounds .message-background.future,
-.communiqué>.backgrounds .message-background.future[data-background-transition=message] {
+.messenger[data-background-transition=message]>.backgrounds .message-background.future,
+.messenger>.backgrounds .message-background.future[data-background-transition=message] {
 	-webkit-transform: translate(100%, 0);
 	-moz-transform: translate(100%, 0);
 	-ms-transform: translate(100%, 0);
 	-o-transform: translate(100%, 0);
 	transform: translate(100%, 0);
 }
-.communiqué[data-background-transition=message]>.backgrounds .message-background>.message-background.past,
-.communiqué>.backgrounds .message-background>.message-background.past[data-background-transition=message] {
+.messenger[data-background-transition=message]>.backgrounds .message-background>.message-background.past,
+.messenger>.backgrounds .message-background>.message-background.past[data-background-transition=message] {
 	-webkit-transform: translate(0, -100%);
 	-moz-transform: translate(0, -100%);
 	-ms-transform: translate(0, -100%);
 	-o-transform: translate(0, -100%);
 	transform: translate(0, -100%);
 }
-.communiqué[data-background-transition=message]>.backgrounds .message-background>.message-background.future,
-.communiqué>.backgrounds .message-background>.message-background.future[data-background-transition=message] {
+.messenger[data-background-transition=message]>.backgrounds .message-background>.message-background.future,
+.messenger>.backgrounds .message-background>.message-background.future[data-background-transition=message] {
 	-webkit-transform: translate(0, 100%);
 	-moz-transform: translate(0, 100%);
 	-ms-transform: translate(0, 100%);
@@ -568,32 +568,32 @@ body {
 }
 
 /* Convex */
-.communiqué[data-background-transition=convex]>.backgrounds .message-background.past,
-.communiqué>.backgrounds .message-background.past[data-background-transition=convex] {
+.messenger[data-background-transition=convex]>.backgrounds .message-background.past,
+.messenger>.backgrounds .message-background.past[data-background-transition=convex] {
 	opacity: 0;
 	-webkit-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 	-moz-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 	-ms-transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 	transform: translate3d(-100%, 0, 0) rotateY(-90deg) translate3d(-100%, 0, 0);
 }
-.communiqué[data-background-transition=convex]>.backgrounds .message-background.future,
-.communiqué>.backgrounds .message-background.future[data-background-transition=convex] {
+.messenger[data-background-transition=convex]>.backgrounds .message-background.future,
+.messenger>.backgrounds .message-background.future[data-background-transition=convex] {
 	opacity: 0;
 	-webkit-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 	-moz-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 	-ms-transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 	transform: translate3d(100%, 0, 0) rotateY(90deg) translate3d(100%, 0, 0);
 }
-.communiqué[data-background-transition=convex]>.backgrounds .message-background>.message-background.past,
-.communiqué>.backgrounds .message-background>.message-background.past[data-background-transition=convex] {
+.messenger[data-background-transition=convex]>.backgrounds .message-background>.message-background.past,
+.messenger>.backgrounds .message-background>.message-background.past[data-background-transition=convex] {
 	opacity: 0;
 	-webkit-transform: translate3d(0, -100%, 0) rotateX(90deg) translate3d(0, -100%, 0);
 	-moz-transform: translate3d(0, -100%, 0) rotateX(90deg) translate3d(0, -100%, 0);
 	-ms-transform: translate3d(0, -100%, 0) rotateX(90deg) translate3d(0, -100%, 0);
 	transform: translate3d(0, -100%, 0) rotateX(90deg) translate3d(0, -100%, 0);
 }
-.communiqué[data-background-transition=convex]>.backgrounds .message-background>.message-background.future,
-.communiqué>.backgrounds .message-background>.message-background.future[data-background-transition=convex] {
+.messenger[data-background-transition=convex]>.backgrounds .message-background>.message-background.future,
+.messenger>.backgrounds .message-background>.message-background.future[data-background-transition=convex] {
 	opacity: 0;
 	-webkit-transform: translate3d(0, 100%, 0) rotateX(-90deg) translate3d(0, 100%, 0);
 	-moz-transform: translate3d(0, 100%, 0) rotateX(-90deg) translate3d(0, 100%, 0);
@@ -602,32 +602,32 @@ body {
 }
 
 /* Concave */
-.communiqué[data-background-transition=concave]>.backgrounds .message-background.past,
-.communiqué>.backgrounds .message-background.past[data-background-transition=concave] {
+.messenger[data-background-transition=concave]>.backgrounds .message-background.past,
+.messenger>.backgrounds .message-background.past[data-background-transition=concave] {
 	opacity: 0;
 	-webkit-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	-moz-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	-ms-transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 	transform: translate3d(-100%, 0, 0) rotateY(90deg) translate3d(-100%, 0, 0);
 }
-.communiqué[data-background-transition=concave]>.backgrounds .message-background.future,
-.communiqué>.backgrounds .message-background.future[data-background-transition=concave] {
+.messenger[data-background-transition=concave]>.backgrounds .message-background.future,
+.messenger>.backgrounds .message-background.future[data-background-transition=concave] {
 	opacity: 0;
 	-webkit-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	-moz-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	-ms-transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 	transform: translate3d(100%, 0, 0) rotateY(-90deg) translate3d(100%, 0, 0);
 }
-.communiqué[data-background-transition=concave]>.backgrounds .message-background>.message-background.past,
-.communiqué>.backgrounds .message-background>.message-background.past[data-background-transition=concave] {
+.messenger[data-background-transition=concave]>.backgrounds .message-background>.message-background.past,
+.messenger>.backgrounds .message-background>.message-background.past[data-background-transition=concave] {
 	opacity: 0;
 	-webkit-transform: translate3d(0, -100%, 0) rotateX(-90deg) translate3d(0, -100%, 0);
 	-moz-transform: translate3d(0, -100%, 0) rotateX(-90deg) translate3d(0, -100%, 0);
 	-ms-transform: translate3d(0, -100%, 0) rotateX(-90deg) translate3d(0, -100%, 0);
 	transform: translate3d(0, -100%, 0) rotateX(-90deg) translate3d(0, -100%, 0);
 }
-.communiqué[data-background-transition=concave]>.backgrounds .message-background>.message-background.future,
-.communiqué>.backgrounds .message-background>.message-background.future[data-background-transition=concave] {
+.messenger[data-background-transition=concave]>.backgrounds .message-background>.message-background.future,
+.messenger>.backgrounds .message-background>.message-background.future[data-background-transition=concave] {
 	opacity: 0;
 	-webkit-transform: translate3d(0, 100%, 0) rotateX(90deg) translate3d(0, 100%, 0);
 	-moz-transform: translate3d(0, 100%, 0) rotateX(90deg) translate3d(0, 100%, 0);
@@ -636,16 +636,16 @@ body {
 }
 
 /* Zoom */
-.communiqué[data-background-transition=zoom]>.backgrounds .message-background,
-.communiqué>.backgrounds .message-background[data-background-transition=zoom] {
+.messenger[data-background-transition=zoom]>.backgrounds .message-background,
+.messenger>.backgrounds .message-background[data-background-transition=zoom] {
 	-webkit-transition-timing-function: ease;
 	-moz-transition-timing-function: ease;
 	-ms-transition-timing-function: ease;
 	-o-transition-timing-function: ease;
 	transition-timing-function: ease;
 }
-.communiqué[data-background-transition=zoom]>.backgrounds .message-background.past,
-.communiqué>.backgrounds .message-background.past[data-background-transition=zoom] {
+.messenger[data-background-transition=zoom]>.backgrounds .message-background.past,
+.messenger>.backgrounds .message-background.past[data-background-transition=zoom] {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(16);
@@ -654,8 +654,8 @@ body {
 	-o-transform: scale(16);
 	transform: scale(16);
 }
-.communiqué[data-background-transition=zoom]>.backgrounds .message-background.future,
-.communiqué>.backgrounds .message-background.future[data-background-transition=zoom] {
+.messenger[data-background-transition=zoom]>.backgrounds .message-background.future,
+.messenger>.backgrounds .message-background.future[data-background-transition=zoom] {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(0.2);
@@ -664,8 +664,8 @@ body {
 	-o-transform: scale(0.2);
 	transform: scale(0.2);
 }
-.communiqué[data-background-transition=zoom]>.backgrounds .message-background>.message-background.past,
-.communiqué>.backgrounds .message-background>.message-background.past[data-background-transition=zoom] {
+.messenger[data-background-transition=zoom]>.backgrounds .message-background>.message-background.past,
+.messenger>.backgrounds .message-background>.message-background.past[data-background-transition=zoom] {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(16);
@@ -674,8 +674,8 @@ body {
 	-o-transform: scale(16);
 	transform: scale(16);
 }
-.communiqué[data-background-transition=zoom]>.backgrounds .message-background>.message-background.future,
-.communiqué>.backgrounds .message-background>.message-background.future[data-background-transition=zoom] {
+.messenger[data-background-transition=zoom]>.backgrounds .message-background>.message-background.future,
+.messenger>.backgrounds .message-background>.message-background.future[data-background-transition=zoom] {
 	opacity: 0;
 	visibility: hidden;
 	-webkit-transform: scale(0.2);
@@ -686,13 +686,13 @@ body {
 }
 
 /* Global transition speed settings */
-.communiqué[data-transition-speed="fast"]>.backgrounds .message-background {
+.messenger[data-transition-speed="fast"]>.backgrounds .message-background {
 	-webkit-transition-duration: 400ms;
 	-moz-transition-duration: 400ms;
 	-ms-transition-duration: 400ms;
 	transition-duration: 400ms;
 }
-.communiqué[data-transition-speed="slow"]>.backgrounds .message-background {
+.messenger[data-transition-speed="slow"]>.backgrounds .message-background {
 	-webkit-transition-duration: 1200ms;
 	-moz-transition-duration: 1200ms;
 	-ms-transition-duration: 1200ms;
@@ -700,23 +700,23 @@ body {
 }
 
 /********************************************** HEADERS *********************************************/
-.communiqué h1,
-.communiqué h2,
-.communiqué h3,
-.communiqué h4,
-.communiqué h5,
-.communiqué h6 {
+.messenger h1,
+.messenger h2,
+.messenger h3,
+.messenger h4,
+.messenger h5,
+.messenger h6 {
 	margin: 0 0 20px 0;
 	color: #456;
 	line-height: 0.9em;
 	text-shadow: none;
 }
-.communiqué h1 {
+.messenger h1 {
 	text-shadow: 0px 0px 0.3em rgba( 0, 0, 0, 0.2 );
 }
 
 /********************************************** LINKS *********************************************/
-.communiqué a:not(.image) {
+.messenger a:not(.image) {
 	color: #28c;
 	text-decoration: none;
 	-webkit-transition: color 0.15s ease;
@@ -725,18 +725,18 @@ body {
 	-o-transition: color 0.15s ease;
 	transition: color 0.15s ease;
 }
-.communiqué a:not(.image):hover {
+.messenger a:not(.image):hover {
 	color: #7be;
 	text-shadow: none;
 	border: none;
 }
-.communiqué .roll span:after {
+.messenger .roll span:after {
 	color: #fff;
 	background: #169;
 }
 
 /********************************************** IMAGES *********************************************/
-.communiqué section img {
+.messenger section img {
 	margin: 0.5em 0;
 	background: rgba(255, 255, 255, 0.12);
 	border: 4px solid #678;
@@ -747,18 +747,18 @@ body {
 	-o-transition: all 0.2s linear;
 	transition: all 0.2s linear;
 }
-.communiqué a:hover img {
+.messenger a:hover img {
 	background: rgba(255, 255, 255, 0.2);
 	border-color: #28c;
 	box-shadow: 0 0 0.75em rgba(0, 0, 0, 0.55);
 }
-.communiqué .messages > section.present,
-.communiqué .messages > section > section.present {
+.messenger .messages > section.present,
+.messenger .messages > section > section.present {
 	background-color: #fff;
 	opacity: 0.9;
 	cursor: default;
 }
-.communiqué .messages > section {
+.messenger .messages > section {
 	background-color: #fff;
 	opacity: 1;
 	padding: 1em 0;
