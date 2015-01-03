@@ -27,7 +27,9 @@
 	"dependencies": {
 		"socket.io-client": "~1.x",
 		"html5shiv": "~3.x",
-		"visibly.js": "~0.x"
+		"visibly.js": "~0.x",
+		"hammer.js": "~2.x",
+		"hammer-touchemulator": "~0.x"
 	},
 	"devDependencies": {}
 }
