@@ -13,7 +13,6 @@
 	var errorHandler = require( "errorhandler" );
 	var csrf = require( "lusca" ).csrf();
 	var methodOverride = require( "method-override" );
-
 	var _ = require( "lodash" );
 	var path = require( "path" );
 	var mongoose = require( "mongoose" );
@@ -30,7 +29,6 @@
 	 */
 	var secrets = require( "./config/secrets" );
 	require( "./config/passport" );
-	// var passportConf = require( "./config/passport" );
 
 	/**
 	 * CSRF white-list
@@ -56,7 +54,6 @@
 	var hour = 3600000; //milliseconds
 	var day = ( hour * 24 );
 	var week = ( day * 7 );
-	//var month = ( day * 30 );
 
 	/**
 	 * Connect to MongoDB
@@ -94,7 +91,7 @@
 	app.use( passport.session() );
 
 	app.use( function ( req, res, next ) {
-		// CSRF protection.
+		//	CSRF protection.
 		if ( _.contains( csrfExclude, req.path ) ) {
 			return next();
 		}
@@ -102,7 +99,7 @@
 	} );
 
 	app.use( function ( req, res, next ) {
-		// Make user object available in templates.
+		//	Make user object available in templates.
 		res.locals.user = req.user;
 		if ( req.user ) {
 			req.session.userDB = secrets.db + "/" + req.user._id.toString();

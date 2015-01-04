@@ -1,13 +1,6 @@
 ( function () {
 	"use strict";
 
-	/**
-	 * Loads the various application plugins (in the plugins directory) synchronously.
-	 *
-	 * @param  {String}	plugins_path	The path relative to server.
-	 * @param  {Object}	plugins			The object to load plugins into. If not provided, an empty object is created and used.
-	 * @returns  {Object}				The object containing loaded plugins.
-	 */
 	function loadPlugins( plugins_path, plugins ) {
 		var stat;
 		var relativePath;
