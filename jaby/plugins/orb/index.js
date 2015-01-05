@@ -18,6 +18,7 @@
 
 			try {
 				jaby.superscript = new SuperScript( superScriptFile, {}, function ( err, bot ) {
+
 					if ( err ) {
 						jaby.logger.error( "Could not create bot: %s", err );
 					}
@@ -29,15 +30,18 @@
 							jaby.logger.error( "No bot created." );
 						}
 					}
+
 				} );
 			}
 			catch ( e ) {
+
 				if ( e.errno === 34 ) {
 					jaby.logger.error( "Could not load SuperScript: File does not exist." );
 				}
 				else {
 					jaby.logger.error( "Could not load SuperScript: %s", JSON.stringify( e, null, "\t" ) );
 				}
+
 			}
 
 			jaby.registerSocket = function registerSocket( io, socket ) {
@@ -83,11 +87,25 @@
 
 				jaby.logger.info( "Socket connected: %s", socket.handshake.address );
 
+				try {
+					jaby.loadUser( socket.request.user._id.toString() );
+				}
+				catch ( e ) {
+					console.error( "Could not load user, since no user ID." );
+				}
+
 				socket.on( "start", function () {
 					var user = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
 					var connectionString;
 
 					if ( user ) {
+
+						jaby.assert( user, new jaby.Message( "goodbye" ) );
+						jaby.assert( user, new jaby.Message( "hello" ) );
+						jaby.assert( user, new jaby.Message( "hello world" ) );
+						jaby.assert( user, new jaby.Message( "!" ) );
+						jaby.match( user );
+
 						if ( jaby.bot ) {
 							jaby.bot.userConnect( user );
 						}

@@ -25,11 +25,10 @@
 		"url": "https://github.org/mpelikan/jaby_server/issues"
 	},
 	"dependencies": {
-		"socket.io-client": "~1.x",
-		"html5shiv": "~3.x",
-		"visibly.js": "~0.x",
-		"hammer.js": "~2.x",
-		"hammer-touchemulator": "~0.x"
+		"socket.io-client": "1.2.1",
+		"html5shiv": "3.7.2",
+		"visibly.js": "0.1.0",
+		"hammer.js": "2.0.4"
 	},
 	"devDependencies": {}
 }
