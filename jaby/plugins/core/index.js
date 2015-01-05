@@ -36,6 +36,7 @@
 					try {
 
 						flow = nools.compile( __dirname + "/rules/core.nools", {
+							name: user,
 							define: {
 								Message: jaby.Message
 							},
@@ -59,6 +60,39 @@
 					}
 					catch ( e ) {
 						console.error( "Couldn't get session for user: %s", e );
+					}
+
+				}
+
+			};
+
+			jaby.unloadUser = function ( user ) {
+
+				if ( !user || typeof user !== "string" ) {
+					return;
+				}
+
+				if ( !this.hasOwnProperty( "users" ) ) {
+					this.users = {};
+				}
+
+				if ( !this.users.hasOwnProperty( user ) ) {
+					return;
+				}
+				else {
+
+					try {
+						nools.deleteFlow( user );
+					}
+					catch ( e ) {
+						console.error( "Couldn't delete flow for user: %s", e );
+					}
+
+					try {
+						delete this.users[ user ];
+					}
+					catch ( e ) {
+						console.error( "Couldn't remove session for user: %s", e );
 					}
 
 				}

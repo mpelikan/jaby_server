@@ -190,6 +190,9 @@
 								//	Nothing to do, the disconnect couldn't process; probably due to not being registered
 							}
 						}
+
+						jaby.unloadUser( user );
+
 						jaby.logger.info( "User disconnected: %s", user );
 					}
 					else {
