@@ -88,10 +88,10 @@
 				jaby.logger.info( "Socket connected: %s", socket.handshake.address );
 
 				try {
-					jaby.loadUser( socket.request.user._id.toString() );
+					jaby.loadUser( socket );
 				}
 				catch ( e ) {
-					console.error( "Could not load user, since no user ID." );
+					console.error( "Could not load user: %s", e );
 				}
 
 				socket.on( "start", function () {
@@ -100,10 +100,10 @@
 
 					if ( user ) {
 
-						jaby.assert( user, new jaby.Message( "goodbye" ) );
-						jaby.assert( user, new jaby.Message( "hello" ) );
-						jaby.assert( user, new jaby.Message( "hello world" ) );
-						jaby.assert( user, new jaby.Message( "!" ) );
+						jaby.assert( user, new jaby.objects.Message( "goodbye" ) );
+						jaby.assert( user, new jaby.objects.Message( "hello" ) );
+						jaby.assert( user, new jaby.objects.Message( "hello world" ) );
+						jaby.assert( user, new jaby.objects.Message( "!" ) );
 						jaby.match( user );
 
 						if ( jaby.bot ) {
@@ -191,7 +191,7 @@
 							}
 						}
 
-						jaby.unloadUser( user );
+						jaby.unloadUser( socket );
 
 						jaby.logger.info( "User disconnected: %s", user );
 					}

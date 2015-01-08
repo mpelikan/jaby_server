@@ -1,3 +1,24 @@
+//	http://c2fo.github.io/nools/#defining-rule
+
+//	[alias] : [type] [pattern] [store sequence]
+//	f1 : Fibonacci f1.value != -1 {sequence:s1};
+//	f2 : Fibonacci f2.value != -1 && f2.sequence == s1 + 1 {sequence:s2};
+//	f3 : Fibonacci f3.value == -1 && f3.sequence == s2 + 1;
+
+rule WelcomeUser {
+	when {
+		not( u: User u.welcome === true )
+	}
+	then {
+		var message = "<h1>Welcome To Jaby</h1>";
+		message += "<h3>what computers were meant to become</h3>";
+
+		modify( u, function() {
+			u.welcome = true;
+		} );
+	}
+}
+
 //	Find any message that starts with hello
 rule Hello {
 	when {

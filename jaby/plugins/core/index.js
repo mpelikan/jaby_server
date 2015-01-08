@@ -1,7 +1,8 @@
 ( function () {
 	"use strict";
 
-	var nools = require( "nools" );
+	var User = require( "./User" );
+	var Message = require( "./Message" );
 
 	var coreRules = {
 
@@ -10,15 +11,16 @@
 		//	`exports.attach` gets called by Broadway on `app.use`
 		attach: function ( jaby ) {
 
-			jaby.Message = function ( message ) {
-				this.text = message;
-			};
+			jaby.objects = {};
+			jaby.objects.Message = Message;
+			jaby.objects.User = User;
 
-			jaby.loadUser = function ( user ) {
+			jaby.loadUser = function ( socket ) {
 
-				var flow;
+				var userID = socket && socket.request && socket.request.user ? socket.request.user._id.toString() : undefined;
+				var user;
 
-				if ( !user || typeof user !== "string" ) {
+				if ( !userID ) {
 					return;
 				}
 
@@ -26,98 +28,68 @@
 					this.users = {};
 				}
 
-				if ( this.users.hasOwnProperty( user ) ) {
+				if ( this.users.hasOwnProperty( userID ) ) {
+					user = this.users[ userID ];
+				}
+				else {
+					user = new User( userID, jaby );
+					this.users[ userID ] = user;
+				}
 
-					return this.users[ user ];
+				if ( user ) {
+					user.addSocket( socket.id, jaby );
+				}
 
+			};
+
+			jaby.unloadUser = function ( socket ) {
+
+				var userID = socket && socket.request && socket.request.user ? socket.request.user._id.toString() : undefined;
+				var user;
+
+				if ( !userID ) {
+					return;
+				}
+
+				if ( !this.hasOwnProperty( "users" ) ) {
+					this.users = {};
+				}
+
+				if ( this.users.hasOwnProperty( userID ) ) {
+
+					user = this.users[ userID ];
+					user.removeSocket( socket.id );
+
+					if ( !user.isActive() ) {
+						delete this.users[ userID ];
+					}
+
+				}
+
+			};
+
+			jaby.assert = function ( userID, assertion, match ) {
+
+				var user;
+
+				if ( !userID || typeof userID !== "string" || !assertion ) {
+					return;
+				}
+
+				if ( !this.users || !this.users.hasOwnProperty( userID ) ) {
+					return;
 				}
 				else {
 
 					try {
+						user = this.users[ userID ];
 
-						flow = nools.compile( __dirname + "/rules/core.nools", {
-							name: user,
-							define: {
-								Message: jaby.Message
-							},
-							scope: {
-								logger: jaby.logger,
-								user: user
+						if ( user.isActive() ) {
+							user.session.assert( assertion );
+
+							if ( match ) {
+								this.match( userID );
 							}
-						} );
-
-					}
-					catch ( e ) {
-						console.error( "Couldn't compile rules for user: %s", e );
-					}
-
-					try {
-
-						if ( flow ) {
-							this.users[ user ] = flow.getSession();
-						}
-
-					}
-					catch ( e ) {
-						console.error( "Couldn't get session for user: %s", e );
-					}
-
-				}
-
-			};
-
-			jaby.unloadUser = function ( user ) {
-
-				if ( !user || typeof user !== "string" ) {
-					return;
-				}
-
-				if ( !this.hasOwnProperty( "users" ) ) {
-					this.users = {};
-				}
-
-				if ( !this.users.hasOwnProperty( user ) ) {
-					return;
-				}
-				else {
-
-					try {
-						nools.deleteFlow( user );
-					}
-					catch ( e ) {
-						console.error( "Couldn't delete flow for user: %s", e );
-					}
-
-					try {
-						delete this.users[ user ];
-					}
-					catch ( e ) {
-						console.error( "Couldn't remove session for user: %s", e );
-					}
-
-				}
-
-			};
-
-			jaby.assert = function ( user, assertion, match ) {
-
-				var userSession;
-
-				if ( !user || typeof user !== "string" || !assertion ) {
-					return;
-				}
-
-				if ( !this.users || !this.users.hasOwnProperty( user ) ) {
-					return;
-				}
-				else {
-
-					try {
-						userSession = this.users[ user ];
-						userSession.assert( assertion );
-
-						if ( match ) {
-							this.match( user );
 						}
 					}
 					catch ( e ) {
@@ -127,26 +99,32 @@
 
 			};
 
-			jaby.match = function ( user ) {
+			jaby.match = function ( userID ) {
 
-				var userSession;
+				var user;
 
-				if ( !user || typeof user !== "string" ) {
+				if ( !userID || typeof userID !== "string" ) {
 					return;
 				}
 
-				if ( !this.users || !this.users.hasOwnProperty( user ) ) {
+				if ( !this.users || !this.users.hasOwnProperty( userID ) ) {
 					return;
 				}
 				else {
 
 					try {
-						userSession = this.users[ user ];
-						userSession.match();
+
+						user = this.users[ userID ];
+
+						if ( user.isActive() ) {
+							user.session.match();
+						}
+
 					}
 					catch ( e ) {
 						console.error( "There was an error matching rules: %s", e );
 					}
+
 				}
 
 			};
