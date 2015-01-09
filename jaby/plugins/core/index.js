@@ -1,6 +1,7 @@
 ( function () {
 	"use strict";
 
+	var Flags = require( "./Flags" );
 	var User = require( "./User" );
 	var Message = require( "./Message" );
 
@@ -12,6 +13,7 @@
 		attach: function ( jaby ) {
 
 			jaby.objects = {};
+			jaby.objects.Flags = Flags;
 			jaby.objects.Message = Message;
 			jaby.objects.User = User;
 

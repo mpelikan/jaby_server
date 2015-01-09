@@ -2,7 +2,6 @@
 	"use strict";
 
 	var nools = require( "nools" );
-	var io = require( "socket.io" );
 
 	var User = function ( id ) {
 
@@ -30,28 +29,34 @@
 		this.addSocket = function addSocket( socketID, jaby ) {
 
 			var flow;
-			var options = {
-				name: this.id,
-				define: {},
-				scope: {
-					logger: jaby.logger,
-					user: this
-				}
-			};
+			var options;
 			var property;
-
-			for ( property in jaby.objects ) {
-				if ( jaby.objects.hasOwnProperty( property ) ) {
-					options.define[ property ] = jaby.objects[ property ];
-				}
-			}
 
 			if ( !socketID || typeof socketID !== "string" ) {
 				return;
 			}
 
+			if ( !this.io ) {
+				this.io = jaby.io;
+			}
+
 			if ( this.sockets.indexOf( socketID ) === -1 ) {
 				this.sockets.push( socketID );
+
+				options = {
+					name: this.id,
+					define: {},
+					scope: {
+						logger: jaby.logger,
+						user: this
+					}
+				};
+
+				for ( property in jaby.objects ) {
+					if ( jaby.objects.hasOwnProperty( property ) ) {
+						options.define[ property ] = jaby.objects[ property ];
+					}
+				}
 
 				try {
 
@@ -71,6 +76,27 @@
 				}
 				catch ( e ) {
 					console.error( "Couldn't get session for user: %s", e );
+				}
+
+				if ( this.session ) {
+
+					try {
+
+						this.session.assert( new jaby.objects.Flags() );
+						this.session.match( function ( err ) {
+							if ( err ) {
+								console.error( "Could not match rules: %s", err );
+							}
+						} );
+
+					}
+					catch ( e ) {
+						console.error( "Couldn't add user to rules: %s", e );
+					}
+
+				}
+				else {
+					console.error( "No session for user." );
 				}
 
 			}
@@ -105,16 +131,23 @@
 
 		};
 
-		this.sendMessage = function sendMessage( message ) {
+		this.sendMessage = function sendMessage( message, type ) {
 
-			var i, socket;
 			var numSockets = this.sockets.length;
+			var i, socketID;
+
+			type = type || "message";
 
 			for ( i = 0; i < numSockets; i++ ) {
-				socket = this.sockets[ i ];
+				socketID = this.sockets[ i ];
 
-				if ( io.sockets.connected[ socket ] ) {
-					io.sockets.connected[ socket ].emit( "message", message );
+				if ( this.io.sockets.connected[ socketID ] ) {
+					try {
+						this.io.sockets.connected[ socketID ].emit( type, message );
+					}
+					catch ( e ) {
+						console.error( "Could not send message (%s): %s", type, e );
+					}
 				}
 			}
 

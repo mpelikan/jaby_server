@@ -86,6 +86,7 @@
 				}
 
 				jaby.logger.info( "Socket connected: %s", socket.handshake.address );
+				jaby.io = io;
 
 				try {
 					jaby.loadUser( socket );
@@ -99,12 +100,6 @@
 					var connectionString;
 
 					if ( user ) {
-
-						jaby.assert( user, new jaby.objects.Message( "goodbye" ) );
-						jaby.assert( user, new jaby.objects.Message( "hello" ) );
-						jaby.assert( user, new jaby.objects.Message( "hello world" ) );
-						jaby.assert( user, new jaby.objects.Message( "!" ) );
-						jaby.match( user );
 
 						if ( jaby.bot ) {
 							jaby.bot.userConnect( user );
