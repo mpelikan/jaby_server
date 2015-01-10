@@ -4,7 +4,6 @@
 	var usage = require( "usage" );
 	var path = require( "path" );
 	var MongoClient = require( "mongodb" ).MongoClient;
-	var SuperScript = require( "superscript" );
 
 	var Flags = require( "./objects/Flags" );
 	var User = require( "./objects/User" );
@@ -19,42 +18,10 @@
 		//	`exports.attach` gets called by Broadway on `app.use`
 		attach: function ( jaby ) {
 
-			var superScriptFile = path.join( __dirname, "data.json" );
-
 			jaby.objects = {};
 			jaby.objects.Flags = Flags;
 			jaby.objects.Message = Message;
 			jaby.objects.User = User;
-
-			try {
-
-				jaby.superscript = new SuperScript( superScriptFile, {}, function ( err, bot ) {
-
-					if ( err ) {
-						jaby.logger.error( "Could not create bot: %s", err );
-					}
-					else {
-						if ( bot ) {
-							jaby.bot = bot;
-						}
-						else {
-							jaby.logger.error( "No bot created." );
-						}
-					}
-
-				} );
-
-			}
-			catch ( e ) {
-
-				if ( e.errno === 34 ) {
-					jaby.logger.error( "Could not load SuperScript: File does not exist." );
-				}
-				else {
-					jaby.logger.error( "Could not load SuperScript: %s", JSON.stringify( e, null, "\t" ) );
-				}
-
-			}
 
 			jaby.loadUser = function ( socket ) {
 
@@ -187,6 +154,7 @@
 				}
 
 				function askQuestion() {
+
 					var id = "question_" + generateUUID();
 					var question = "Does the QA function work?";
 					var answers = [ {
@@ -205,6 +173,7 @@
 						question: question,
 						answers: answers
 					} );
+
 				}
 
 				if ( !io || !socket ) {
@@ -222,6 +191,7 @@
 				}
 
 				socket.on( "start", function () {
+
 					var user = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
 					var connectionString;
 
@@ -265,60 +235,52 @@
 								} );
 							}
 						} );
+
 					}
 					else {
+
 						jaby.logger.error( "Could not obtain user from socket." );
+
 					}
+
 				} );
 
 				socket.on( "message", function ( data ) {
+
 					var user = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
 					var message = data && data.message ? data.message : null;
-					var response = {};
 
-					if ( jaby.bot && user && message ) {
+					if ( user && message ) {
 
-						jaby.bot.reply( user, message, function ( err, reply ) {
-							if ( err ) {
-								jaby.logger.error( "Bot generated an error: %s", err );
-							}
-							else {
-								if ( reply ) {
-									response.message = reply;
-									io.sockets.emit( "reply", response );
-								}
-								else {
-									jaby.logger.error( "Bot replied with nothing for %s", message );
-								}
-							}
-						} );
+						console.info( "Got \"%s\" from %s", message, user );
+						jaby.assert( user, message, true );
+
 					}
+
 				} );
 
 				socket.on( "answer", function ( data ) {
+
 					jaby.logger.info( "Received answer \"%s\" from %s: \"%s\"", data.question, socket.handshake.address, data.answer );
+
 				} );
 
 				socket.on( "disconnect", function () {
+
 					var user = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
 
 					if ( user ) {
-						if ( jaby.bot ) {
-							try {
-								jaby.bot.userDisconnect( user );
-							}
-							catch ( exception ) {
-								//	Nothing to do, the disconnect couldn't process; probably due to not being registered
-							}
-						}
 
 						jaby.unloadUser( socket );
-
 						jaby.logger.info( "User disconnected: %s", user );
+
 					}
 					else {
+
 						jaby.logger.info( "Socket disconnected: %s", socket.handshake.address );
+
 					}
+
 				} );
 
 				socket.on( "status", function ( context ) {
