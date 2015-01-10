@@ -2,6 +2,7 @@
 	"use strict";
 
 	var nools = require( "nools" );
+	var path = require( "path" );
 
 	var User = function ( id ) {
 
@@ -60,7 +61,7 @@
 
 				try {
 
-					flow = nools.compile( __dirname + "/rules/core.nools", options );
+					flow = nools.compile( path.resolve( __dirname, "../rules/core.nools" ), options );
 
 				}
 				catch ( e ) {
