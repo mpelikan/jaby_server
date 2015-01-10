@@ -1,10 +1,5 @@
 //	http://c2fo.github.io/nools/#defining-rule
 
-//	[alias] : [type] [pattern] [store sequence]
-//	f1 : Fibonacci f1.value != -1 {sequence:s1};
-//	f2 : Fibonacci f2.value != -1 && f2.sequence == s1 + 1 {sequence:s2};
-//	f3 : Fibonacci f3.value == -1 && f3.sequence == s2 + 1;
-
 rule WelcomeUser {
 	when {
 		f: Flags;
@@ -14,11 +9,43 @@ rule WelcomeUser {
 		var message = "<h1>Welcome To Jaby</h1>";
 		message += "<h3>what computers were meant to become</h3>";
 
-		console.info( "Sending welcome message for %s", user.id );
+		logger.info( "Sending welcome message for %s", user.id );
 		user.sendMessage( message );
 
 		modify( f, function() {
 			f.welcome = true;
 		} );
+	}
+}
+
+rule AskQuestion {
+	when {
+		q: Question;
+		not ( q: Question q.asked === true );
+	}
+	then {
+		logger.info( "Asking question for %s", user.id );
+		user.sendMessage( q, "question" );
+
+		modify( q, function() {
+			q.asked = true;
+		} );
+	}
+}
+
+rule AnswerQuestion {
+	when {
+		a: Answer { question: id };
+		q: Question q.asked === true && q.id === id;
+		not ( q: Question q.answer );
+	}
+	then {
+		logger.info( "Answered %s for %s", a.question, user.id );
+
+		modify( q, function() {
+			q.answer = a.answer;
+		} );
+
+		retract( a );
 	}
 }

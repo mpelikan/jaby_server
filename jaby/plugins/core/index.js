@@ -8,6 +8,8 @@
 	var Flags = require( "./objects/Flags" );
 	var User = require( "./objects/User" );
 	var Message = require( "./objects/Message" );
+	var Question = require( "./objects/Question" );
+	var Answer = require( "./objects/Answer" );
 
 	var secrets = require( path.relative( __dirname, path.join( process.cwd(), "config", "secrets" ) ) );
 
@@ -22,6 +24,8 @@
 			jaby.objects.Flags = Flags;
 			jaby.objects.Message = Message;
 			jaby.objects.User = User;
+			jaby.objects.Question = Question;
+			jaby.objects.Answer = Answer;
 
 			jaby.loadUser = function ( socket ) {
 
@@ -139,23 +143,10 @@
 
 			jaby.registerSocket = function ( io, socket ) {
 
-				function generateUUID() {
-					/*jslint bitwise: true */
-
-					var d = new Date().getTime();
-					var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace( /[xy]/g, function ( c ) {
-						var r = ( d + Math.random() * 16 ) % 16 | 0;
-						d = Math.floor( d / 16 );
-
-						return ( c === "x" ? r : ( r & 0x3 | 0x8 ) ).toString( 16 );
-					} );
-
-					return uuid;
-				}
-
 				function askQuestion() {
 
-					var id = "question_" + generateUUID();
+					var questionObject;
+
 					var question = "Does the QA function work?";
 					var answers = [ {
 						id: 123,
@@ -168,13 +159,13 @@
 						text: "Testing Three"
 					} ];
 
-					io.sockets.emit( "question", {
-						id: id,
-						question: question,
-						answers: answers
-					} );
+					questionObject = new Question( question, answers );
+
+					jaby.assert( userID, questionObject, true );
 
 				}
+
+				var userID = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
 
 				if ( !io || !socket ) {
 					return;
@@ -192,16 +183,11 @@
 
 				socket.on( "start", function () {
 
-					var user = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
 					var connectionString;
 
-					if ( user ) {
+					if ( userID ) {
 
-						if ( jaby.bot ) {
-							jaby.bot.userConnect( user );
-						}
-
-						connectionString = secrets.db + "/" + user;
+						connectionString = secrets.db + "/" + userID;
 
 						MongoClient.connect( connectionString, function ( err, database ) {
 							var contextCollection;
@@ -247,13 +233,12 @@
 
 				socket.on( "message", function ( data ) {
 
-					var user = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
 					var message = data && data.message ? data.message : null;
 
-					if ( user && message ) {
+					if ( userID && message ) {
 
-						console.info( "Got \"%s\" from %s", message, user );
-						jaby.assert( user, message, true );
+						console.info( "Got \"%s\" from %s", message, userID );
+						jaby.assert( userID, message, true );
 
 					}
 
@@ -261,18 +246,24 @@
 
 				socket.on( "answer", function ( data ) {
 
+					var answerObject;
+
 					jaby.logger.info( "Received answer \"%s\" from %s: \"%s\"", data.question, socket.handshake.address, data.answer );
+
+					if ( data.question && data.answer ) {
+
+						answerObject = new Answer( data.question, data.answer );
+						jaby.assert( userID, answerObject, true );
+					}
 
 				} );
 
 				socket.on( "disconnect", function () {
 
-					var user = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
-
-					if ( user ) {
+					if ( userID ) {
 
 						jaby.unloadUser( socket );
-						jaby.logger.info( "User disconnected: %s", user );
+						jaby.logger.info( "User disconnected: %s", userID );
 
 					}
 					else {
