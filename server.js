@@ -206,8 +206,6 @@
 	} );
 
 	function onAuthorizeSuccess( data, accept ) {
-		console.log( "Successful connection to socket.io" );
-
 		accept();
 	}
 

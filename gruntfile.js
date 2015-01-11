@@ -91,7 +91,7 @@ module.exports = function ( grunt ) {
 		jshint: {
 			files: [
 				"gruntfile.js", "server.js", "config/**/*.js", "controllers/**/*.js", "jaby/**/*.js",
-				"lib/js/*.js", "test/**/*.js", "!public/js/lib/**/*.js",
+				"models/**/*.js", "lib/js/*.js", "test/**/*.js", "!public/js/lib/**/*.js",
 				"!public/third-party/**/*.js", "!third-party/**/*.js"
 			],
 			options: {

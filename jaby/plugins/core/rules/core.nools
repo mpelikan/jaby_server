@@ -1,5 +1,3 @@
-//	http://c2fo.github.io/nools/#defining-rule
-
 rule WelcomeUser {
 	when {
 		f: Flags;
@@ -20,7 +18,7 @@ rule WelcomeUser {
 
 rule AskQuestion {
 	when {
-		q: Question;
+		q: Question q.hasOwnProperty( "answers" );
 		not ( q: Question q.asked === true );
 	}
 	then {
@@ -36,13 +34,13 @@ rule AskQuestion {
 rule AnswerQuestion {
 	when {
 		a: Answer { question: id };
-		q: Question q.asked === true && q.id === id;
-		not ( q: Question q.answer );
+		q: Question q.id === id && q.asked === true && q.answer !== true;
 	}
 	then {
 		logger.info( "Answered %s for %s", a.question, user.id );
 
 		modify( q, function() {
+			delete q.answers;
 			q.answer = a.answer;
 		} );
 

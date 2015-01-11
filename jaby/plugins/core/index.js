@@ -3,15 +3,16 @@
 
 	var usage = require( "usage" );
 	var path = require( "path" );
+	var nools = require( "nools" );
 	var MongoClient = require( "mongodb" ).MongoClient;
 
+	var User = require( "../../../models/User" );
+	var Message = require( "../../../models/Message" );
+	var Question = require( "../../../models/Question" );
+	var Answer = require( "../../../models/Answer" );
 	var Flags = require( "./objects/Flags" );
-	var User = require( "./objects/User" );
-	var Message = require( "./objects/Message" );
-	var Question = require( "./objects/Question" );
-	var Answer = require( "./objects/Answer" );
 
-	var secrets = require( path.relative( __dirname, path.join( process.cwd(), "config", "secrets" ) ) );
+	var secrets = require( "../../../config/secrets" );
 
 	var coreRules = {
 
@@ -27,10 +28,66 @@
 			jaby.objects.Question = Question;
 			jaby.objects.Answer = Answer;
 
+			jaby.getUser = function ( socket ) {
+				return socket && socket.request && socket.request.user ? socket.request.user : undefined;
+			};
+
+			jaby.getUserDB = function ( socket ) {
+				var userID = socket.request.user._id.toString();
+				return secrets.db + "/" + userID;
+			};
+
 			jaby.loadUser = function ( socket ) {
 
-				var userID = socket && socket.request && socket.request.user ? socket.request.user._id.toString() : undefined;
-				var user;
+				function loadFacts() {
+
+					var connectionString = jaby.getUserDB( socket );
+
+					if ( user.hasSession() && connectionString ) {
+
+						MongoClient.connect( connectionString, function ( err, database ) {
+
+							var factsCollection;
+
+							if ( err ) {
+								jaby.logger.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
+							}
+
+							if ( database ) {
+
+								factsCollection = database.collection( "facts" );
+								factsCollection.findOne( {
+									_id: user.id
+								}, function ( err, userFacts ) {
+
+									try {
+										database.close();
+									}
+									catch ( e ) {
+										jaby.logger.error( "Could not close database: %s", e );
+									}
+
+									if ( err || !userFacts ) {
+										jaby.logger.error( "%s\tCould not load user facts: %s", new Date(), err || "none" );
+									}
+									else {
+										//	TODO: Implement
+									}
+
+								} );
+
+							}
+
+						} );
+
+					}
+
+				}
+
+				var user = socket.request.user;
+				var userID = user.id;
+				var flow, options, property;
+				var self = this;
 
 				if ( !userID ) {
 					return;
@@ -44,20 +101,107 @@
 					user = this.users[ userID ];
 				}
 				else {
-					user = new User( userID, jaby );
 					this.users[ userID ] = user;
+
+					user.logger = this.logger;
+					user.io = this.io;
 				}
 
-				if ( user ) {
-					user.addSocket( socket.id, jaby );
+				user.addSocket( socket.id, jaby );
+
+				if ( !user.session ) {
+
+					//	Setup the knowledge for user (Nools)
+					options = {
+						name: userID,
+						define: {},
+						scope: {
+							logger: this.logger,
+							user: user
+						}
+					};
+
+					for ( property in this.objects ) {
+						if ( this.objects.hasOwnProperty( property ) ) {
+							options.define[ property ] = this.objects[ property ];
+						}
+					}
+
+					try {
+
+						flow = nools.compile( path.resolve( __dirname, "./rules/core.nools" ), options );
+
+					}
+					catch ( e ) {
+						this.logger.error( "Couldn't compile rules for user: %s", e );
+					}
+
+					try {
+
+						if ( flow ) {
+							user.session = flow.getSession();
+						}
+
+					}
+					catch ( e ) {
+						this.logger.error( "Couldn't get session for user: %s", e );
+					}
+
+					if ( user.session ) {
+
+						try {
+
+							user.session.assert( new Flags() );
+
+							loadFacts();
+							user.session.match( function ( err ) {
+								if ( err ) {
+									console.error( err );
+									self.logger.error( "Could not match rules: %s", err );
+								}
+							} );
+
+						}
+						catch ( e ) {
+							this.logger.error( "Couldn't add user to rules: %s", e );
+						}
+
+					}
+					else {
+						this.logger.error( "No session for user." );
+					}
 				}
 
 			};
 
+			jaby.saveSession = function ( socket ) {
+
+				var user = jaby.getUser( socket );
+				var sessionFacts, numFacts, i, fact;
+
+				if ( user && user.hasSession() ) {
+
+					sessionFacts = user.session.getFacts();
+					numFacts = sessionFacts.length;
+					for ( i = 0; i < numFacts; i++ ) {
+						fact = sessionFacts[ i ];
+
+						if ( fact.save ) {
+							fact.save();
+						}
+						else {
+							console.error( "Cannot save fact (%s), since not a Mongoose object.", typeof fact );
+							console.info( JSON.stringify( fact, null, "\t" ) );
+						}
+					}
+
+				}
+			};
+
 			jaby.unloadUser = function ( socket ) {
 
-				var userID = socket && socket.request && socket.request.user ? socket.request.user._id.toString() : undefined;
-				var user;
+				var user = socket && socket.request && socket.request.user ? socket.request.user : undefined;
+				var userID = user.id;
 
 				if ( !userID ) {
 					return;
@@ -103,10 +247,12 @@
 								this.match( userID );
 							}
 						}
+
 					}
 					catch ( e ) {
 						console.error( "There was an error adding assertion to rules: %s", e );
 					}
+
 				}
 
 			};
@@ -159,19 +305,24 @@
 						text: "Testing Three"
 					} ];
 
-					questionObject = new Question( question, answers );
+					questionObject = new Question();
+					questionObject.question = question;
+					questionObject.answers = answers;
 
 					jaby.assert( userID, questionObject, true );
 
 				}
 
-				var userID = socket.request.user && socket.request.user._id ? socket.request.user._id.toString() : undefined;
+				var user, userID;
 
 				if ( !io || !socket ) {
 					return;
 				}
 
-				jaby.logger.info( "Socket connected: %s", socket.handshake.address );
+				user = this.getUser( socket );
+				userID = user.id;
+
+				jaby.logger.info( "Socket connected: %s for %s", socket.handshake.address, userID );
 				jaby.io = io;
 
 				try {
@@ -179,15 +330,16 @@
 				}
 				catch ( e ) {
 					console.error( "Could not load user: %s", e );
+					if ( e.stack ) {
+						console.info( e.stack );
+					}
 				}
 
 				socket.on( "start", function () {
 
-					var connectionString;
+					var connectionString = jaby.getUserDB( socket );
 
-					if ( userID ) {
-
-						connectionString = secrets.db + "/" + userID;
+					if ( connectionString ) {
 
 						MongoClient.connect( connectionString, function ( err, database ) {
 							var contextCollection;
@@ -227,6 +379,8 @@
 
 						jaby.logger.error( "Could not obtain user from socket." );
 
+						console.error( socket.request );
+
 					}
 
 				} );
@@ -262,6 +416,7 @@
 
 					if ( userID ) {
 
+						jaby.saveSession( socket );
 						jaby.unloadUser( socket );
 						jaby.logger.info( "User disconnected: %s", userID );
 
@@ -275,9 +430,10 @@
 				} );
 
 				socket.on( "status", function ( context ) {
+
+					var connectionString = jaby.getUserDB( socket );
 					var now = new Date();
 					var response;
-					var connectionString;
 					var pid = process.pid;
 					var options = {
 						keepHistory: true
@@ -286,7 +442,8 @@
 					if ( context.hasOwnProperty( "ttl" ) && context.ttl < now ) {
 						return;
 					}
-					else {
+
+					if ( connectionString ) {
 						response = {
 							message: "online"
 						};
@@ -300,8 +457,6 @@
 									response.usage = result;
 								}
 							}
-
-							connectionString = secrets.db + "/" + socket.request.user._id.toString();
 
 							MongoClient.connect( connectionString, function ( err, database ) {
 								var contextCollection;
