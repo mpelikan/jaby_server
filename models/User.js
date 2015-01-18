@@ -4,7 +4,6 @@
 	var mongoose = require( "mongoose" );
 	var bcrypt = require( "bcrypt-nodejs" );
 	var crypto = require( "crypto" );
-	var nools = require( "nools" );
 	var path = require( "path" );
 	var MongoClient = require( "mongodb" ).MongoClient;
 
@@ -51,7 +50,9 @@
 		},
 
 		resetPasswordToken: String,
-		resetPasswordExpires: Date
+		resetPasswordExpires: Date,
+
+		sockets: [String]
 
 	} );
 
@@ -110,17 +111,12 @@
 		return "https://gravatar.com/avatar/" + md5 + "?s=" + size + "&d=retro";
 	};
 
-
 	userSchema.methods.getDisplayName = function () {
 		return this.name || this.id;
 	};
 
-	userSchema.methods.isActive = function () {
-		return this.hasSockets() || this.hasSession();
-	};
-
-	userSchema.methods.hasSession = function () {
-		return this.session !== null;
+	userSchema.methods.getSession = function () {
+		return this.session;
 	};
 
 	userSchema.methods.hasSockets = function () {
@@ -133,9 +129,42 @@
 
 	};
 
-	userSchema.methods.addSocket = function ( socketID ) {
+	userSchema.methods.hasSocket = function ( socket ) {
 
-		if ( !socketID || typeof socketID !== "string" ) {
+		var socketID;
+
+		if ( !socket ) {
+			return false;
+		}
+
+		socketID = typeof socket === "string" ? socket : socket.id;
+
+		if ( !socketID ) {
+			return false;
+		}
+
+		if ( !this.sockets ) {
+			this.sockets = [];
+		}
+
+		return this.sockets.indexOf( socketID ) !== -1;
+
+	};
+
+	userSchema.methods.addSocket = function ( socket ) {
+
+		var users;
+		var session;
+		var sessionUser;
+		var socketID;
+
+		if ( !socket ) {
+			return;
+		}
+
+		socketID = typeof socket === "string" ? socket : socket.id;
+
+		if ( !socketID ) {
 			return;
 		}
 
@@ -145,6 +174,27 @@
 
 		if ( this.sockets.indexOf( socketID ) === -1 ) {
 			this.sockets.push( socketID );
+		}
+
+		session = this.getSession();
+		if ( session ) {
+			users = session.getFacts( module.exports );
+			if ( !users || users.length === 0 ) {
+				console.error( "Could not locate user." );
+			}
+			else {
+				if ( users.length !== 1 ) {
+					console.warn( "Located %d users in session.", users.length, {} );
+				}
+				sessionUser = users[ 0 ];
+
+				if ( !sessionUser.sockets ) {
+					sessionUser.sockets = [];
+				}
+				if ( sessionUser.sockets.indexOf( socketID ) === -1 ) {
+					sessionUser.sockets.push( socketID );
+				}
+			}
 		}
 
 	};
@@ -157,23 +207,38 @@
 			return;
 		}
 
-		if ( !this.socket ) {
-			this.socket = [];
+		if ( this.hasSockets() ) {
+
+			index = this.sockets.indexOf( socketID );
+			if ( index > -1 ) {
+				this.sockets.splice( index, 1 );
+
+				this.retireSession();
+			}
+
 		}
 
-		index = this.sockets.indexOf( socketID );
-		if ( index > -1 ) {
-			this.sockets.splice( index, 1 );
-		}
+	};
+
+	userSchema.methods.retireSession = function () {
 
 		if ( !this.hasSockets() ) {
 
-			try {
-				this.session.dispose();
-				nools.deleteFlow( this.id );
-			}
-			catch ( e ) {
-				this.logger.error( "Couldn't delete flow for user: %s", e );
+			if ( this.session ) {
+
+				//	TODO: Implement deferred disposal of session
+
+				try {
+					console.info( "SHOULD dispose of session." );
+					console.info( "SHOULD delete flow." );
+
+					// this.session.dispose();
+					// nools.deleteFlow( this.id );
+				}
+				catch ( e ) {
+					this.logger.error( "Couldn't delete flow for user: %s", e, {} );
+				}
+
 			}
 
 		}
@@ -182,35 +247,34 @@
 
 	userSchema.methods.sendMessage = function ( message, type ) {
 
-		var numSockets;
-		var i, socketID;
+		var numSockets, i;
+		var connectedSocket;
 
-		if ( !this.sockets ) {
-			this.sockets = [];
-		}
+		if ( this.hasSockets() ) {
 
-		numSockets = this.sockets.length;
-		type = type || "message";
+			numSockets = this.sockets.length;
+			type = type || "message";
 
-		if ( numSockets === 0 ) {
-			console.info( "No sockets to send message to!" );
-		}
+			for ( i = 0; i < numSockets; i++ ) {
 
-		for ( i = 0; i < numSockets; i++ ) {
+				connectedSocket = this.io.sockets.connected[ this.sockets[ i ] ];
 
-			socketID = this.sockets[ i ];
+				if ( connectedSocket ) {
 
-			if ( this.io.sockets.connected[ socketID ] ) {
+					try {
+						connectedSocket.emit( type, message );
+					}
+					catch ( e ) {
+						this.logger.error( "Could not send message (%s): %s", type, e, {} );
+					}
 
-				try {
-					this.io.sockets.connected[ socketID ].emit( type, message );
-				}
-				catch ( e ) {
-					this.logger.error( "Could not send message (%s): %s", type, e );
 				}
 
 			}
 
+		}
+		else {
+			this.logger.error( "No sockets to send message to!" );
 		}
 
 	};
@@ -218,15 +282,16 @@
 	userSchema.methods.loadFacts = function ( jaby ) {
 
 		var connectionString = secrets.db + "/" + this.id;
+		var session = this.getSession();
 
-		if ( this.hasSession() ) {
+		if ( session ) {
 
 			MongoClient.connect( connectionString, function ( err, database ) {
 
 				var factsCollection;
 
 				if ( err ) {
-					this.logger.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
+					this.logger.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err, {} );
 				}
 
 				if ( database ) {
@@ -243,15 +308,16 @@
 							database.close();
 						}
 						catch ( e ) {
-							this.logger.error( "Could not close database: %s", e );
+							this.logger.error( "Could not close database: %s", e, {} );
 						}
 
 						if ( err || !userFacts ) {
-							this.logger.error( "%s\tCould not load user facts: %s", new Date(), err );
+							this.logger.error( "%s\tCould not load user facts: %s", new Date(), err, {} );
 						}
 						else {
 							numFacts = userFacts.facts ? userFacts.facts.length : 0;
 							for ( i = 0; i < numFacts; i++ ) {
+
 								fact = userFacts.facts[ i ];
 								factObj = fact;
 								if ( fact.type ) {
@@ -264,7 +330,9 @@
 										}
 									}
 								}
-								this.session.assert( factObj );
+
+								session.assert( factObj );
+
 							}
 						}
 

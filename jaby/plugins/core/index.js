@@ -21,6 +21,8 @@
 		//	`exports.attach` gets called by Broadway on `app.use`
 		attach: function ( jaby ) {
 
+			jaby.sessions = {};
+
 			jaby.objects = {};
 			jaby.objects.Flags = Flags;
 			jaby.objects.Message = Message;
@@ -32,156 +34,222 @@
 				return socket && socket.request && socket.request.user ? socket.request.user : undefined;
 			};
 
-			jaby.getUserDB = function ( socket ) {
-				var userID = socket.request.user._id.toString();
+			jaby.getUserID = function ( socket ) {
+				var user = this.getUser( socket );
+				return user ? user.id : undefined;
+			};
+
+			jaby.getUserConnectionString = function ( socket ) {
+				var userID = typeof socket === "string" ? socket : this.getUserID( socket );
 				return secrets.db + "/" + userID;
+			};
+
+			jaby.getUserSession = function ( socket ) {
+				var userID = typeof socket === "string" ? socket : this.getUserID( socket );
+
+				if ( !userID ) {
+					return null;
+				}
+
+				return this.sessions.hasOwnProperty( userID ) ? this.sessions[ userID ] : null;
+			};
+
+			jaby.getSessionUser = function ( session ) {
+				var facts = session ? session.getFacts( User ) : null;
+				return facts && facts.length ? facts[ 0 ] : null;
+			};
+
+			jaby.ruleFire = function ( name, rule ) {
+				this.logger.debug( "Fired %s - %j", name, rule, {} );
+			};
+
+			jaby.factAssert = function ( fact ) {
+				this.logger.debug( "Fact asserted: %j", fact, {} );
+			};
+
+			jaby.factRetract = function ( fact ) {
+				this.logger.debug( "Fact retracted: %j", fact, {} );
+			};
+
+			jaby.factModify = function ( fact ) {
+				this.logger.debug( "Fact modified: %j", fact, {} );
+			};
+
+			jaby.rulesMatched = function ( err ) {
+
+				if ( err ) {
+					this.logger.error( "Could not match rules: %s", err, {} );
+				}
+				else {
+					this.logger.debug( "Rules matched." );
+				}
+
 			};
 
 			jaby.loadUser = function ( socket ) {
 
-				function loadFacts() {
+				function setupSession() {
 
-					var connectionString = jaby.getUserDB( socket );
+					function loadFacts() {
 
-					if ( user.hasSession() && connectionString ) {
+						var connectionString = jaby.getUserConnectionString( socket );
 
-						MongoClient.connect( connectionString, function ( err, database ) {
+						if ( user && user.session ) {
 
-							var factsCollection;
+							jaby.assert( user.id, user );
 
-							if ( err ) {
-								jaby.logger.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
-							}
+							if ( connectionString ) {
 
-							if ( database ) {
+								MongoClient.connect( connectionString, function ( err, database ) {
 
-								factsCollection = database.collection( "facts" );
-								factsCollection.findOne( {
-									_id: user.id
-								}, function ( err, userFacts ) {
+									var factsCollection;
 
-									try {
-										database.close();
-									}
-									catch ( e ) {
-										jaby.logger.error( "Could not close database: %s", e );
+									if ( err ) {
+										jaby.logger.error( "Could not connect to MongoDB: %s", err, {} );
 									}
 
-									if ( err || !userFacts ) {
-										jaby.logger.error( "%s\tCould not load user facts: %s", new Date(), err || "none" );
-									}
-									else {
-										//	TODO: Implement
+									if ( database ) {
+
+										factsCollection = database.collection( "facts" );
+										factsCollection.findOne( {
+											_id: user.id
+										}, function ( err, userFacts ) {
+
+											try {
+												database.close();
+											}
+											catch ( e ) {
+												jaby.logger.error( "Could not close database: %s", e, {} );
+											}
+
+											if ( err ) {
+												jaby.logger.error( "Could not load user facts: %s", err || "There are no facts in database", {} );
+											}
+											else {
+												jaby.assert( userID, new Flags() );
+
+												if ( !userFacts ) {
+													jaby.logger.debug( "There are no facts in database." );
+												}
+												else {
+													//	TODO: Add facts to the knowledge base
+												}
+
+												jaby.match( userID );
+											}
+
+										} );
+
 									}
 
 								} );
 
 							}
 
-						} );
+						}
 
 					}
 
-				}
-
-				var user = socket.request.user;
-				var userID = user.id;
-				var flow, options, property;
-				var self = this;
-
-				if ( !userID ) {
-					return;
-				}
-
-				if ( !this.hasOwnProperty( "users" ) ) {
-					this.users = {};
-				}
-
-				if ( this.users.hasOwnProperty( userID ) ) {
-					user = this.users[ userID ];
-				}
-				else {
-					this.users[ userID ] = user;
-
-					user.logger = this.logger;
-					user.io = this.io;
-				}
-
-				user.addSocket( socket.id, jaby );
-
-				if ( !user.session ) {
-
-					//	Setup the knowledge for user (Nools)
-					options = {
+					var flow;
+					var property;
+					var userID = user.id;
+					var options = {
 						name: userID,
 						define: {},
 						scope: {
-							logger: this.logger,
-							user: user
+							logger: jaby.logger
 						}
 					};
 
-					for ( property in this.objects ) {
-						if ( this.objects.hasOwnProperty( property ) ) {
-							options.define[ property ] = this.objects[ property ];
+					user.logger = jaby.logger;
+					user.io = jaby.io;
+					user.addSocket( socket );
+
+					jaby.logger.debug( "Creating session for user." );
+
+					for ( property in jaby.objects ) {
+						if ( jaby.objects.hasOwnProperty( property ) ) {
+							options.define[ property ] = jaby.objects[ property ];
 						}
 					}
 
 					try {
 
-						flow = nools.compile( path.resolve( __dirname, "./rules/core.nools" ), options );
-
-					}
-					catch ( e ) {
-						this.logger.error( "Couldn't compile rules for user: %s", e );
-					}
-
-					try {
-
-						if ( flow ) {
-							user.session = flow.getSession();
+						if ( nools.hasFlow( userID ) ) {
+							jaby.logger.debug( "Using existing flow for %s", userID, {} );
+							flow = nools.getFlow( userID );
+						}
+						else {
+							jaby.logger.debug( "Compiling new set of rules..." );
+							flow = nools.compile( path.resolve( __dirname, "./rules/core.nools" ), options );
 						}
 
 					}
 					catch ( e ) {
-						this.logger.error( "Couldn't get session for user: %s", e );
+						jaby.logger.error( "Couldn't compile rules for user: %s", e, {} );
 					}
 
-					if ( user.session ) {
+					if ( flow ) {
+						user.session = flow.getSession();
+						jaby.sessions[ userID ] = user.session;
+
+						user.session.on( "fire", jaby.ruleFire.bind( jaby ) );
+						user.session.on( "assert", jaby.factAssert.bind( jaby ) );
+						user.session.on( "retract", jaby.factRetract.bind( jaby ) );
+						user.session.on( "modify", jaby.factModify.bind( jaby ) );
 
 						try {
-
-							user.session.assert( new Flags() );
-
 							loadFacts();
-							user.session.match( function ( err ) {
-								if ( err ) {
-									console.error( err );
-									self.logger.error( "Could not match rules: %s", err );
-								}
-							} );
-
 						}
 						catch ( e ) {
-							this.logger.error( "Couldn't add user to rules: %s", e );
+							jaby.logger.error( "Couldn't add user to rules: %s", e );
 						}
+					}
 
+					if ( !user.session ) {
+						jaby.logger.error( "No session for user." );
 					}
-					else {
-						this.logger.error( "No session for user." );
+				}
+
+				var session, sessionUser;
+				var user = this.getUser( socket );
+
+				if ( !user ) {
+					return;
+				}
+
+				session = this.getUserSession( socket );
+				sessionUser = this.getSessionUser( session );
+				if ( sessionUser ) {
+
+					this.logger.debug( "Using existing session for user." );
+
+					user.logger = sessionUser.logger;
+					user.io = sessionUser.io;
+					user.sockets = sessionUser.sockets;
+
+					if ( !sessionUser.hasSocket( socket ) ) {
+						user.addSocket( socket );
+						sessionUser.addSocket( socket );
+						session.modify( sessionUser );
 					}
+
+				}
+				else {
+					setupSession();
 				}
 
 			};
 
 			jaby.saveSession = function ( socket ) {
 
-				var user = jaby.getUser( socket );
+				var userID = this.getUserID( socket );
+				var session = userID ? this.getUserSession( userID ) : undefined;
 				var sessionFacts, numFacts, i, fact;
 
-				if ( user && user.hasSession() ) {
+				if ( session ) {
 
-					sessionFacts = user.session.getFacts();
+					sessionFacts = session.getFacts();
 					numFacts = sessionFacts.length;
 					for ( i = 0; i < numFacts; i++ ) {
 						fact = sessionFacts[ i ];
@@ -190,8 +258,8 @@
 							fact.save();
 						}
 						else {
-							console.error( "Cannot save fact (%s), since not a Mongoose object.", typeof fact );
-							console.info( JSON.stringify( fact, null, "\t" ) );
+							this.logger.error( "Cannot save fact, since not a Mongoose object." );
+							this.logger.debug( JSON.stringify( fact, null, "\t" ) );
 						}
 					}
 
@@ -200,24 +268,26 @@
 
 			jaby.unloadUser = function ( socket ) {
 
-				var user = socket && socket.request && socket.request.user ? socket.request.user : undefined;
-				var userID = user.id;
+				var session = this.getUserSession( socket );
+				var user = this.getUser( socket );
+				var sessionUser;
 
-				if ( !userID ) {
-					return;
+				if ( user ) {
+					user.removeSocket( socket );
 				}
 
-				if ( !this.hasOwnProperty( "users" ) ) {
-					this.users = {};
-				}
+				if ( session ) {
 
-				if ( this.users.hasOwnProperty( userID ) ) {
+					sessionUser = this.getSessionUser( session );
+					if ( sessionUser ) {
 
-					user = this.users[ userID ];
-					user.removeSocket( socket.id );
+						if ( sessionUser.hasSocket( socket ) ) {
 
-					if ( !user.isActive() ) {
-						delete this.users[ userID ];
+							sessionUser.removeSocket( socket );
+							session.modify( sessionUser );
+
+						}
+
 					}
 
 				}
@@ -226,63 +296,45 @@
 
 			jaby.assert = function ( userID, assertion, match ) {
 
-				var user;
+				var session = this.getUserSession( userID );
 
-				if ( !userID || typeof userID !== "string" || !assertion ) {
+				if ( !session ) {
 					return;
 				}
 
-				if ( !this.users || !this.users.hasOwnProperty( userID ) ) {
+				if ( assertion === undefined || assertion === null ) {
 					return;
 				}
-				else {
 
-					try {
-						user = this.users[ userID ];
+				try {
+					session.assert( assertion );
 
-						if ( user.isActive() ) {
-							user.session.assert( assertion );
-
-							if ( match ) {
-								this.match( userID );
-							}
-						}
-
-					}
-					catch ( e ) {
-						console.error( "There was an error adding assertion to rules: %s", e );
+					if ( match ) {
+						this.match( userID );
 					}
 
+				}
+				catch ( e ) {
+					this.logger.error( "There was an error adding assertion to rules: %s", e, {} );
 				}
 
 			};
 
 			jaby.match = function ( userID ) {
 
-				var user;
+				var session = this.getUserSession( userID );
 
-				if ( !userID || typeof userID !== "string" ) {
+				if ( !session ) {
 					return;
 				}
 
-				if ( !this.users || !this.users.hasOwnProperty( userID ) ) {
-					return;
+				try {
+
+					session.match( this.rulesMatched.bind( this ) );
+
 				}
-				else {
-
-					try {
-
-						user = this.users[ userID ];
-
-						if ( user.isActive() ) {
-							user.session.match();
-						}
-
-					}
-					catch ( e ) {
-						console.error( "There was an error matching rules: %s", e );
-					}
-
+				catch ( e ) {
+					this.logger.error( "There was an error matching rules: %s", e, {} );
 				}
 
 			};
@@ -291,25 +343,36 @@
 
 				function askQuestion() {
 
-					var questionObject;
+					var question = {
+						question: "Does the QA function work?",
+						answers: [ {
+							id: 123,
+							text: "Testing One"
+						}, {
+							id: 456,
+							text: "Testing Two"
+						}, {
+							id: 789,
+							text: "Testing Three"
+						} ],
+						asked: false,
+						answer: null
+					};
 
-					var question = "Does the QA function work?";
-					var answers = [ {
-						id: 123,
-						text: "Testing One"
-					}, {
-						id: 456,
-						text: "Testing Two"
-					}, {
-						id: 789,
-						text: "Testing Three"
-					} ];
-
-					questionObject = new Question();
-					questionObject.question = question;
-					questionObject.answers = answers;
-
-					jaby.assert( userID, questionObject, true );
+					Question.create( question, function ( err, questionObject ) {
+						if ( err ) {
+							jaby.logger.error( "There was an error creating Question: %s", err );
+						}
+						else {
+							if ( questionObject ) {
+								jaby.logger.debug( "Asserting question..." );
+								jaby.assert( userID, questionObject, true );
+							}
+							else {
+								jaby.logger.error( "No Question returned." );
+							}
+						}
+					} );
 
 				}
 
@@ -322,22 +385,23 @@
 				user = this.getUser( socket );
 				userID = user.id;
 
-				jaby.logger.info( "Socket connected: %s for %s", socket.handshake.address, userID );
-				jaby.io = io;
+				this.logger.info( "Socket (%s) connected: %s for %s", socket.id, socket.handshake.address, userID );
+				this.io = io;
 
 				try {
-					jaby.loadUser( socket );
+					this.loadUser( socket );
 				}
 				catch ( e ) {
-					console.error( "Could not load user: %s", e );
+					this.logger.error( "Could not load user: %s", e, {} );
 					if ( e.stack ) {
-						console.info( e.stack );
+						this.logger.debug( e.stack );
 					}
 				}
 
 				socket.on( "start", function () {
 
-					var connectionString = jaby.getUserDB( socket );
+					var user = jaby.getUser( socket );
+					var connectionString = jaby.getUserConnectionString( socket );
 
 					if ( connectionString ) {
 
@@ -345,7 +409,7 @@
 							var contextCollection;
 
 							if ( err ) {
-								jaby.logger.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
+								jaby.logger.error( "Could not connect to MongoDB: %s", err, {} );
 							}
 
 							if ( database ) {
@@ -356,10 +420,10 @@
 									expireAfterSeconds: 3600
 								}, function ( err ) {
 									if ( err ) {
-										jaby.logger.error( "%s\tCould not add expiration to context collection: %s", new Date(), err );
+										jaby.logger.error( "Could not add expiration to context collection: %s", err, {} );
 									}
 									else {
-										jaby.logger.info( "Start %s: %s", socket.handshake.address, socket.request.user.profile.name );
+										jaby.logger.debug( "Start %s: %s", socket.handshake.address, user.profile.name );
 
 										try {
 											database.close();
@@ -379,8 +443,6 @@
 
 						jaby.logger.error( "Could not obtain user from socket." );
 
-						console.error( socket.request );
-
 					}
 
 				} );
@@ -391,7 +453,6 @@
 
 					if ( userID && message ) {
 
-						console.info( "Got \"%s\" from %s", message, userID );
 						jaby.assert( userID, message, true );
 
 					}
@@ -400,14 +461,31 @@
 
 				socket.on( "answer", function ( data ) {
 
-					var answerObject;
+					var answer;
 
-					jaby.logger.info( "Received answer \"%s\" from %s: \"%s\"", data.question, socket.handshake.address, data.answer );
+					jaby.logger.info( "Received answer \"%s\" from %s: \"%s\"", data.question, socket.handshake.address, data.answer, {} );
 
 					if ( data.question && data.answer ) {
 
-						answerObject = new Answer( data.question, data.answer );
-						jaby.assert( userID, answerObject, true );
+						answer = {
+							question: data.question,
+							answer: data.answer
+						};
+
+						Answer.create( answer, function ( err, answerObject ) {
+							if ( err ) {
+								jaby.logger.error( "There was an error creating Answer: %s", err );
+							}
+							else {
+								if ( answerObject ) {
+									jaby.assert( userID, answerObject, true );
+								}
+								else {
+									jaby.logger.error( "No Answer returned." );
+								}
+							}
+						} );
+
 					}
 
 				} );
@@ -431,7 +509,8 @@
 
 				socket.on( "status", function ( context ) {
 
-					var connectionString = jaby.getUserDB( socket );
+					var user = jaby.getUser( socket );
+					var connectionString = jaby.getUserConnectionString( socket );
 					var now = new Date();
 					var response;
 					var pid = process.pid;
@@ -462,7 +541,7 @@
 								var contextCollection;
 
 								if ( err ) {
-									jaby.logger.error( "%s:\tCould not connect to MongoDB: %s", new Date(), err );
+									jaby.logger.error( "Could not connect to MongoDB: %s", err, {} );
 								}
 
 								if ( database ) {
@@ -478,10 +557,10 @@
 											}
 
 											if ( err ) {
-												jaby.logger.error( "%s\tCould not save context: %s", new Date(), err );
+												jaby.logger.error( "Could not save context: %s", err, {} );
 											}
 
-											jaby.logger.info( "%s\t%s: %s", new Date(), socket.request.user._id, JSON.stringify( response ) );
+											jaby.logger.debug( "%s: %j", user._id, response, {} );
 											io.sockets.emit( "status", response );
 										} );
 									}

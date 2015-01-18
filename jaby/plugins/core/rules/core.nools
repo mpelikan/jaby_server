@@ -1,5 +1,6 @@
 rule WelcomeUser {
 	when {
+		u: User;
 		f: Flags;
 		not( f: Flags f.welcome === true );
 	}
@@ -7,8 +8,8 @@ rule WelcomeUser {
 		var message = "<h1>Welcome To Jaby</h1>";
 		message += "<h3>what computers were meant to become</h3>";
 
-		logger.info( "Sending welcome message for %s", user.id );
-		user.sendMessage( message );
+		logger.info( "Sending welcome message for %s", u.id, {} );
+		u.sendMessage( message );
 
 		modify( f, function() {
 			f.welcome = true;
@@ -16,14 +17,26 @@ rule WelcomeUser {
 	}
 }
 
-rule AskQuestion {
+rule QuestionExists {
 	when {
-		q: Question q.hasOwnProperty( "answers" );
-		not ( q: Question q.asked === true );
+		u: User;
+		q: Question;
 	}
 	then {
-		logger.info( "Asking question for %s", user.id );
-		user.sendMessage( q, "question" );
+		logger.info( "QuestionExists!!!!" );
+	}
+}
+
+rule AskQuestion {
+	when {
+		u: User;
+		q: Question q.asked === false;
+	}
+	then {
+		logger.info( "Asking question for %s", u.id, {} );
+		logger.debug( "q = %j", q, {} );
+
+		u.sendMessage( q, "question" );
 
 		modify( q, function() {
 			q.asked = true;
@@ -33,11 +46,12 @@ rule AskQuestion {
 
 rule AnswerQuestion {
 	when {
+		u: User;
 		a: Answer { question: id };
-		q: Question q.id === id && q.asked === true && q.answer !== true;
+		q: Question q.id === id && q.asked === true && q.answer !== null;
 	}
 	then {
-		logger.info( "Answered %s for %s", a.question, user.id );
+		logger.info( "Answered %s for %s", a.question, u.id, {} );
 
 		modify( q, function() {
 			delete q.answers;

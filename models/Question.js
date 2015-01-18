@@ -6,8 +6,17 @@
 	var questionSchema = new mongoose.Schema( {
 
 		question: String,
-		answers: Array
+		answers: Array,
+		asked: {
+			type: Boolean,
+			default: false
+		},
+		answer: String
 
+	} );
+
+	questionSchema.set( "toJSON", {
+		virtuals: true
 	} );
 
 	module.exports = mongoose.model( "Question", questionSchema, "facts" );

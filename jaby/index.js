@@ -40,7 +40,7 @@
 		}
 		catch ( e ) {
 			if ( e ) {
-				jaby.logger.error( "Could not load plugin: %s", e );
+				jaby.logger.error( "Could not load plugin: %s", e, {} );
 				if ( e.stack ) {
 					jaby.logger.info( e.stack );
 				}
@@ -62,18 +62,26 @@
 	var plugin;
 
 	var jaby = new broadway.App();
-	jaby.logger = winston;
+	jaby.logger = new( winston.Logger )( {
+		transports: [
+			new( winston.transports.Console )( {
+				level: "info",
+				colorize: true,
+				timestamp: true
+			} )
+		]
+	} );
 
 	jaby.plugins = loadPlugins( pluginsRoot );
 
 	for ( plugin in jaby.plugins ) {
 		if ( jaby.plugins.hasOwnProperty( plugin ) ) {
-			jaby.logger.info( "Using %s", plugin );
+			jaby.logger.info( "Using %s", plugin, {} );
 			try {
 				jaby.use( jaby.plugins[ plugin ], jaby );
 			}
 			catch ( e ) {
-				jaby.logger.error( "Could not use %s: %s", plugin, e );
+				jaby.logger.error( "Could not use %s: %s", plugin, e, {} );
 			}
 		}
 	}
