@@ -17,16 +17,6 @@ rule WelcomeUser {
 	}
 }
 
-rule QuestionExists {
-	when {
-		u: User;
-		q: Question;
-	}
-	then {
-		logger.info( "QuestionExists!!!!" );
-	}
-}
-
 rule AskQuestion {
 	when {
 		u: User;
@@ -48,10 +38,10 @@ rule AnswerQuestion {
 	when {
 		u: User;
 		a: Answer { question: id };
-		q: Question q.id === id && q.asked === true && q.answer !== null;
+		q: Question q.id === id && q.asked === true && isUndefinedOrNull( q.answer );
 	}
 	then {
-		logger.info( "Answered %s for %s", a.question, u.id, {} );
+		logger.info( "Answered \"%s\" for \"%s\"", a.answer, a.question, {} );
 
 		modify( q, function() {
 			delete q.answers;
