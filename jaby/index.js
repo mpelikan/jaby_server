@@ -65,7 +65,7 @@
 	jaby.logger = new( winston.Logger )( {
 		transports: [
 			new( winston.transports.Console )( {
-				level: "info",
+				level: "debug",
 				colorize: true,
 				timestamp: true
 			} )

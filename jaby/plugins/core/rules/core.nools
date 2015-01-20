@@ -1,8 +1,7 @@
 rule WelcomeUser {
 	when {
 		u: User;
-		f: Flags;
-		not( f: Flags f.welcome === true );
+		f: Knowledge f.type === "flags" && isUndefinedOrNull( f.welcome );
 	}
 	then {
 		var message = "<h1>Welcome To Jaby</h1>";
@@ -20,7 +19,7 @@ rule WelcomeUser {
 rule AskQuestion {
 	when {
 		u: User;
-		q: Question q.asked === false;
+		q: Knowledge q.type === "question" && isUndefinedOrNull( q.asked );
 	}
 	then {
 		logger.info( "Asking question for %s", u.id, {} );
@@ -37,8 +36,8 @@ rule AskQuestion {
 rule AnswerQuestion {
 	when {
 		u: User;
-		a: Answer { question: id };
-		q: Question q.id === id && q.asked === true && isUndefinedOrNull( q.answer );
+		a: Knowledge a.type === "answer" { question: id };
+		q: Knowledge q.type === "question" && q.id === id && q.asked === true && isUndefinedOrNull( q.answer );
 	}
 	then {
 		logger.info( "Answered \"%s\" for \"%s\"", a.answer, a.question, {} );

@@ -4,13 +4,11 @@
 	var usage = require( "usage" );
 	var path = require( "path" );
 	var nools = require( "nools" );
+	var cuid = require( "cuid" );
 	var MongoClient = require( "mongodb" ).MongoClient;
 
 	var User = require( "../../../models/User" );
-	var Message = require( "../../../models/Message" );
-	var Question = require( "../../../models/Question" );
-	var Answer = require( "../../../models/Answer" );
-	var Flags = require( "./objects/Flags" );
+	var Knowledge = require( "../../../models/Knowledge" );
 
 	var secrets = require( "../../../config/secrets" );
 
@@ -22,13 +20,6 @@
 		attach: function ( jaby ) {
 
 			jaby.sessions = {};
-
-			jaby.objects = {};
-			jaby.objects.Flags = Flags;
-			jaby.objects.Message = Message;
-			jaby.objects.User = User;
-			jaby.objects.Question = Question;
-			jaby.objects.Answer = Answer;
 
 			jaby.getUser = function ( socket ) {
 				return socket && socket.request && socket.request.user ? socket.request.user : undefined;
@@ -93,6 +84,7 @@
 					function loadFacts() {
 
 						var connectionString = jaby.getUserConnectionString( socket );
+						var flagsObject;
 
 						if ( user && user.session ) {
 
@@ -126,16 +118,13 @@
 												jaby.logger.error( "Could not load user facts: %s", err || "There are no facts in database", {} );
 											}
 											else {
-												jaby.assert( userID, new Flags() );
-
-												if ( !userFacts ) {
-													jaby.logger.debug( "There are no facts in database." );
-												}
-												else {
-													//	TODO: Add facts to the knowledge base
-												}
-
+												flagsObject = new Knowledge( "flags" );
+												jaby.assert( userID, flagsObject );
 												jaby.match( userID );
+
+												if ( userFacts ) {
+													//	TODO: Implement
+												}
 											}
 
 										} );
@@ -151,11 +140,13 @@
 					}
 
 					var flow;
-					var property;
 					var userID = user.id;
 					var options = {
 						name: userID,
-						define: {},
+						define: {
+							User: User,
+							Knowledge: Knowledge
+						},
 						scope: {
 							logger: jaby.logger
 						}
@@ -166,12 +157,6 @@
 					user.addSocket( socket );
 
 					jaby.logger.debug( "Creating session for user." );
-
-					for ( property in jaby.objects ) {
-						if ( jaby.objects.hasOwnProperty( property ) ) {
-							options.define[ property ] = jaby.objects[ property ];
-						}
-					}
 
 					try {
 
@@ -254,12 +239,9 @@
 					for ( i = 0; i < numFacts; i++ ) {
 						fact = sessionFacts[ i ];
 
-						if ( fact.save ) {
-							fact.save();
-						}
-						else {
-							this.logger.error( "Cannot save fact, since not a Mongoose object." );
-							this.logger.debug( JSON.stringify( fact, null, "\t" ) );
+						if ( fact instanceof Knowledge ) {
+							// fact.save();
+							this.logger.info( "Need to save: %j", fact, {} );
 						}
 					}
 
@@ -343,7 +325,8 @@
 
 				function askQuestion() {
 
-					var question = {
+					var questionObject = new Knowledge( "question", {
+						id: cuid(),
 						question: "Does the QA function work?",
 						answers: [ {
 							id: 123,
@@ -354,25 +337,11 @@
 						}, {
 							id: 789,
 							text: "Testing Three"
-						} ],
-						asked: false,
-						answer: null
-					};
-
-					Question.create( question, function ( err, questionObject ) {
-						if ( err ) {
-							jaby.logger.error( "There was an error creating Question: %s", err );
-						}
-						else {
-							if ( questionObject ) {
-								jaby.logger.debug( "Asserting question..." );
-								jaby.assert( userID, questionObject, true );
-							}
-							else {
-								jaby.logger.error( "No Question returned." );
-							}
-						}
+						} ]
 					} );
+
+					jaby.logger.debug( "Asserting question..." );
+					jaby.assert( userID, questionObject, true );
 
 				}
 
@@ -461,30 +430,17 @@
 
 				socket.on( "answer", function ( data ) {
 
-					var answer;
+					var answerObject;
 
 					jaby.logger.info( "Received answer \"%s\" from %s: \"%s\"", data.question, socket.handshake.address, data.answer, {} );
 
 					if ( data.question && data.answer ) {
 
-						answer = {
+						answerObject = new Knowledge( "answer", {
 							question: data.question,
 							answer: data.answer
-						};
-
-						Answer.create( answer, function ( err, answerObject ) {
-							if ( err ) {
-								jaby.logger.error( "There was an error creating Answer: %s", err );
-							}
-							else {
-								if ( answerObject ) {
-									jaby.assert( userID, answerObject, true );
-								}
-								else {
-									jaby.logger.error( "No Answer returned." );
-								}
-							}
 						} );
+						jaby.assert( userID, answerObject, true );
 
 					}
 

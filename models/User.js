@@ -250,10 +250,10 @@
 		var numSockets, i;
 		var connectedSocket;
 
-		if ( this.hasSockets() ) {
+		if ( message && this.hasSockets() ) {
 
 			numSockets = this.sockets.length;
-			type = type || "message";
+			type = type || message.type || "message";
 
 			for ( i = 0; i < numSockets; i++ ) {
 
