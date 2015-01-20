@@ -94,7 +94,7 @@
 
 								MongoClient.connect( connectionString, function ( err, database ) {
 
-									var factsCollection;
+									var factsCollection, userFacts;
 
 									if ( err ) {
 										jaby.logger.error( "Could not connect to MongoDB: %s", err, {} );
@@ -103,28 +103,38 @@
 									if ( database ) {
 
 										factsCollection = database.collection( "facts" );
-										factsCollection.findOne( {
-											_id: user.id
-										}, function ( err, userFacts ) {
+										userFacts = factsCollection.find();
 
-											try {
-												database.close();
-											}
-											catch ( e ) {
-												jaby.logger.error( "Could not close database: %s", e, {} );
-											}
+										if ( userFacts.count === 0 ) {
+
+											flagsObject = new Knowledge( "flags" );
+											jaby.assert( userID, flagsObject );
+
+										}
+
+										userFacts.each( function ( err, fact ) {
 
 											if ( err ) {
 												jaby.logger.error( "Could not load user facts: %s", err || "There are no facts in database", {} );
 											}
+
+											if ( fact ) {
+
+												jaby.assert( userID, fact );
+
+											}
 											else {
-												flagsObject = new Knowledge( "flags" );
-												jaby.assert( userID, flagsObject );
+
+												try {
+													database.close();
+
+												}
+												catch ( e ) {
+													jaby.logger.error( "Could not close database: %s", e, {} );
+												}
+
 												jaby.match( userID );
 
-												if ( userFacts ) {
-													//	TODO: Implement
-												}
 											}
 
 										} );
@@ -229,23 +239,69 @@
 			jaby.saveSession = function ( socket ) {
 
 				var userID = this.getUserID( socket );
+				var connectionString = jaby.getUserConnectionString( userID );
 				var session = userID ? this.getUserSession( userID ) : undefined;
-				var sessionFacts, numFacts, i, fact;
 
-				if ( session ) {
+				if ( session && connectionString ) {
 
-					sessionFacts = session.getFacts();
-					numFacts = sessionFacts.length;
-					for ( i = 0; i < numFacts; i++ ) {
-						fact = sessionFacts[ i ];
+					MongoClient.connect( connectionString, function ( err, database ) {
 
-						if ( fact instanceof Knowledge ) {
-							// fact.save();
-							this.logger.info( "Need to save: %j", fact, {} );
+						function savedFact( err ) {
+
+							numSaved++;
+
+							if ( err ) {
+								jaby.logger.error( "Could not save fact: %s", err, {} );
+							}
+
+							if ( i === numFacts && numSaved === numFacts ) {
+								try {
+									database.close();
+								}
+								catch ( e ) {
+									jaby.logger.warn( "Could not close database after saving facts: %s", e, {} );
+								}
+							}
+
 						}
-					}
+
+						var factsCollection;
+						var sessionFacts, numFacts, i, fact;
+						var numToSave = 0;
+						var numSaved = 0;
+
+						if ( err ) {
+							jaby.logger.error( "Could not connect to MongoDB: %s", err, {} );
+						}
+
+						if ( database ) {
+
+							factsCollection = database.collection( "facts" );
+
+							sessionFacts = session.getFacts();
+							numFacts = sessionFacts.length;
+							for ( i = 0; i < numFacts; i++ ) {
+
+								fact = sessionFacts[ i ];
+								if ( fact instanceof Knowledge ) {
+
+									jaby.logger.debug( "Saving: %j", fact, {} );
+
+									numToSave++;
+									factsCollection.save( fact, savedFact );
+
+								}
+							}
+
+						}
+						else {
+							jaby.logger.error( "Could not connect to database." );
+						}
+
+					} );
 
 				}
+
 			};
 
 			jaby.unloadUser = function ( socket ) {
