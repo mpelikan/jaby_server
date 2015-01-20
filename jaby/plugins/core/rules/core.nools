@@ -41,6 +41,7 @@ rule AnswerQuestion {
 	}
 	then {
 		logger.info( "Answered \"%s\" for \"%s\"", a.answer, a.question, {} );
+		u.retractMessage( a.question );
 
 		modify( q, function() {
 			delete q.answers;

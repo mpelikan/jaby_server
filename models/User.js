@@ -52,7 +52,7 @@
 		resetPasswordToken: String,
 		resetPasswordExpires: Date,
 
-		sockets: [String]
+		sockets: [ String ]
 
 	} );
 
@@ -275,6 +275,29 @@
 		}
 		else {
 			this.logger.error( "No sockets to send message to!" );
+		}
+
+	};
+
+	userSchema.methods.retractMessage = function ( id ) {
+
+		var message = {};
+
+		if ( id ) {
+
+			if ( typeof id === "string" ) {
+				message.id = id;
+			}
+			else {
+				if ( id.id ) {
+					message.id = id.id;
+				}
+			}
+
+			if ( message.id ) {
+				this.sendMessage( message, "retract" );
+			}
+
 		}
 
 	};
