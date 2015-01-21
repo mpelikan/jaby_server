@@ -16,6 +16,59 @@ rule WelcomeUser {
 	}
 }
 
+rule GetUserName {
+	when {
+		or (
+			u: User isUndefinedOrNull( u.profile.name2 ),
+			u: User u.profile.name2 === ""
+		);
+		not ( q: Knowledge q.id === "user.name2" && q.type === "question" );
+	}
+	then {
+		var message = {
+			id: "user.name2",
+			question: "What is your name?",
+			answers: "user.name2"
+		};
+		var question = new Knowledge( "question", message );
+
+		logger.info( "Asking user %s for name2.", u.id, {} );
+		u.sendMessage( message, "question" );
+
+		assert( question );
+	}
+}
+
+rule ConfirmUserName {
+	when {
+		u: User u.profile.name !== "";
+		not ( q: Knowledge q.id === "confirm.user.name" && q.type === "question" );
+	}
+	then {
+		var message = {
+			id: "confirm.user.name",
+			question: "Is " + u.profile.name + " your name?",
+			answers: [
+				{
+					id: "no",
+					text: "No"
+				},
+				{
+					id: "yes",
+					text: "Yes"
+				}
+			]
+		};
+		var question = new Knowledge( "question", message );
+		question.asked = true;
+
+		logger.info( "Confirming user %s for name.", u.id, {} );
+		u.sendMessage( message, "question" );
+
+		assert( question );
+	}
+}
+
 rule AskQuestion {
 	when {
 		u: User;
