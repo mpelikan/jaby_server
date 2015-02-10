@@ -1,0 +1,18 @@
+rule TwitterFriends {
+	when {
+		u: User;
+		not (
+			u: User isUndefinedOrNull( u.twitter )
+		);
+		not (
+			t: Knowledge t.id === "social.twitter.friends"
+		);
+	}
+	then {
+		var twitter = new Knowledge( "social.twitter.friends", 69 );
+
+		console.info( "Asserted \"social.twitter.friends\" for %s.", u.twitter );
+
+		assert( twitter );
+	}
+}

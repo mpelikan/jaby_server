@@ -6,9 +6,6 @@
 		"public/*",
 		"node_modules/*",
 		"third-party/*",
-		".git/*",
-		"logs/*",
-		"jaby/orb/systemDB/*",
-		"jaby/orb/topics/*"
+		".git/*"
 	]
 }

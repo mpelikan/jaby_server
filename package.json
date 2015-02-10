@@ -76,11 +76,9 @@
 		"uglify-js": "2.4.16",
 		"validator": "3.26.0",
 		"yui": "3.18.1",
-		"broadway": "0.3.6",
 		"nools": "0.3.0",
 		"usage": "0.5.0",
-		"winston": "0.8.3",
-		"cuid": "1.2.4"
+		"winston": "0.8.3"
 	},
 	"devDependencies": {
 		"blessed": "0.0.37",
